@@ -4,16 +4,16 @@ const categoryData = {
   dataFoundation: {
     title: "Data Foundation",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>`,
-    description: "Core reusable data components you need funding to build properly. These assets eliminate repeated data prep and semantic work.",
+    description: "A suite of shared data components our team has developed and refined across multiple engagements - eliminating repeated semantic and integration work on every new project.",
     assets: [
-      { label: "Source system mappings (ERP, CRM etc.)", desc: "Templates that speed up data onboarding." },
-      { label: "Canonical data models", desc: "Unified entity structure for integrating sources." },
-      { label: "Industry data dictionaries", desc: "Standard definitions for fields across systems." },
-      { label: "Predefined KPI definitions", desc: "Common metrics that ensure consistent measurement." },
-      { label: "Shared reference tables (currency, units)", desc: "Reusable lookup tables to normalize values." },
-      { label: "Prebuilt data quality rules", desc: "Automated checks to catch anomalies early." },
-      { label: "Master data management templates", desc: "Frameworks that maintain clean reference data." },
-      { label: "Standard security classifications", desc: "Predefined access levels for sensitive info." }
+      { label: "Source system mappings (ERP, CRM etc.)", desc: "Reusable templates that cut data onboarding time on every engagement." },
+      { label: "Canonical data models", desc: "Unified entity structures for joining data across multiple source systems." },
+      { label: "Industry data dictionaries", desc: "Standardised field definitions maintained consistently across all projects." },
+      { label: "Predefined KPI definitions", desc: "Agreed metric logic that ensures every team measures the same thing." },
+      { label: "Shared reference tables (currency, units)", desc: "Common lookup tables that normalise values at source." },
+      { label: "Prebuilt data quality rules", desc: "Automated checks that catch data issues before they reach models." },
+      { label: "Master data management templates", desc: "Governance frameworks our team applies to keep reference data clean." },
+      { label: "Standard security classifications", desc: "Predefined access tiers applied consistently across all data assets." }
     ],
     examples: [
       { label: "SAP to canonical supply chain model" },
@@ -31,14 +31,14 @@ const categoryData = {
   dataIngestion: {
     title: "Data Ingestion Accelerators",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v4a2 2 0 0 1-2 2H3"></path><path d="M14 21v-4a2 2 0 0 1 2-2h5"></path><line x1="14" y1="7" x2="21" y2="7"></line><line x1="3" y1="17" x2="10" y2="17"></line></svg>`,
-    description: "Pre-built pipelines and connectors for the most common enterprise systems. These components take the pain out of initial integration.",
+    description: "Production-ready pipelines and connectors for the most common enterprise systems, built from real client integrations and continuously improved.",
     assets: [
-      { label: "Reusable pipelines for SAP", desc: "Quickly connect to SAP systems with a template." },
-      { label: "Oracle ingestion flows", desc: "Preconfigured data pulls from Oracle ERP." },
-      { label: "Salesforce connectors", desc: "Standard interface for CRM data." },
-      { label: "Manufacturing MES & IoT feeds", desc: "Plug-and-play streams from factory systems." },
-      { label: "Streaming SDK for real-time events", desc: "Turnkey tooling for event-driven ingestion." },
-      { label: "API ingestion kits", desc: "Reusable wrappers for popular REST/GraphQL sources." }
+      { label: "Reusable pipelines for SAP", desc: "Tested integration templates connecting SAP systems in days, not weeks." },
+      { label: "Oracle ingestion flows", desc: "Preconfigured data pulls from Oracle ERP with transformation logic included." },
+      { label: "Salesforce connectors", desc: "Battle-tested CRM connector our team has deployed across multiple clients." },
+      { label: "Manufacturing MES & IoT feeds", desc: "Structured streams from factory systems connecting to our analytics layer." },
+      { label: "Streaming SDK for real-time events", desc: "Reusable SDK our team built for event-driven, real-time data ingestion." },
+      { label: "API ingestion kits", desc: "Standardised wrappers for REST and GraphQL sources that remove boilerplate." }
     ],
     examples: [
       { label: "SAP integration template deployed in days" },
@@ -56,14 +56,14 @@ const categoryData = {
   modelLibrary: {
     title: "Intelligence Model Library",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>`,
-    description: "Reusable analytics and machine-learning assets that power every domain pod. Build once, deploy everywhere.",
+    description: "A growing catalogue of analytics and ML assets developed from live client deployments - forecasting, anomaly detection, optimisation and more, ready to deploy into any domain.",
     assets: [
-      { label: "Forecasting templates", desc: "Ready-made models for demand and revenue." },
-      { label: "Anomaly detection models", desc: "Outlier spotting for quality and ops." },
-      { label: "Optimization algorithms", desc: "Prebuilt math for resource planning." },
-      { label: "Simulation components", desc: "Scenario tools to stress-test strategies." },
-      { label: "Feature engineering pipelines", desc: "Reusable code for common data transformations." },
-      { label: "Monitoring & drift alerts", desc: "Ready dashboards to keep models healthy." }
+      { label: "Forecasting templates", desc: "Demand and revenue forecasting models our team has validated across industries." },
+      { label: "Anomaly detection models", desc: "Statistical and ML-based outlier detection applied to quality, ops and finance." },
+      { label: "Optimization algorithms", desc: "Mathematical solvers our team configures for scheduling, routing and allocation." },
+      { label: "Simulation components", desc: "Scenario and what-if tools used to stress-test strategies before deployment." },
+      { label: "Feature engineering pipelines", desc: "Modular transformation logic our team reuses across model builds." },
+      { label: "Monitoring & drift alerts", desc: "Dashboards and rules our team uses to keep deployed models accurate over time." }
     ],
     examples: [
       { label: "Forecasting model reused across three pods" },
@@ -81,14 +81,14 @@ const categoryData = {
   visualization: {
     title: "Visualization & Decision Layer",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"></polyline></svg>`,
-    description: "Standard dashboards and decision tools that make models usable by business users.",
+    description: "A library of dashboard templates and decision tools built for business audiences - role-specific, action-oriented and proven in production environments.",
     assets: [
-      { label: "Executive KPI dashboards", desc: "High-level views for leadership decisions." },
-      { label: "Persona-based monitoring", desc: "Dashboards tailored to each role (sales, ops, etc.) with action-ready visuals." },
-      { label: "Simulation interfaces", desc: "Interactive what-if dashboards." },
-      { label: "Decision support tools", desc: "Guided workflows for business users." },
-      { label: "Alert configuration packs", desc: "Predefined rules for common operational alerts." },
-      { label: "Mobile dashboard templates", desc: "Prebuilt layouts optimized for phones and tablets." }
+      { label: "Executive KPI dashboards", desc: "Leadership-facing views our team has calibrated to drive decisions, not just reporting." },
+      { label: "Persona-based monitoring", desc: "Role-specific dashboards built for each function - ops, finance, sales - with action-ready context." },
+      { label: "Simulation interfaces", desc: "Interactive what-if tools that let business users test decisions before committing." },
+      { label: "Decision support tools", desc: "Guided workflows our team builds to translate model output into business actions." },
+      { label: "Alert configuration packs", desc: "Predefined alert rules our team tunes for each domain's operational thresholds." },
+      { label: "Mobile dashboard templates", desc: "Responsive layouts optimised for field and mobile users without custom development." }
     ],
     examples: [
       { label: "Executive KPIs prewired for C-suite" },
@@ -106,14 +106,14 @@ const categoryData = {
   platform: {
     title: "Platform Accelerator",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l0 0a2 2 0 0 1-2.83 2.83l0 0A1.65 1.65 0 0 0 13 19.4a1.65 1.65 0 0 0-1.82.33l0 0a2 2 0 0 1-2.83-2.83l0 0A1.65 1.65 0 0 0 4.6 13a1.65 1.65 0 0 0-.33-1.82l0 0a2 2 0 0 1 2.83-2.83l0 0A1.65 1.65 0 0 0 11 4.6a1.65 1.65 0 0 0 1.82-.33l0 0a2 2 0 0 1 2.83 2.83l0 0A1.65 1.65 0 0 0 19.4 11a1.65 1.65 0 0 0 .33 1.82z"></path></svg>`,
-    description: "A pre-configured deployment stack clients can adopt wholesale or pick apart - data lake, orchestration, ML templates and built-in governance.",
+    description: "A pre-configured, cloud-native deployment stack our team has hardened across engagements - covering data lake architecture, pipeline orchestration, ML release patterns and built-in governance.",
     assets: [
-      { label: "Data lake/warehouse scaffolding", desc: "Prebuilt storage structure for analytics." },
-      { label: "Pipeline orchestration templates", desc: "Automated workflow setups for data flow." },
-      { label: "ML deployment blueprints", desc: "Standardized model release patterns." },
-      { label: "Governance framework setup", desc: "Governance policies ready to roll out." },
-      { label: "CI/CD scripts", desc: "Reusable build and release pipelines for analytics code." },
-      { label: "Monitoring & logging stack", desc: "Turnkey observability for platform health." }
+      { label: "Data lake/warehouse scaffolding", desc: "Structured storage architecture our team applies as a consistent starting point." },
+      { label: "Pipeline orchestration templates", desc: "Automated workflow patterns we reuse to keep data flows reliable and maintainable." },
+      { label: "ML deployment blueprints", desc: "Standardised model release patterns our team has refined across multiple deployments." },
+      { label: "Governance framework setup", desc: "Data governance policies and controls our team configures and hands over to clients." },
+      { label: "CI/CD scripts", desc: "Reusable build and release pipelines for analytics code, adapted from production projects." },
+      { label: "Monitoring & logging stack", desc: "Observability tooling our team deploys to ensure platform health from day one." }
     ],
     examples: [
       { label: "Full stack deployed to client cloud in weeks" },
