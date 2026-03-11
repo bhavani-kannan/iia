@@ -1,92 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foundation Accelerator Catalogue</title>
 
-<title>Intelligence Accelerator Catalogue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 
-<link rel="stylesheet" href="styles.css">
-
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 </head>
-
 <body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
 
-<header class="header">
-<h2>Integrated Intelligence Advantage</h2>
-</header>
+  <header class="site-header">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <span>Integrated Intelligence Advantage</span>
+    </div>
+    <nav class="top-nav">
+      <a href="#foundation">Foundation</a>
+      <a href="#detail">Accelerator Detail</a>
+      <a href="#preview">Future Pods</a>
+    </nav>
+  </header>
 
-<section class="hero">
-<h1>Modular Intelligence Accelerator Catalogue</h1>
-<p>Reusable foundation accelerators powering plug-and-play domain pods.</p>
-</section>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Leadership investment case</p>
+      <h1>Build the reusable foundation first.</h1>
+      <p class="hero-copy">
+        The funding ask is to create a catalogue of domain-agnostic foundation accelerators that reduce rebuild effort,
+        shorten time to value, and enable future plug-and-play predictive intelligence use cases across industries.
+      </p>
 
-<section class="architecture">
+      <div class="hero-metrics">
+        <div class="metric-card">
+          <span class="metric-value">Domain agnostic</span>
+          <span class="metric-label">Reusable across multiple client contexts</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">Reusable assets</span>
+          <span class="metric-label">Data, pipelines, models, governance, dashboards</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">Faster activation</span>
+          <span class="metric-label">Accelerates downstream use-case delivery</span>
+        </div>
+      </div>
+    </section>
 
-<h2>Architecture</h2>
+    <section class="foundation-section" id="foundation">
+      <div class="section-heading">
+        <p class="eyebrow">Foundation accelerator layer</p>
+        <h2>Reusable capabilities that every domain pod will rely on</h2>
+        <p>
+          These accelerators are common, reusable, and fundable because they remove repeated effort across engagements.
+          Select an accelerator to view its purpose, impact, and reusable assets.
+        </p>
+      </div>
 
-<div class="pods">
+      <div class="foundation-layout">
+        <div class="accelerator-grid">
+          <button class="accelerator-card active" data-key="canonicalModel">
+            <span class="card-tag">Foundation</span>
+            <h3>Canonical Data Model</h3>
+            <p>Standardized business entities and relationships across source systems</p>
+          </button>
 
-<div class="pod" data-pod="supply">
-<h3>Supply Chain</h3>
-<p>Inventory, forecasting, logistics</p>
-</div>
+          <button class="accelerator-card" data-key="dataDictionary">
+            <span class="card-tag">Foundation</span>
+            <h3>Data Dictionary & KPI Library</h3>
+            <p>Reusable definitions for fields, KPIs, business logic, and semantic meaning</p>
+          </button>
 
-<div class="pod" data-pod="finance">
-<h3>Finance</h3>
-<p>Working capital & revenue forecasting</p>
-</div>
+          <button class="accelerator-card" data-key="connectors">
+            <span class="card-tag">Foundation</span>
+            <h3>ERP / Source Connectors</h3>
+            <p>Prebuilt integrations into common enterprise systems and source patterns</p>
+          </button>
 
-<div class="pod" data-pod="manufacturing">
-<h3>Manufacturing</h3>
-<p>Predictive maintenance & yield</p>
-</div>
+          <button class="accelerator-card" data-key="pipelines">
+            <span class="card-tag">Foundation</span>
+            <h3>Reusable Data Pipelines</h3>
+            <p>Pre-engineered ingestion, transformation, and quality flows</p>
+          </button>
 
-<div class="pod" data-pod="commercial">
-<h3>Commercial</h3>
-<p>Pricing & customer segmentation</p>
-</div>
+          <button class="accelerator-card" data-key="modelLibrary">
+            <span class="card-tag">Foundation</span>
+            <h3>Predictive Model Library</h3>
+            <p>Reusable forecasting, anomaly detection, and optimization components</p>
+          </button>
 
-<div class="pod" data-pod="operations">
-<h3>Operations</h3>
-<p>Energy optimization & asset monitoring</p>
-</div>
+          <button class="accelerator-card" data-key="governance">
+            <span class="card-tag">Foundation</span>
+            <h3>Governance & Security Templates</h3>
+            <p>Repeatable controls for trust, access, auditability, and scale</p>
+          </button>
+        </div>
 
-</div>
+        <div class="detail-panel" id="detail">
+          <div class="detail-top">
+            <p class="eyebrow small">Selected accelerator</p>
+            <h3 id="detail-title">Canonical Data Model</h3>
+            <div class="impact-chip" id="detail-impact">Impact: faster standardization across source systems</div>
+          </div>
 
-</section>
+          <div class="detail-block">
+            <h4>What it is</h4>
+            <p id="detail-what"></p>
+          </div>
 
-<section class="foundation">
+          <div class="detail-block">
+            <h4>Why it matters</h4>
+            <p id="detail-why"></p>
+          </div>
 
-<h2>Foundation Accelerators</h2>
+          <div class="detail-block">
+            <h4>Reusable assets included</h4>
+            <ul id="detail-assets"></ul>
+          </div>
 
-<div class="foundation-grid">
+          <div class="detail-block">
+            <h4>Business impact</h4>
+            <ul id="detail-benefits"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="foundation-card">Canonical Data Models</div>
-<div class="foundation-card">ERP Connectors</div>
-<div class="foundation-card">Reusable Data Pipelines</div>
-<div class="foundation-card">ML Model Library</div>
-<div class="foundation-card">KPI Dictionaries</div>
-<div class="foundation-card">Dashboards & Control Towers</div>
+    <section class="preview-section" id="preview">
+      <div class="section-heading narrow">
+        <p class="eyebrow">What comes next</p>
+        <h2>Future domain pods will plug into this layer</h2>
+        <p>
+          Once the foundation catalogue is established, domain-specific predictive intelligence pods can be activated
+          faster for areas like supply chain, manufacturing, finance, and operations.
+        </p>
+      </div>
 
-</div>
+      <div class="pod-preview-row">
+        <div class="preview-pill">Supply Chain Intelligence Pod</div>
+        <div class="preview-pill">Manufacturing Intelligence Pod</div>
+        <div class="preview-pill muted">Finance Pod (later)</div>
+        <div class="preview-pill">Operations & Asset Pod</div>
+      </div>
+    </section>
+  </main>
 
-</section>
-
-<section class="usecases">
-
-<h2 id="pod-title">Supply Chain Pod</h2>
-
-<div id="usecase-container"></div>
-
-</section>
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
