@@ -4,7 +4,7 @@ const categoryData = {
   dataFoundation: {
     title: "Data Foundation",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>`,
-    description: "A suite of shared data components our team has developed and refined across multiple engagements - eliminating repeated semantic and integration work on every new project.",
+    description: "A suite of shared data components developed and refined across multiple client engagements - eliminating repeated semantic and integration work on every new project.",
     assets: [
       { label: "Source system mappings (ERP, CRM etc.)", desc: "Reusable templates that cut data onboarding time on every engagement." },
       { label: "Canonical data models", desc: "Unified entity structures for joining data across multiple source systems." },
@@ -106,7 +106,7 @@ const categoryData = {
   platform: {
     title: "Platform Accelerator",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l0 0a2 2 0 0 1-2.83 2.83l0 0A1.65 1.65 0 0 0 13 19.4a1.65 1.65 0 0 0-1.82.33l0 0a2 2 0 0 1-2.83-2.83l0 0A1.65 1.65 0 0 0 4.6 13a1.65 1.65 0 0 0-.33-1.82l0 0a2 2 0 0 1 2.83-2.83l0 0A1.65 1.65 0 0 0 11 4.6a1.65 1.65 0 0 0 1.82-.33l0 0a2 2 0 0 1 2.83 2.83l0 0A1.65 1.65 0 0 0 19.4 11a1.65 1.65 0 0 0 .33 1.82z"></path></svg>`,
-    description: "A pre-configured, cloud-native deployment stack our team has hardened across engagements - covering data lake architecture, pipeline orchestration, ML release patterns and built-in governance.",
+    description: "A pre-configured, cloud-native deployment stack hardened across engagements - covering data lake architecture, pipeline orchestration, ML release patterns and built-in governance.",
     assets: [
       { label: "Data lake/warehouse scaffolding", desc: "Structured storage architecture applied as a consistent, proven starting point across projects." },
       { label: "Pipeline orchestration templates", desc: "Automated workflow patterns we reuse to keep data flows reliable and maintainable." },
