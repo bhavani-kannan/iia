@@ -12,7 +12,7 @@ const categoryData = {
       { label: "Predefined KPI definitions", desc: "Agreed metric logic that ensures every team measures the same thing." },
       { label: "Shared reference tables (currency, units)", desc: "Common lookup tables that normalise values at source." },
       { label: "Prebuilt data quality rules", desc: "Automated checks that catch data issues before they reach models." },
-      { label: "Master data management templates", desc: "Governance frameworks our team applies to keep reference data clean." },
+      { label: "Master data management templates", desc: "Governance frameworks that maintain clean, trusted reference data across all deployments." },
       { label: "Standard security classifications", desc: "Predefined access tiers applied consistently across all data assets." }
     ],
     examples: [
@@ -35,9 +35,9 @@ const categoryData = {
     assets: [
       { label: "Reusable pipelines for SAP", desc: "Tested integration templates connecting SAP systems in days, not weeks." },
       { label: "Oracle ingestion flows", desc: "Preconfigured data pulls from Oracle ERP with transformation logic included." },
-      { label: "Salesforce connectors", desc: "Battle-tested CRM connector our team has deployed across multiple clients." },
+      { label: "Salesforce connectors", desc: "Battle-tested CRM connector deployed across multiple client environments." },
       { label: "Manufacturing MES & IoT feeds", desc: "Structured streams from factory systems connecting to our analytics layer." },
-      { label: "Streaming SDK for real-time events", desc: "Reusable SDK our team built for event-driven, real-time data ingestion." },
+      { label: "Streaming SDK for real-time events", desc: "Purpose-built SDK for event-driven, real-time data ingestion at scale." },
       { label: "API ingestion kits", desc: "Standardised wrappers for REST and GraphQL sources that remove boilerplate." }
     ],
     examples: [
@@ -58,12 +58,12 @@ const categoryData = {
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>`,
     description: "A growing catalogue of analytics and ML assets developed from live client deployments - forecasting, anomaly detection, optimisation and more, ready to deploy into any domain.",
     assets: [
-      { label: "Forecasting templates", desc: "Demand and revenue forecasting models our team has validated across industries." },
+      { label: "Forecasting templates", desc: "Demand and revenue forecasting models validated and refined across multiple industries." },
       { label: "Anomaly detection models", desc: "Statistical and ML-based outlier detection applied to quality, ops and finance." },
-      { label: "Optimization algorithms", desc: "Mathematical solvers our team configures for scheduling, routing and allocation." },
+      { label: "Optimization algorithms", desc: "Mathematical solvers configured for scheduling, routing and resource allocation problems." },
       { label: "Simulation components", desc: "Scenario and what-if tools used to stress-test strategies before deployment." },
-      { label: "Feature engineering pipelines", desc: "Modular transformation logic our team reuses across model builds." },
-      { label: "Monitoring & drift alerts", desc: "Dashboards and rules our team uses to keep deployed models accurate over time." }
+      { label: "Feature engineering pipelines", desc: "Modular transformation logic reused and refined across every model build." },
+      { label: "Monitoring & drift alerts", desc: "Dashboards and alert rules that keep deployed models accurate and reliable over time." }
     ],
     examples: [
       { label: "Forecasting model reused across three pods" },
@@ -83,11 +83,11 @@ const categoryData = {
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"></polyline></svg>`,
     description: "A library of dashboard templates and decision tools built for business audiences - role-specific, action-oriented and proven in production environments.",
     assets: [
-      { label: "Executive KPI dashboards", desc: "Leadership-facing views our team has calibrated to drive decisions, not just reporting." },
+      { label: "Executive KPI dashboards", desc: "Leadership-facing views calibrated to drive decisions, not just report on them." },
       { label: "Persona-based monitoring", desc: "Role-specific dashboards built for each function - ops, finance, sales - with action-ready context." },
       { label: "Simulation interfaces", desc: "Interactive what-if tools that let business users test decisions before committing." },
-      { label: "Decision support tools", desc: "Guided workflows our team builds to translate model output into business actions." },
-      { label: "Alert configuration packs", desc: "Predefined alert rules our team tunes for each domain's operational thresholds." },
+      { label: "Decision support tools", desc: "Guided workflows that translate model output into clear, actionable business decisions." },
+      { label: "Alert configuration packs", desc: "Predefined alert rules tuned to each domain's operational thresholds and priorities." },
       { label: "Mobile dashboard templates", desc: "Responsive layouts optimised for field and mobile users without custom development." }
     ],
     examples: [
@@ -108,12 +108,12 @@ const categoryData = {
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l0 0a2 2 0 0 1-2.83 2.83l0 0A1.65 1.65 0 0 0 13 19.4a1.65 1.65 0 0 0-1.82.33l0 0a2 2 0 0 1-2.83-2.83l0 0A1.65 1.65 0 0 0 4.6 13a1.65 1.65 0 0 0-.33-1.82l0 0a2 2 0 0 1 2.83-2.83l0 0A1.65 1.65 0 0 0 11 4.6a1.65 1.65 0 0 0 1.82-.33l0 0a2 2 0 0 1 2.83 2.83l0 0A1.65 1.65 0 0 0 19.4 11a1.65 1.65 0 0 0 .33 1.82z"></path></svg>`,
     description: "A pre-configured, cloud-native deployment stack our team has hardened across engagements - covering data lake architecture, pipeline orchestration, ML release patterns and built-in governance.",
     assets: [
-      { label: "Data lake/warehouse scaffolding", desc: "Structured storage architecture our team applies as a consistent starting point." },
+      { label: "Data lake/warehouse scaffolding", desc: "Structured storage architecture applied as a consistent, proven starting point across projects." },
       { label: "Pipeline orchestration templates", desc: "Automated workflow patterns we reuse to keep data flows reliable and maintainable." },
-      { label: "ML deployment blueprints", desc: "Standardised model release patterns our team has refined across multiple deployments." },
-      { label: "Governance framework setup", desc: "Data governance policies and controls our team configures and hands over to clients." },
+      { label: "ML deployment blueprints", desc: "Standardised model release patterns refined across multiple production deployments." },
+      { label: "Governance framework setup", desc: "Data governance policies and controls configured for client ownership from day one." },
       { label: "CI/CD scripts", desc: "Reusable build and release pipelines for analytics code, adapted from production projects." },
-      { label: "Monitoring & logging stack", desc: "Observability tooling our team deploys to ensure platform health from day one." }
+      { label: "Monitoring & logging stack", desc: "Full observability tooling deployed at platform launch to ensure health from day one." }
     ],
     examples: [
       { label: "Full stack deployed to client cloud in weeks" },
