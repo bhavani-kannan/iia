@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foundation Accelerator Catalogue</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- using Inter for body and Poppins for the header title -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- make sure the CSS file is referenced relative to this HTML file -->
+  <link rel="stylesheet" href="./styles.css" type="text/css">
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span>Integrated Intelligence Advantage</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+
+
+      <div class="hero-metrics">
+        <div class="metric-card">
+          <span class="metric-value">Domain Agnostic</span>
+          <span class="metric-label">Works across any business line</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">Reusable Assets</span>
+          <span class="metric-label">Prebuilt components cut future cost</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">Rapid Time-to-Value</span>
+          <span class="metric-label">Start delivering benefits sooner</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">Growth Ready</span>
+          <span class="metric-label">Designed to scale as needs expand</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="foundation-section">
+      <div class="section-heading">
+        <h2 class="eyebrow">Foundation accelerator layer</h2>
+        <p class="intro-copy">These accelerators are common, reusable and fundable, removing repeated effort across engagements.</p>
+      </div>
+
+      <div class="foundation-layout">
+        <!-- category buttons at top -->
+        <div class="category-menu">
+          <button type="button" class="category-button active" data-key="dataFoundation">
+            <span class="btn-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </span>Data Foundation
+          </button>
+          <button type="button" class="category-button" data-key="dataIngestion">
+            <span class="btn-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v4a2 2 0 0 1-2 2H3"></path><path d="M14 21v-4a2 2 0 0 1 2-2h5"></path><line x1="14" y1="7" x2="21" y2="7"></line><line x1="3" y1="17" x2="10" y2="17"></line></svg>
+            </span>Data Ingestion Accelerators
+          </button>
+          <button type="button" class="category-button" data-key="modelLibrary">
+            <span class="btn-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
+            </span>Intelligence Model Library
+          </button>
+          <button type="button" class="category-button" data-key="visualization">
+            <span class="btn-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"></polyline></svg>
+            </span>Visualization &amp; Decision Layer
+          </button>
+          <button type="button" class="category-button" data-key="platform">
+            <span class="btn-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l0 0a2 2 0 0 1-2.83 2.83l0 0A1.65 1.65 0 0 0 13 19.4a1.65 1.65 0 0 0-1.82.33l0 0a2 2 0 0 1-2.83-2.83l0 0A1.65 1.65 0 0 0 4.6 13a1.65 1.65 0 0 0-.33-1.82l0 0a2 2 0 0 1 2.83-2.83l0 0A1.65 1.65 0 0 0 11 4.6a1.65 1.65 0 0 0 1.82-.33l0 0a2 2 0 0 1 2.83 2.83l0 0A1.65 1.65 0 0 0 19.4 11a1.65 1.65 0 0 0 .33 1.82z"></path></svg>
+            </span>Platform Accelerator
+          </button>
+        </div>
+
+        <!-- details area populated by JS -->
+        <div class="category-details" id="category-details">
+          <!-- default content filled on DOMContentLoaded -->
+        </div>
+      </div>
+    </section>
+
+    <section class="preview-section">
+      <div class="section-heading narrow">
+        <h2 class="eyebrow">Industry Specific Intelligence Pods</h2>
+        <p>These predictive intelligence pods can be activated faster across various domains.</p>
+      </div>
+
+      <div class="pod-preview-row">
+        <div class="preview-pill" data-key="procurement">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          Procurement
+        </div>
+        <div class="preview-pill" data-key="manufacturing">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          Manufacturing
+        </div>
+        <div class="preview-pill" data-key="logistics">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 20 13 16 13"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="13.5" cy="18.5" r="2.5"></circle></svg>
+          Logistics
+        </div>
+        <div class="preview-pill" data-key="sales">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 10"></polyline><path d="M7 4h10v4H7z"></path><path d="M9 9v2m6-2v2"></path></svg>
+          Sales
+        </div>
+        <div class="preview-pill" data-key="finance">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          Finance
+        </div>
+      </div>
+
+      <div id="pod-details" class="pod-details-panel" style="margin-top:32px; padding:24px; background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:var(--radius-sm);"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
