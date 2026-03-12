@@ -81,7 +81,26 @@ body{
   width:min(var(--max), calc(100% - 64px));
   margin:0 auto;
   padding:16px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
+.header-nav-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 16px;
+  border-radius:8px;
+  background:rgba(145,242,216,0.08);
+  border:1px solid rgba(145,242,216,0.22);
+  color:var(--accent-2);
+  font-size:0.8rem;
+  font-weight:600;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background 0.2s;
+}
+.header-nav-btn:hover{ background:rgba(145,242,216,0.16); }
 
 /* push content down so it isn't hidden under the fixed header */
 .page-shell{
