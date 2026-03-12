@@ -84,7 +84,19 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .context-card .ctx-headline{
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
       margin-bottom: 8px;
+    }
+    .context-card .ctx-detail{
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
     }
     .context-card .ctx-value{
       font-size: 0.92rem;
@@ -610,21 +622,24 @@
 
     <!-- ── Client Context ─────────────────────────────────────── -->
     <div class="journey-section">
-      <h2>Autonomous Employee Onboarding</h2>
+      <h2>Overview</h2>
       <p class="intro-copy">A manufacturing enterprise with mature HR processes and an existing SaaS tool stack, looking to automate end-to-end onboarding coordination without a data platform investment.</p>
 
       <div class="context-grid">
         <div class="context-card">
           <div class="ctx-label">Sector</div>
-          <div class="ctx-value">Manufacturing enterprise across copper production, processing and sales - with active functions in Procurement, Supply Chain, Logistics, Finance, HR, IT and Administration</div>
+          <div class="ctx-headline">Copper manufacturing — production to sales</div>
+          <div class="ctx-detail">HR, IT, Finance, Procurement, Supply Chain, Logistics and Administration</div>
         </div>
         <div class="context-card">
-          <div class="ctx-label">The Ask</div>
-          <div class="ctx-value">A multi-agent system coordinating end-to-end onboarding - each agent owning a discrete function (offer tracking, IT provisioning, BGV, SLA monitoring) with a supervisor agent orchestrating the workflow.</div>
+          <div class="ctx-label">Objective</div>
+          <div class="ctx-headline">Automate onboarding coordination across five departments</div>
+          <div class="ctx-detail">Supervisor agent orchestrates HR, IT, Admin, Compliance and Learning in parallel</div>
         </div>
         <div class="context-card">
           <div class="ctx-label">Constraint</div>
-          <div class="ctx-value">Cost constraints rule out a data platform. The Intelligence Layer sits on top of existing tools via API connectors - no infrastructure changes required.</div>
+          <div class="ctx-headline">No data platform — deploy on what exists today</div>
+          <div class="ctx-detail">Intelligence Layer connects to existing SaaS tools via API connectors</div>
         </div>
         <div class="context-card">
           <div class="ctx-label">Existing Tool Stack</div>
