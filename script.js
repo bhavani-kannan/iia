@@ -1,6 +1,34 @@
 /* rewritten to support category-button navigation with expandable details */
 
 const categoryData = {
+  processIntelligence: {
+    title: "Process Intelligence & Design",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>`,
+    description: "Reusable process frameworks, governance templates and workflow design patterns built from successful client engagement across multiple industries - establishing process maturity as the foundation for automation.",
+    assets: [
+      { label: "As-is process mapping templates", desc: "Rapid assessment frameworks that document current workflows, bottlenecks, handoffs and decision points across core business processes." },
+      { label: "To-be workflow design patterns", desc: "Industry-proven process designs for common functions (onboarding, procurement, order-to-cash) that serve as blueprints for automation-ready workflows." },
+      { label: "SLA and KPI governance frameworks", desc: "Standardised definitions for service levels, KPIs and escalation thresholds that make process expectations explicit and measurable." },
+      { label: "Decision logic and escalation rules", desc: "Reusable rule libraries for when to escalate, who owns each decision, and what conditions trigger different process paths." },
+      { label: "Role-based access and governance models", desc: "Process governance templates defining who can approve, modify or override decisions at each workflow stage." },
+      { label: "Process discovery and analysis tools", desc: "Diagnostic frameworks to identify waste, cycle time variance, bottlenecks and automation opportunities within existing workflows." },
+      { label: "Process orchestration patterns", desc: "Proven multi-step coordination patterns for complex workflows spanning multiple systems and teams." },
+      { label: "Performance benchmarking templates", desc: "Industry baselines and internal targets for cycle time, quality, cost and compliance across standard processes." }
+    ],
+    examples: [
+      { label: "HR onboarding workflow - mapped, redesigned and optimization targets defined" },
+      { label: "Procurement approval hierarchy and escalation rules - documented and standardised" },
+      { label: "Order-to-cash SLAs and decision thresholds - defined for agent decision-making" },
+      { label: "Supply chain process bottleneck analysis - cycle time variance and automation candidates identified" }
+    ],
+    outcomes: [
+      "Explicit process documentation",
+      "Clear decision governance",
+      "Automation-ready workflows",
+      "Measurable process maturity",
+      "Reduced coordination overhead"
+    ]
+  },
   dataFoundation: {
     title: "Data Foundation",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>`,
