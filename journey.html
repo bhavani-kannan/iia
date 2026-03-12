@@ -837,82 +837,66 @@
 
       <div class="pod-columns-grid">
 
-        <!-- Predictive -->
-        <div class="pod-column">
-          <div class="tier-badge" style="background:#7fd8ff22; color:#7fd8ff; border:1px solid #7fd8ff44; align-self:flex-start;">PREDICTIVE</div>
-          <div class="pod-column-cards">
+        <!-- Badge row -->
+        <div class="tier-badge" style="background:#7fd8ff22; color:#7fd8ff; border:1px solid #7fd8ff44;">PREDICTIVE</div>
+        <div class="tier-badge" style="background:#91f2d822; color:#91f2d8; border:1px solid #91f2d844;">PRESCRIPTIVE</div>
+        <div class="tier-badge" style="background:#f26cbf22; color:#f26cbf; border:1px solid #f26cbf44;">AGENTIC</div>
 
-            <div class="pod-use-case">
-              <div class="puc-title">Offer Acceptance Likelihood</div>
-              <div class="puc-desc">Score each open offer on acceptance probability using role, compensation band, candidate engagement signals and historical patterns.</div>
-              <div class="puc-value"><span class="value-label">Business value:</span> Prioritise pre-boarding actions for high-risk offers and avoid last-minute backfill surprises.</div>
-            </div>
-
-            <div class="pod-use-case">
-              <div class="puc-title">BGV Delay Risk Prediction</div>
-              <div class="puc-desc">Predict which background verifications are at risk of delay based on vendor history, candidate profile and geography.</div>
-              <div class="puc-value"><span class="value-label">Business value:</span> Flag at-risk cases early and trigger escalation before they threaten the start date.</div>
-            </div>
-
-            <div class="pod-use-case">
-              <div class="puc-title">IT Provisioning Timeline Forecast</div>
-              <div class="puc-desc">Forecast IT ticket completion time based on role, location, current queue depth and hardware availability.</div>
-              <div class="puc-value"><span class="value-label">Business value:</span> Identify provisioning bottlenecks before Day 1 and allow proactive reallocation of resources.</div>
-            </div>
-
-          </div>
+        <!-- Row 1: Core orchestration value -->
+        <div class="pod-use-case">
+          <div class="puc-title">Offer Acceptance Likelihood</div>
+          <div class="puc-desc">Score each open offer on acceptance probability using role, compensation band, candidate engagement signals and historical patterns.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Prioritise pre-boarding actions for high-risk offers and avoid last-minute backfill surprises.</div>
         </div>
 
-        <!-- Prescriptive -->
-        <div class="pod-column">
-          <div class="tier-badge" style="background:#91f2d822; color:#91f2d8; border:1px solid #91f2d844; align-self:flex-start;">PRESCRIPTIVE</div>
-          <div class="pod-column-cards">
-
-            <div class="pod-use-case">
-              <div class="puc-title">Next Best Action for HR Coordinators</div>
-              <div class="puc-desc">Rank actions across all active onboarding cases: which candidate to chase, which ticket to escalate, which step is blocking.</div>
-              <div class="puc-value"><span class="value-label">Business value:</span> Replaces manual task tracking with a prioritised action list.</div>
-            </div>
-
-            <div class="pod-use-case">
-              <div class="puc-title">Onboarding Checklist Optimisation</div>
-              <div class="puc-desc">Prescribe the optimal task sequence for each role and location, running steps in parallel where possible to cut total cycle time.</div>
-              <div class="puc-value"><span class="value-label">Business value:</span> Shorter onboarding cycles and fewer bottlenecks from sequential handoffs.</div>
-            </div>
-
-            <div class="pod-use-case">
-              <div class="puc-title">Escalation and Exception Guidance</div>
-              <div class="puc-desc">On SLA breach or overdue task, surfaces the escalation path, responsible contact and resolution steps for that exception.</div>
-              <div class="puc-value"><span class="value-label">Business value:</span> Consistent, auditable exception handling regardless of coordinator experience.</div>
-            </div>
-
-          </div>
+        <div class="pod-use-case">
+          <div class="puc-title">Next Best Action for HR Coordinators</div>
+          <div class="puc-desc">Rank actions across all active onboarding cases: which candidate to chase, which ticket to escalate, which step is blocking.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Replaces manual task tracking with a prioritised action list surfaced in real time.</div>
         </div>
 
-        <!-- Agentic -->
-        <div class="pod-column">
-          <div class="tier-badge" style="background:#f26cbf22; color:#f26cbf; border:1px solid #f26cbf44; align-self:flex-start;">AGENTIC</div>
-          <div class="pod-column-cards">
+        <div class="pod-use-case">
+          <div class="puc-title">Autonomous Onboarding Orchestrator</div>
+          <div class="puc-desc">Monitors offer status, raises IT and admin tickets, initiates BGV and updates Darwinbox at each milestone. No manual coordination.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Every step fires on time, for every new hire, without a coordinator chasing it.</div>
+        </div>
 
-            <div class="pod-use-case">
-              <div class="puc-title">Autonomous Onboarding Orchestrator</div>
-              <div class="puc-desc">Monitors offer status, raises IT and admin tickets, initiates BGV and updates Darwinbox at each milestone. No manual coordination.</div>
-              <div class="puc-value"><span class="value-label">Business value:</span> Every step fires on time, for every new hire, without a coordinator chasing it.</div>
-            </div>
+        <!-- Row 2: Risk and exception layer -->
+        <div class="pod-use-case">
+          <div class="puc-title">BGV Delay Risk Prediction</div>
+          <div class="puc-desc">Predict which background verifications are at risk of delay based on vendor history, candidate profile and geography.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Flag at-risk cases early and trigger escalation before they threaten the start date.</div>
+        </div>
 
-            <div class="pod-use-case">
-              <div class="puc-title">Intelligent SLA Watchdog</div>
-              <div class="puc-desc">Tracks all open tasks against SLA thresholds, sends escalation alerts to responsible parties and logs breach events.</div>
-              <div class="puc-value"><span class="value-label">Business value:</span> No manual chasing. No new hire falls through the cracks.</div>
-            </div>
+        <div class="pod-use-case">
+          <div class="puc-title">Onboarding Checklist Optimisation</div>
+          <div class="puc-desc">Prescribe the optimal task sequence for each role and location, running steps in parallel where possible to cut total cycle time.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Shorter onboarding cycles and fewer bottlenecks from sequential handoffs.</div>
+        </div>
 
-            <div class="pod-use-case">
-              <div class="puc-title">Day 1 Readiness Confirmation Agent</div>
-              <div class="puc-desc">Validates completion of all prerequisites across systems, generates a readiness report and notifies the hiring manager and HR coordinator for sign-off.</div>
-              <div class="puc-value"><span class="value-label">Business value:</span> Every new hire arrives prepared. Full audit trail included.</div>
-            </div>
+        <div class="pod-use-case">
+          <div class="puc-title">Intelligent SLA Watchdog</div>
+          <div class="puc-desc">Tracks all open tasks against SLA thresholds, sends escalation alerts to responsible parties and logs breach events automatically.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> No manual chasing. No new hire falls through the cracks.</div>
+        </div>
 
-          </div>
+        <!-- Row 3: Timeline and readiness layer -->
+        <div class="pod-use-case">
+          <div class="puc-title">IT Provisioning Timeline Forecast</div>
+          <div class="puc-desc">Forecast IT ticket completion time based on role, location, current queue depth and hardware availability.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Identify provisioning bottlenecks before Day 1 and allow proactive reallocation of resources.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Escalation and Exception Guidance</div>
+          <div class="puc-desc">On SLA breach or overdue task, surfaces the escalation path, responsible contact and resolution steps for that exception type.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Consistent, auditable exception handling regardless of coordinator experience.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Day 1 Readiness Confirmation Agent</div>
+          <div class="puc-desc">Validates completion of all prerequisites across systems, generates a readiness report and notifies the hiring manager and HR coordinator for sign-off.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Every new hire arrives prepared on Day 1. Full audit trail included.</div>
         </div>
 
       </div>

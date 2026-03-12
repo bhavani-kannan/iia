@@ -693,7 +693,6 @@ body{
   display:grid;
   grid-template-columns:repeat(3, 1fr);
   gap:20px;
-  align-items:start;
 }
 
 .pod-column{
@@ -757,7 +756,7 @@ body{
   font-size:0.83rem;
   color:var(--accent-2);
   line-height:1.5;
-  margin-top:4px;
+  margin-top:auto;
   padding-top:8px;
   border-top:1px solid var(--line);
 }
