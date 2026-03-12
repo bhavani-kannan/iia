@@ -208,12 +208,43 @@
       font-size: 0.82rem;
       font-weight: 700;
       color: var(--text);
+    }
+    .lane-header{
+      margin-bottom: 6px;
+    }
+    .readiness-header{
       margin-bottom: 8px;
     }
-    .lane-blocks,
-    .readiness-checks{
+    .lane-meta,
+    .lane-sla{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .meta-pill,
+    .sla-pill{
+      font-size: 0.7rem;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.02);
+      padding: 4px 9px;
+      line-height: 1.2;
+    }
+    .lane-sla .sla-pill{
+      color: var(--accent);
+      border-color: rgba(127,216,255,0.22);
+      background: rgba(127,216,255,0.06);
+    }
+    .lane-blocks{
       display: grid;
       grid-template-columns: repeat(3, minmax(160px,1fr));
+      gap: 10px;
+    }
+    .readiness-checks{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px,1fr));
       gap: 10px;
     }
     .lane-block,
@@ -282,6 +313,25 @@
       color: var(--muted);
       line-height: 1.4;
     }
+    .dependency-row{
+      margin-top: 12px;
+      border: 1px solid rgba(127,216,255,0.2);
+      border-radius: 12px;
+      background: rgba(127,216,255,0.04);
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px,1fr));
+      gap: 10px;
+    }
+    .dependency-item{
+      font-size: 0.76rem;
+      color: var(--muted);
+      border: 1px dashed rgba(127,216,255,0.28);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.02);
+      line-height: 1.35;
+    }
     .readiness-icon{
       border-color: rgba(145,242,216,0.35);
       background: rgba(145,242,216,0.08);
@@ -307,6 +357,36 @@
       line-height: 1.45;
     }
     .exception-strip strong{ color: var(--accent-4); }
+    .outcomes-strip{
+      margin-top: 12px;
+      border: 1px solid rgba(145,242,216,0.22);
+      border-radius: 12px;
+      background: rgba(145,242,216,0.04);
+      padding: 10px 12px;
+    }
+    .outcomes-title{
+      font-size: 0.76rem;
+      color: var(--accent-2);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .outcomes-grid{
+      display: grid;
+      grid-template-columns: repeat(4, minmax(140px,1fr));
+      gap: 8px;
+    }
+    .outcome-pill{
+      font-size: 0.74rem;
+      color: var(--text);
+      text-align: center;
+      border: 1px solid rgba(145,242,216,0.24);
+      border-radius: 999px;
+      background: rgba(145,242,216,0.05);
+      padding: 8px 10px;
+      line-height: 1.25;
+    }
     .flow-agent-bar{
       margin-top: 28px;
       padding: 14px 20px;
@@ -326,7 +406,9 @@
     @media (max-width: 1080px){
       .lane-blocks,
       .readiness-checks,
-      .governance-checks{
+      .governance-checks,
+      .dependency-row,
+      .outcomes-grid{
         grid-template-columns: repeat(2, minmax(140px,1fr));
       }
     }
@@ -344,7 +426,9 @@
       }
       .lane-blocks,
       .readiness-checks,
-      .governance-checks{
+      .governance-checks,
+      .dependency-row,
+      .outcomes-grid{
         grid-template-columns: 1fr;
       }
     }
@@ -527,6 +611,14 @@
             </div>
             <div class="lane-frame">
               <div class="lane-header">HR Operations</div>
+              <div class="lane-meta">
+                <span class="meta-pill">Owner: HRBP Team</span>
+                <span class="meta-pill">System: Darwinbox</span>
+              </div>
+              <div class="lane-sla">
+                <span class="sla-pill">Target SLA: T+4h case kickoff</span>
+                <span class="sla-pill">Criticality: High</span>
+              </div>
               <div class="lane-blocks">
                 <div class="lane-block">Onboarding case created</div>
                 <div class="lane-block">Documents and forms collected</div>
@@ -541,6 +633,14 @@
             </div>
             <div class="lane-frame">
               <div class="lane-header">IT and Access</div>
+              <div class="lane-meta">
+                <span class="meta-pill">Owner: IT Service Desk</span>
+                <span class="meta-pill">System: Ticketing and IDAM</span>
+              </div>
+              <div class="lane-sla">
+                <span class="sla-pill">Target SLA: T+24h access readiness</span>
+                <span class="sla-pill">Criticality: High</span>
+              </div>
               <div class="lane-blocks">
                 <div class="lane-block">Identity tickets raised</div>
                 <div class="lane-block">App and VPN access provisioned</div>
@@ -555,6 +655,14 @@
             </div>
             <div class="lane-frame">
               <div class="lane-header">Workplace and Admin</div>
+              <div class="lane-meta">
+                <span class="meta-pill">Owner: Admin and Facilities</span>
+                <span class="meta-pill">System: Admin Ticketing</span>
+              </div>
+              <div class="lane-sla">
+                <span class="sla-pill">Target SLA: T+24h asset allocation</span>
+                <span class="sla-pill">Criticality: Medium</span>
+              </div>
               <div class="lane-blocks">
                 <div class="lane-block">Laptop and assets allocated</div>
                 <div class="lane-block">Workstation and access badge ready</div>
@@ -569,6 +677,14 @@
             </div>
             <div class="lane-frame">
               <div class="lane-header">Compliance and Risk</div>
+              <div class="lane-meta">
+                <span class="meta-pill">Owner: Compliance Team</span>
+                <span class="meta-pill">System: BGV Vendor API</span>
+              </div>
+              <div class="lane-sla">
+                <span class="sla-pill">Target SLA: T+48h risk status</span>
+                <span class="sla-pill">Criticality: High</span>
+              </div>
               <div class="lane-blocks">
                 <div class="lane-block">BGV workflow initiated</div>
                 <div class="lane-block">Policy acknowledgements tracked</div>
@@ -583,6 +699,14 @@
             </div>
             <div class="lane-frame">
               <div class="lane-header">Manager and Learning</div>
+              <div class="lane-meta">
+                <span class="meta-pill">Owner: Hiring Manager and L and D</span>
+                <span class="meta-pill">System: Darwinbox and LMS</span>
+              </div>
+              <div class="lane-sla">
+                <span class="sla-pill">Target SLA: T+24h induction release</span>
+                <span class="sla-pill">Criticality: Medium</span>
+              </div>
               <div class="lane-blocks">
                 <div class="lane-block">Manager and buddy assigned</div>
                 <div class="lane-block">30-60-90 plan published</div>
@@ -592,6 +716,11 @@
           </div>
         </div>
 
+        <div class="dependency-row">
+          <div class="dependency-item">Dependency: BGV clear -> final privileged system access enablement</div>
+          <div class="dependency-item">Dependency: payroll profile complete -> benefits activation and salary readiness</div>
+        </div>
+
         <div class="governance-row">
           <div class="governance-icon">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
@@ -599,9 +728,9 @@
           <div class="governance-frame">
             <div class="governance-header">Governance Checkpoints</div>
             <div class="governance-checks">
-              <div class="governance-check">HTIL checkpoint: policy deviation or SLA amber requires human validation</div>
-              <div class="governance-check">HTOL checkpoint: high-risk exception routes to leadership override queue</div>
-              <div class="governance-check">Success criteria: mandatory controls passed and no critical blocker open</div>
+              <div class="governance-check">Trigger: SLA amber or policy deviation | Control: HITL review | Action: process owner validates route</div>
+              <div class="governance-check">Trigger: legal or critical risk | Control: HOTL override | Action: leadership decides hold, waive, or alternate path</div>
+              <div class="governance-check">Trigger: pre-close gate run | Control: success criteria validation | Action: case closes only on full pass</div>
             </div>
             <div class="governance-note">Supervisor agent enforces checkpoint order and only advances case when governance outcome is compliant.</div>
           </div>
@@ -624,6 +753,16 @@
 
         <div class="exception-strip">
           <strong>Exception path:</strong> Any SLA breach, missing document or approval block is escalated with owner, ETA and recovery action until closure.
+        </div>
+
+        <div class="outcomes-strip">
+          <div class="outcomes-title">Operational Success Metrics</div>
+          <div class="outcomes-grid">
+            <div class="outcome-pill">KPI: Day 1 readiness rate</div>
+            <div class="outcome-pill">KPI: SLA breach rate</div>
+            <div class="outcome-pill">KPI: Onboarding cycle time</div>
+            <div class="outcome-pill">KPI: Manual follow-up volume</div>
+          </div>
         </div>
 
         <div class="flow-agent-bar">
