@@ -400,10 +400,15 @@
     <div class="journey-section">
       <div class="section-heading">
         <h2 class="eyebrow">Orchestration Architecture</h2>
-        <p class="intro-copy">Coordinates across all existing systems. Monitors state, triggers each next step and escalates only when human input is needed.</p>
+        <p class="intro-copy">The agent monitors state across all systems, applies decision rules from the optimized process, coordinates parallel workstreams, automatically escalates exceptions, and ensures SLA compliance at every step.</p>
       </div>
 
       <div class="flow-wrapper">
+        <!-- SLA Watchdog spine -->
+        <div style="background: rgba(127,216,255,0.04); border-left: 3px solid rgba(127,216,255,0.3); padding: 12px 16px; margin-bottom: 20px; border-radius: 8px; font-size: 0.82rem; color: var(--muted); font-style: italic;">
+          SLA Watchdog: Continuous monitoring across all steps. Alerts escalate if any task breaches SLA, routes to escalation authority defined in process governance.
+        </div>
+
         <div class="flow-row">
 
           <div class="flow-step">
@@ -418,24 +423,28 @@
             <div class="flow-node agent-node">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
             </div>
-            <div class="flow-label">Acceptance<br>Detection</div>
-            <div class="flow-sublabel">Agent monitors<br>email + Darwinbox</div>
+            <div class="flow-label">Acceptance Judgment</div>
+            <div class="flow-sublabel">Decision: Is offer accepted?<br>(Email receipt signal + Rules)</div>
           </div>
 
-          <div class="flow-step">
-            <div class="flow-node">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><polyline points="8 21 12 17 16 21"></polyline></svg>
+          <div class="flow-step" style="flex: 2; position: relative;">
+            <div style="display: flex; gap: 16px; align-items: flex-start; width: 100%;">
+              <div style="flex: 1; text-align: center;">
+                <div class="flow-node">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><polyline points="8 21 12 17 16 21"></polyline></svg>
+                </div>
+                <div class="flow-label">IT Provisioning</div>
+                <div class="flow-sublabel">Auto-ticket raised<br>(Parallel)</div>
+              </div>
+              <div style="flex: 1; text-align: center;">
+                <div class="flow-node">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg>
+                </div>
+                <div class="flow-label">Laptop Allocation</div>
+                <div class="flow-sublabel">Admin ticket raised<br>(Parallel)</div>
+              </div>
             </div>
-            <div class="flow-label">IT Provisioning</div>
-            <div class="flow-sublabel">Auto-ticket raised<br>in IT system</div>
-          </div>
-
-          <div class="flow-step">
-            <div class="flow-node">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg>
-            </div>
-            <div class="flow-label">Laptop Allocation</div>
-            <div class="flow-sublabel">Admin ticket raised<br>via SharePoint</div>
+            <div style="position: absolute; top: -8px; left: 0; right: 0; text-align: center; font-size: 0.7rem; color: var(--muted);">Both coordinated simultaneously</div>
           </div>
 
           <div class="flow-step">
@@ -447,24 +456,22 @@
           </div>
 
           <div class="flow-step">
-            <div class="flow-node agent-node">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
-            </div>
-            <div class="flow-label">SLA Monitoring</div>
-            <div class="flow-sublabel">Agent tracks all<br>open tasks + deadlines</div>
-          </div>
-
-          <div class="flow-step">
             <div class="flow-node" style="background:rgba(145,242,216,0.08); border-color:rgba(145,242,216,0.3);">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
             <div class="flow-label">Day 1 Ready</div>
-            <div class="flow-sublabel">All systems confirmed<br>Darwinbox updated</div>
+            <div class="flow-sublabel">All prerequisites confirmed<br>Darwinbox final update</div>
           </div>
 
         </div>
+
+        <!-- Escalation paths -->
+        <div style="margin-top: 20px; padding: 12px 16px; background: rgba(242,108,191,0.04); border-left: 3px solid rgba(242,108,191,0.3); border-radius: 8px; font-size: 0.82rem; color: var(--muted);">
+          <strong style="color: var(--accent-4);">Exception Escalation:</strong> If acceptance is delayed beyond SLA, or any task blocks (IT backlog, BGV delay, document missing), agent routes exception to escalation authority per process governance. Human approves override or retry with modified parameters.
+        </div>
+
         <div class="flow-agent-bar">
-          Orchestration Agent: monitors state across all systems, escalates exceptions, updates Darwinbox as source of truth
+          Intelligent Orchestration Agent: Decision logic, parallel coordination, continuous SLA monitoring, automated escalation
         </div>
       </div>
     </div>
