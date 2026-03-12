@@ -237,6 +237,31 @@
       border-color: rgba(127,216,255,0.22);
       background: rgba(127,216,255,0.06);
     }
+    .trigger-lane .lane-icon{
+      border-color: rgba(255,154,102,0.35);
+      background: rgba(255,154,102,0.08);
+    }
+    .trigger-lane .lane-icon svg{ stroke: var(--accent-3); }
+    .trigger-lane .lane-frame{
+      border-color: rgba(255,154,102,0.24);
+      background: rgba(255,154,102,0.04);
+    }
+    .trigger-lane .lane-block{
+      color: var(--text);
+      border-color: rgba(255,154,102,0.24);
+      background: rgba(255,154,102,0.05);
+    }
+    .trigger-lane .sla-pill{
+      color: var(--accent-3);
+      border-color: rgba(255,154,102,0.24);
+      background: rgba(255,154,102,0.08);
+    }
+    .trigger-note{
+      margin-top: 8px;
+      font-size: 0.74rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
     .lane-blocks{
       display: grid;
       grid-template-columns: repeat(3, minmax(160px,1fr));
@@ -598,13 +623,36 @@
     <div class="journey-section">
       <div class="section-heading">
         <h2 class="eyebrow">Orchestration Architecture</h2>
-        <p class="intro-copy">The agent monitors state across all systems, applies decision rules from the optimized process, coordinates parallel workstreams, automatically escalates exceptions, and ensures SLA compliance at every step.</p>
+        <p class="intro-copy">Execution starts only after offer acceptance is captured in the system of record, DOJ is set, and ETA baselines are published. The agent then coordinates parallel workstreams with governance and SLA control.</p>
       </div>
 
       <div class="flow-wrapper">
         <div class="flow-kicker">Parallel window: once offer is accepted, all departmental lanes execute concurrently under one supervisor agent.</div>
 
         <div class="parallel-lanes">
+          <div class="parallel-lane trigger-lane">
+            <div class="lane-icon">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            </div>
+            <div class="lane-frame">
+              <div class="lane-header">Trigger and Baseline Control</div>
+              <div class="lane-meta">
+                <span class="meta-pill">System of record: Darwinbox</span>
+                <span class="meta-pill">Event source: status update or signed email</span>
+              </div>
+              <div class="lane-sla">
+                <span class="sla-pill">T0 control: DOJ and ETA baseline lock</span>
+                <span class="sla-pill">Criticality: Mandatory</span>
+              </div>
+              <div class="lane-blocks">
+                <div class="lane-block">Offer accepted event captured and validated</div>
+                <div class="lane-block">DOJ updated in system of record</div>
+                <div class="lane-block">Lane ETAs and SLA timers published</div>
+              </div>
+              <div class="trigger-note">If DOJ changes, the supervisor agent automatically recalculates all lane deadlines and republishes ETA baselines.</div>
+            </div>
+          </div>
+
           <div class="parallel-lane">
             <div class="lane-icon">
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -718,6 +766,7 @@
 
         <div class="dependency-row">
           <div class="dependency-item">Dependency: BGV clear -> final privileged system access enablement</div>
+          <div class="dependency-item">Dependency: DOJ update -> all lane ETA and SLA baselines are recalculated</div>
           <div class="dependency-item">Dependency: payroll profile complete -> benefits activation and salary readiness</div>
         </div>
 
