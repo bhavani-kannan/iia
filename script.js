@@ -1,12 +1,14 @@
 /* rewritten to support category-button navigation with expandable details */
 
 const categoryData = {
+
   processIntelligence: {
     title: "Process Intelligence & Design",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>`,
     description: "Reusable process frameworks, governance templates and workflow design patterns built from successful client engagement across multiple industries - establishing process maturity as the foundation for automation.",
     assets: [
       { label: "As-is process mapping templates", desc: "Rapid assessment frameworks that document current workflows, bottlenecks, handoffs and decision points across core business processes." },
+      { label: "Use Case Identification", desc: "Structured discovery templates powered by Procedure Eater that analyse client policy, procedure and headcount documents to surface a prioritised use case backlog, each candidate scoped with target users, system requirements, cost analysis and agent-ready prompts." },
       { label: "To-be workflow design patterns", desc: "Industry-proven process designs for common functions (onboarding, procurement, order-to-cash) that serve as blueprints for automation-ready workflows." },
       { label: "SLA and KPI governance frameworks", desc: "Standardised definitions for service levels, KPIs and escalation thresholds that make process expectations explicit and measurable." },
       { label: "Decision logic and escalation rules", desc: "Reusable rule libraries for when to escalate, who owns each decision, and what conditions trigger different process paths." },
@@ -19,7 +21,7 @@ const categoryData = {
       { label: "HR onboarding workflow - mapped, redesigned and optimization targets defined" },
       { label: "Procurement approval hierarchy and escalation rules - documented and standardised" },
       { label: "Order-to-cash SLAs and decision thresholds - defined for agent decision-making" },
-      { label: "Supply chain process bottleneck analysis - cycle time variance and automation candidates identified" }
+      { label: "Account servicing operations - Procedure Eater processed 11 policies across 19 processes and surfaced 84 prioritised agent use cases spanning Finance and Procurement" }
     ],
     outcomes: [
       "Explicit process documentation",
@@ -441,6 +443,8 @@ const podData = {
   }
 };
 
+/* ─── RENDER FUNCTIONS ────────────────────────────────────────────────────── */
+
 function renderPod(key) {
   const data = podData[key];
   if (!data) return;
@@ -448,7 +452,6 @@ function renderPod(key) {
   const container = document.getElementById("pod-details");
   if (!container) return;
 
-  // New 3-tier layout (predictive / prescriptive / agentic)
   if (data.predictive) {
     const renderColumn = (label, color, items) => `
       <div class="pod-column">
@@ -475,7 +478,6 @@ function renderPod(key) {
       </div>
     `;
   } else {
-    // Legacy layout for pods not yet converted
     container.innerHTML = `
       <h3 class="details-header"><span>${data.title}</span></h3>
       <p style="color:var(--muted); margin-bottom:20px;">${data.description}</p>
@@ -514,6 +516,8 @@ function renderCategory(key) {
   if (!data) return;
 
   const container = document.getElementById("category-details");
+
+  /* ── Standard layout for all categories ── */
   container.innerHTML = `
     <h3 class="details-header">${data.icon || ''}<span>${data.title}</span></h3>
     ${data.description ? `<p>${data.description}</p>` : ''}
@@ -536,20 +540,14 @@ function renderCategory(key) {
     <div class="section examples-section">
       <h4>Examples</h4>
       <ol class="examples-list">
-        ${ (data.examples || []).map(ex => `<li>${ex.label}</li>`).join('') }
+        ${(data.examples || []).map(ex => `<li>${ex.label}</li>`).join('')}
       </ol>
     </div>
 
     <div class="section outcomes-section">
       <h4>Outcomes</h4>
       <ul class="outcomes-list">
-        ${ (data.outcomes || []).map((o) => {
-          return `
-            <li class="outcome-block">
-              ${o}
-            </li>
-          `;
-        }).join('') }
+        ${(data.outcomes || []).map(o => `<li class="outcome-block">${o}</li>`).join('')}
       </ul>
     </div>
   `;
@@ -559,17 +557,20 @@ function renderCategory(key) {
   });
 }
 
+/* ─── EVENT LISTENERS ─────────────────────────────────────────────────────── */
+
 document.querySelectorAll(".category-button").forEach(btn => {
   btn.addEventListener("click", function() {
     renderCategory(this.dataset.key);
   });
 });
 
+/* Default: open Process Intelligence on load - use case identification lives here */
 window.addEventListener("DOMContentLoaded", function() {
-  renderCategory("dataFoundation");
+  renderCategory("processIntelligence");
 });
 
-// Pod preview pill click handlers
+/* Pod preview pill click handlers */
 document.querySelectorAll(".preview-pill").forEach(pill => {
   pill.addEventListener("click", function() {
     renderPod(this.dataset.key);
@@ -577,7 +578,7 @@ document.querySelectorAll(".preview-pill").forEach(pill => {
   pill.style.cursor = "pointer";
 });
 
-// Render first pod on load
+/* Render first pod on load */
 document.addEventListener("DOMContentLoaded", function() {
   renderPod("procurement");
 }, { once: true });
