@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O2C Transformation - IIA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" type="text/css">
+  <style>
+    /* ── O2C page styles (extends journey styles) ───────────── */
+    .journey-hero{
+      padding: 72px 0 32px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 48px;
+    }
+    .journey-hero h1{
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+    .journey-hero h1 span{ color: var(--accent-2); }
+    .journey-hero p{
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 860px;
+      line-height: 1.7;
+    }
+    .journey-section{
+      padding: 16px 0 88px;
+    }
+    .journey-section > h2{
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 12px;
+      white-space: nowrap;
+    }
+    .journey-section > .intro-copy{
+      display: block;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 6px;
+      margin-bottom: 28px;
+      max-width: 820px;
+    }
+
+    /* ── Context cards ───────────────────────────────────────── */
+    .context-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 16px;
+    }
+    .context-card{
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .context-card .ctx-label{
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .context-card .ctx-headline{
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .context-card .ctx-detail{
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .tool-chips{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .tool-chip{
+      display: inline-flex;
+      align-items: center;
+      background: rgba(127,216,255,0.08);
+      border: 1px solid rgba(127,216,255,0.2);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── Pain point cards ────────────────────────────────────── */
+    .pain-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: 14px;
+    }
+    .pain-card{
+      background: rgba(255,154,102,0.04);
+      border: 1px solid rgba(255,154,102,0.18);
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+    .pain-stage{
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-3);
+      margin-bottom: 8px;
+    }
+    .pain-title{
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .pain-desc{
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── Framework mapping ───────────────────────────────────── */
+    .mapping-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: 14px;
+    }
+    .mapping-card{
+      border-radius: 14px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .mapping-card.active{
+      background: rgba(145,242,216,0.06);
+      border-color: rgba(145,242,216,0.25);
+    }
+    .mapping-badge{
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-top: 2px;
+      background: rgba(145,242,216,0.2);
+      color: var(--accent-2);
+    }
+    .mapping-title{ font-weight: 700; font-size: 0.9rem; color: var(--text); margin-bottom: 4px; }
+    .mapping-desc{ font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+    .mapping-chips{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .mapping-chip{
+      font-size: 0.7rem;
+      color: var(--accent-2);
+      border: 1px solid rgba(145,242,216,0.22);
+      border-radius: 999px;
+      background: rgba(145,242,216,0.06);
+      padding: 3px 10px;
+    }
+
+    /* ── O2C process flow ────────────────────────────────────── */
+    .flow-wrapper{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      background: rgba(255,255,255,0.02);
+    }
+    .flow-kicker{
+      margin-bottom: 14px;
+      border-left: 3px solid rgba(127,216,255,0.35);
+      border-radius: 8px;
+      background: rgba(127,216,255,0.04);
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .process-chain{
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .process-stage{
+      display: grid;
+      grid-template-columns: 100px 1fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .stage-label-wrap{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stage-icon{
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      border: 2px solid rgba(127,216,255,0.3);
+      background: rgba(127,216,255,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .stage-icon svg{ stroke: var(--accent); }
+    .stage-num{
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .stage-current{
+      border: 1px solid rgba(255,154,102,0.22);
+      border-radius: 12px;
+      background: rgba(255,154,102,0.04);
+      padding: 12px 14px;
+    }
+    .stage-future{
+      border: 1px solid rgba(145,242,216,0.22);
+      border-radius: 12px;
+      background: rgba(145,242,216,0.04);
+      padding: 12px 14px;
+    }
+    .stage-col-label{
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .stage-current .stage-col-label{ color: var(--accent-3); }
+    .stage-future .stage-col-label{ color: var(--accent-2); }
+    .stage-title{
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .stage-body{
+      font-size: 0.80rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .stage-system{
+      display: inline-block;
+      font-size: 0.68rem;
+      color: var(--accent);
+      border: 1px solid rgba(127,216,255,0.2);
+      background: rgba(127,216,255,0.06);
+      border-radius: 999px;
+      padding: 2px 9px;
+      margin-top: 6px;
+    }
+    .stage-connector{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 14px;
+      padding-left: 50px;
+    }
+    .stage-connector-line{
+      width: 2px;
+      height: 14px;
+      background: rgba(127,216,255,0.15);
+      border-radius: 2px;
+    }
+    .flow-agent-bar{
+      margin-top: 20px;
+      padding: 14px 20px;
+      background: rgba(242,108,191,0.07);
+      border: 1px solid rgba(242,108,191,0.2);
+      border-radius: 12px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--accent-4);
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .flow-agent-bar span{
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    /* ── P/P/A pod reuse ─────────────────────────────────────── */
+    .hr-pod-intro{
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.92rem;
+      margin-bottom: 24px;
+      max-width: 820px;
+    }
+
+    /* ── Proof / advantage cards ─────────────────────────────── */
+    .proof-grid{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .proof-card{
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .proof-header{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .proof-tick{
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(145,242,216,0.12);
+      border: 1px solid rgba(145,242,216,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .proof-tick svg{ stroke: var(--accent-2); }
+    .proof-label{
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .proof-bullets{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .proof-bullets li{
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.45;
+      padding-left: 18px;
+      position: relative;
+    }
+    .proof-bullets li::before{
+      content: '-';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ── Insight callout ─────────────────────────────────────── */
+    .insight-box{
+      background: rgba(127,216,255,0.06);
+      border: 1px solid rgba(127,216,255,0.2);
+      border-radius: 14px;
+      padding: 24px 28px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-top: 24px;
+    }
+    .insight-box svg{ stroke: var(--accent); flex-shrink: 0; margin-top: 2px; }
+    .insight-box h4{ font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .insight-box p{ font-size: 0.87rem; color: var(--muted); line-height: 1.65; margin: 0; }
+
+    @media (max-width: 900px){
+      .process-stage{ grid-template-columns: 1fr; }
+      .stage-label-wrap{ flex-direction: row; justify-content: flex-start; }
+      .proof-grid{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px){
+      .pod-columns-grid{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span>Integrated Intelligence Advantage</span>
+      </div>
+      <a href="index.html" class="header-nav-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline><polyline points="9 18 3 12 9 6"></polyline></svg>
+        Back to Catalogue
+      </a>
+    </div>
+  </header>
+
+  <main class="page-shell">
+
+    <!-- ── Hero ──────────────────────────────────────────────── -->
+    <div class="journey-hero">
+      <h1>O2C Transformation: <span>Agentizing Order to Cash</span></h1>
+      <p>A discrete manufacturing company running SAP across order, inventory and finance modules - with a third-party live delivery tracker and Excel-based regional sales planning - transforms its end-to-end Order to Cash process through the Foundation Accelerator.</p>
+    </div>
+
+    <!-- ── Overview ──────────────────────────────────────────── -->
+    <div class="journey-section">
+      <h2>Overview</h2>
+      <p class="intro-copy">A discrete manufacturer with a mature SAP landscape but fragmented visibility across the O2C chain. Sales targets live in Excel, delivery data sits outside SAP, and exception handling is largely manual across teams.</p>
+
+      <div class="context-grid">
+        <div class="context-card">
+          <div class="ctx-label">Sector</div>
+          <div class="ctx-headline">Discrete manufacturing enterprise</div>
+          <div class="ctx-detail">Multi-region operations with structured order management, fulfilment and finance functions running on SAP</div>
+        </div>
+        <div class="context-card">
+          <div class="ctx-label">Objective</div>
+          <div class="ctx-headline">Agentize end-to-end Order to Cash</div>
+          <div class="ctx-detail">From regional sales planning through order fulfilment, delivery, invoicing and cash collection - with intelligent agents at every stage</div>
+        </div>
+        <div class="context-card">
+          <div class="ctx-label">Complexity</div>
+          <div class="ctx-headline">Three disconnected data sources, one process chain</div>
+          <div class="ctx-detail">SAP modules do not surface delivery status from the third party tracker. Excel sales plans are manually reconciled against actuals. Exceptions managed across teams without a unified view.</div>
+        </div>
+        <div class="context-card">
+          <div class="ctx-label">Existing System Landscape</div>
+          <div class="ctx-detail">
+            <div class="tool-chips">
+              <span class="tool-chip">SAP SD</span>
+              <span class="tool-chip">SAP MM</span>
+              <span class="tool-chip">SAP FI</span>
+              <span class="tool-chip">3rd Party Delivery Tracker</span>
+              <span class="tool-chip">Excel Sales Business Plan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Current State Pain Points ─────────────────────────── -->
+    <div class="journey-section">
+      <div class="section-heading">
+        <h2 class="eyebrow">Where the Process Breaks Today</h2>
+        <p class="intro-copy">Seven friction points across the O2C chain that automation directly addresses. Each represents a stage where manual effort, disconnected systems or reactive behaviour creates cost and risk.</p>
+      </div>
+
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-stage">Credit Management</div>
+          <div class="pain-title">Credit decisions are static and manually governed</div>
+          <div class="pain-desc">Credit limits are set periodically and rarely adjusted based on live payment behaviour. Credit holds are managed manually across sales and finance teams with no risk-based prioritisation, causing delays on legitimate orders and missed signals on high-risk accounts.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-stage">Sales Planning</div>
+          <div class="pain-title">Regional targets locked in Excel</div>
+          <div class="pain-desc">Sales Business Plans are maintained in spreadsheets and reconciled manually against SAP actuals. No live variance visibility, no automated escalation when regions drift from plan.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-stage">Order Management - SAP SD</div>
+          <div class="pain-title">Order exceptions handled reactively</div>
+          <div class="pain-desc">Stuck orders - blocked by credit holds, pricing mismatches or inventory shortages - require manual cross-team coordination. No systematic prioritisation by revenue impact or SLA risk.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-stage">Delivery - 3rd Party Tracker</div>
+          <div class="pain-title">Live delivery data invisible to the business</div>
+          <div class="pain-desc">Real-time delivery status lives in the third-party tracking system. SAP has no feed from it. Customer-facing teams and logistics coordinators operate without live visibility, reacting to delays after the fact.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-stage">Collections - SAP FI</div>
+          <div class="pain-title">Collections driven by aging reports, not risk</div>
+          <div class="pain-desc">The collections team works from static AR aging reports. No scoring of which invoices are most at risk of default. High-value at-risk accounts receive the same attention as low-risk ones.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-stage">Deductions and Disputes - SAP FI</div>
+          <div class="pain-title">Customer deductions managed on spreadsheets</div>
+          <div class="pain-desc">Short payments linked to quality claims, short shipments and pricing disputes are tracked manually. Validating claims, retrieving supporting documents and resolving deductions takes weeks. At 2-4% of sales, unresolved deductions represent significant revenue leakage with no systematic visibility.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-stage">Cash Application - SAP FI</div>
+          <div class="pain-title">Manual payment matching creates close delays</div>
+          <div class="pain-desc">Incoming payments are matched to open invoices manually. Partial payments, reference mismatches and deductions generate a high volume of exceptions that delay the financial close each month.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Foundation Accelerator Activation ─────────────────── -->
+    <div class="journey-section">
+      <div class="section-heading">
+        <h2 class="eyebrow">Foundation Accelerator in Action</h2>
+        <p class="intro-copy">This is a full Foundation Accelerator deployment. All six layers are activated - each addressing a specific gap in the current O2C landscape. Unlike a lightweight agent deployment, O2C requires a connected data foundation to enable cross-stage intelligence.</p>
+      </div>
+
+      <div class="mapping-grid">
+        <div class="mapping-card active">
+          <div class="mapping-badge">+</div>
+          <div>
+            <div class="mapping-title">Process Intelligence and Design</div>
+            <div class="mapping-desc">End-to-end O2C process mapped across all five stages. SLAs defined for order fulfilment, delivery and collections. Decision logic for exception routing and credit holds documented and standardised.</div>
+            <div class="mapping-chips">
+              <span class="mapping-chip">O2C process mapping</span>
+              <span class="mapping-chip">Credit hold rules</span>
+              <span class="mapping-chip">Collections escalation logic</span>
+              <span class="mapping-chip">Use Case Discovery</span>
+            </div>
+          </div>
+        </div>
+        <div class="mapping-card active">
+          <div class="mapping-badge">+</div>
+          <div>
+            <div class="mapping-title">Data Foundation</div>
+            <div class="mapping-desc">Canonical data models built for SAP SD, MM and FI. Delivery API schema normalised and mapped to the order entity. Excel sales plan structure standardised and validated for ingestion. O2C KPI definitions locked: OTIF, DSO, order cycle time, dispute rate.</div>
+            <div class="mapping-chips">
+              <span class="mapping-chip">SAP canonical models</span>
+              <span class="mapping-chip">Delivery API schema</span>
+              <span class="mapping-chip">Excel plan normalisation</span>
+              <span class="mapping-chip">DSO, OTIF, cycle time KPIs</span>
+            </div>
+          </div>
+        </div>
+        <div class="mapping-card active">
+          <div class="mapping-badge">+</div>
+          <div>
+            <div class="mapping-title">Data Ingestion Accelerators</div>
+            <div class="mapping-desc">Prebuilt SAP connectors deployed for SD, MM and FI modules. Third-party delivery API wired to the ingestion layer with real-time event streaming. Excel sales plan ingested on upload with automated validation and normalisation.</div>
+            <div class="mapping-chips">
+              <span class="mapping-chip">SAP SD connector</span>
+              <span class="mapping-chip">SAP MM connector</span>
+              <span class="mapping-chip">SAP FI connector</span>
+              <span class="mapping-chip">Delivery API feed</span>
+              <span class="mapping-chip">Excel ingestion pipeline</span>
+            </div>
+          </div>
+        </div>
+        <div class="mapping-card active">
+          <div class="mapping-badge">+</div>
+          <div>
+            <div class="mapping-title">Intelligence Model Library</div>
+            <div class="mapping-desc">Use Case Discovery applied to O2C SOPs and policies to seed the initial backlog. Delivery delay prediction, AR default risk scoring and revenue vs plan variance models deployed from the library, validated and adapted for the O2C context.</div>
+            <div class="mapping-chips">
+              <span class="mapping-chip">Use Case Discovery</span>
+              <span class="mapping-chip">Delivery delay model</span>
+              <span class="mapping-chip">AR risk scoring</span>
+              <span class="mapping-chip">Revenue variance model</span>
+            </div>
+          </div>
+        </div>
+        <div class="mapping-card active">
+          <div class="mapping-badge">+</div>
+          <div>
+            <div class="mapping-title">Visualization and Decision Layer</div>
+            <div class="mapping-desc">O2C Control Tower gives operations a live end-to-end view across order status, delivery risk and collections. Collections workbench surfaces risk-ranked AR with recommended actions. Regional sales vs plan dashboard replaces the manual Excel review.</div>
+            <div class="mapping-chips">
+              <span class="mapping-chip">O2C Control Tower</span>
+              <span class="mapping-chip">Collections workbench</span>
+              <span class="mapping-chip">Regional sales vs plan</span>
+              <span class="mapping-chip">Delivery performance view</span>
+            </div>
+          </div>
+        </div>
+        <div class="mapping-card active">
+          <div class="mapping-badge">+</div>
+          <div>
+            <div class="mapping-title">Platform Accelerator</div>
+            <div class="mapping-desc">Cloud-native data and agent platform deployed on existing infrastructure. Pipeline orchestration manages SAP batch feeds, real-time delivery events and Excel uploads in a single governed layer. Full audit logging for every agent decision and human approval.</div>
+            <div class="mapping-chips">
+              <span class="mapping-chip">Pipeline orchestration</span>
+              <span class="mapping-chip">Agent runtime</span>
+              <span class="mapping-chip">Governance framework</span>
+              <span class="mapping-chip">Audit logging</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <div>
+          <h4>Why a full deployment is required here</h4>
+          <p>O2C intelligence spans three disconnected source systems - SAP, a third-party tracker and Excel. Unlike a single-system agent deployment, cross-stage insight (linking a delivery delay to AR risk to collections priority) requires a shared data foundation. The six-layer approach is not overhead here - it is what makes the agents coherent across the process chain.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── O2C Process and Agent Architecture ─────────────────── -->
+    <div class="journey-section">
+      <div class="section-heading">
+        <h2 class="eyebrow">O2C Process Architecture</h2>
+        <p class="intro-copy">Each stage of the O2C process transitions from its current manual or disconnected state to an agent-supported future state. Agents do not replace human decisions - they eliminate the manual effort around them.</p>
+      </div>
+
+      <div class="flow-wrapper">
+        <div class="flow-kicker">Six sequential stages, each with a dedicated intelligence and agent layer. Cross-stage signals - credit risk gating order entry, delivery risk feeding collections priority, deduction patterns feeding dispute resolution - are enabled by the shared data foundation.</div>
+
+        <div class="process-chain">
+
+          <div class="process-stage">
+            <div class="stage-label-wrap">
+              <div class="stage-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </div>
+              <div class="stage-num">Stage 01</div>
+            </div>
+            <div class="stage-current">
+              <div class="stage-col-label">Current State</div>
+              <div class="stage-title">Credit Assessment and Limit Management</div>
+              <div class="stage-body">Credit limits set periodically based on static rules and manual review. Credit holds applied manually with no risk-based prioritisation. No live view of payment behaviour or customer exposure - decisions lag behind actual risk.</div>
+              <span class="stage-system">SAP FI + Manual Process</span>
+            </div>
+            <div class="stage-future">
+              <div class="stage-col-label">Intelligent Future State</div>
+              <div class="stage-title">Dynamic Credit Scoring and Automated Hold Management</div>
+              <div class="stage-body">Credit Risk Agent scores each customer continuously using payment history, days outstanding trends and order pipeline data. Recommends limit adjustments and hold actions to the credit controller. High-risk accounts flagged before orders are placed, not after.</div>
+              <span class="stage-system">Credit Risk Agent</span>
+            </div>
+          </div>
+
+          <div class="stage-connector"><div class="stage-connector-line"></div></div>
+
+          <div class="process-stage">
+            <div class="stage-label-wrap">
+              <div class="stage-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              </div>
+              <div class="stage-num">Stage 02</div>
+            </div>
+            <div class="stage-current">
+              <div class="stage-col-label">Current State</div>
+              <div class="stage-title">Sales Planning</div>
+              <div class="stage-body">Regional sales targets maintained in Excel Business Plan files. Reconciliation against SAP actuals done manually at month end. No live variance visibility between plan and actuals during the month.</div>
+              <span class="stage-system">Excel Sales Business Plan</span>
+            </div>
+            <div class="stage-future">
+              <div class="stage-col-label">Intelligent Future State</div>
+              <div class="stage-title">Automated Plan Ingestion and Live Variance Tracking</div>
+              <div class="stage-body">Sales Plan Ingestion Agent reads uploaded Excel files, validates structure and regional target data, normalises and loads into the platform. Live regional performance vs plan dashboards replace the manual month-end review.</div>
+              <span class="stage-system">Sales Plan Ingestion Agent</span>
+            </div>
+          </div>
+
+          <div class="stage-connector"><div class="stage-connector-line"></div></div>
+
+          <div class="process-stage">
+            <div class="stage-label-wrap">
+              <div class="stage-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+              </div>
+              <div class="stage-num">Stage 03</div>
+            </div>
+            <div class="stage-current">
+              <div class="stage-col-label">Current State</div>
+              <div class="stage-title">Order Entry and Exception Management</div>
+              <div class="stage-body">Orders entered and managed in SAP SD. Exceptions - credit holds, inventory shortages, pricing errors - trigger manual cross-team coordination. No systematic prioritisation by impact or SLA risk.</div>
+              <span class="stage-system">SAP SD</span>
+            </div>
+            <div class="stage-future">
+              <div class="stage-col-label">Intelligent Future State</div>
+              <div class="stage-title">Automated Exception Detection and Resolution</div>
+              <div class="stage-body">Order Exception Agent monitors SAP SD continuously for stuck orders. Diagnoses root cause, scores by revenue impact and SLA proximity, drafts resolution action and routes to the right owner for approval. Full audit trail maintained.</div>
+              <span class="stage-system">Order Exception Agent</span>
+            </div>
+          </div>
+
+          <div class="stage-connector"><div class="stage-connector-line"></div></div>
+
+          <div class="process-stage">
+            <div class="stage-label-wrap">
+              <div class="stage-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 20 13 16 13"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="13.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+              <div class="stage-num">Stage 04</div>
+            </div>
+            <div class="stage-current">
+              <div class="stage-col-label">Current State</div>
+              <div class="stage-title">Fulfilment and Delivery Tracking</div>
+              <div class="stage-body">Fulfilment managed in SAP MM. Live delivery status sits in the third-party tracking system with no feed into SAP. Logistics teams and customer-facing functions react to delays after they occur, with no proactive alert mechanism.</div>
+              <span class="stage-system">SAP MM + 3rd Party Tracker</span>
+            </div>
+            <div class="stage-future">
+              <div class="stage-col-label">Intelligent Future State</div>
+              <div class="stage-title">Proactive Delivery Risk Management</div>
+              <div class="stage-body">Delivery Risk Agent monitors live tracking data continuously. When delay risk is detected, it flags the shipment, surfaces alternative carrier or routing options and notifies the logistics coordinator for action - before the customer is impacted.</div>
+              <span class="stage-system">Delivery Risk Agent</span>
+            </div>
+          </div>
+
+          <div class="stage-connector"><div class="stage-connector-line"></div></div>
+
+          <div class="process-stage">
+            <div class="stage-label-wrap">
+              <div class="stage-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              </div>
+              <div class="stage-num">Stage 05</div>
+            </div>
+            <div class="stage-current">
+              <div class="stage-col-label">Current State</div>
+              <div class="stage-title">Invoicing, Disputes and AR Collections</div>
+              <div class="stage-body">Invoices generated in SAP FI SD. Collections managed from static AR aging reports with no risk scoring. High-value at-risk accounts treated the same as low-risk ones. Disputes managed manually with inconsistent resolution times.</div>
+              <span class="stage-system">SAP FI</span>
+            </div>
+            <div class="stage-future">
+              <div class="stage-col-label">Intelligent Future State</div>
+              <div class="stage-title">Risk-Scored Collections, Dispute Detection and Automated Outreach</div>
+              <div class="stage-body">AR invoices scored daily by default probability. Collections Agent drafts personalised follow-up for highest-risk accounts, queued for controller approval. Dispute Resolution Agent detects deduction patterns, classifies claim types and routes each case with supporting context to the responsible team - cutting resolution time from weeks to days.</div>
+              <span class="stage-system">Collections Agent + Dispute Resolution Agent</span>
+            </div>
+          </div>
+
+          <div class="stage-connector"><div class="stage-connector-line"></div></div>
+
+          <div class="process-stage">
+            <div class="stage-label-wrap">
+              <div class="stage-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div class="stage-num">Stage 06</div>
+            </div>
+            <div class="stage-current">
+              <div class="stage-col-label">Current State</div>
+              <div class="stage-title">Cash Application and Close</div>
+              <div class="stage-body">Incoming payments matched to open invoices manually in SAP FI. Partial payments, reference mismatches and deductions generate high exception volumes that delay the monthly financial close.</div>
+              <span class="stage-system">SAP FI</span>
+            </div>
+            <div class="stage-future">
+              <div class="stage-col-label">Intelligent Future State</div>
+              <div class="stage-title">Automated Cash Matching and Exception Routing</div>
+              <div class="stage-body">Cash Application Agent auto-matches incoming payments to open invoices using remittance data and pattern matching. Genuine exceptions are classified, enriched with context and routed to the finance team - only the cases that need human judgement reach a person.</div>
+              <span class="stage-system">Cash Application Agent</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="flow-agent-bar">
+          O2C Intelligence Layer: six agents operating across SAP SD, SAP MM, SAP FI, the third-party delivery tracker and the Excel sales plan - from credit assessment through cash application - coordinated through a single governed platform
+        </div>
+      </div>
+    </div>
+
+    <!-- ── O2C Intelligence Pod P/P/A ─────────────────────────── -->
+    <div class="journey-section">
+      <div class="section-heading">
+        <h2 class="eyebrow">O2C Intelligence Pod</h2>
+      </div>
+      <p class="hr-pod-intro">Three tiers of intelligence applied across the O2C chain. Predictive models surface risk and variance before they become problems. Prescriptive recommendations tell teams what to do about them. Agentic automation removes the manual effort entirely where human oversight is not required.</p>
+
+      <div class="pod-columns-grid">
+
+        <div class="tier-badge" style="background:#7fd8ff22; color:#7fd8ff; border:1px solid #7fd8ff44;">PREDICTIVE</div>
+        <div class="tier-badge" style="background:#91f2d822; color:#91f2d8; border:1px solid #91f2d844;">PRESCRIPTIVE</div>
+        <div class="tier-badge" style="background:#f26cbf22; color:#f26cbf; border:1px solid #f26cbf44;">AGENTIC</div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Customer Credit Risk Scoring</div>
+          <div class="puc-desc">Score each customer continuously on payment default probability using AR aging trends, days sales outstanding history and order pipeline exposure - refreshed on every payment event.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Credit decisions are grounded in live risk signals, not periodic manual reviews. High-risk accounts are identified before orders are placed.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Credit Limit Adjustment Recommendations</div>
+          <div class="puc-desc">When risk score changes materially, recommend the appropriate credit limit adjustment or hold action to the credit controller - with the supporting evidence and expected impact on exposure.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Controllers act on evidence, not instinct. Limit decisions are faster, consistent and defensible.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Credit Risk Agent</div>
+          <div class="puc-desc">Monitors payment behaviour and AR signals across the customer base. When a threshold is breached, surfaces the credit recommendation to the controller and - upon approval - triggers the limit or hold update in SAP FI automatically.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates manual credit review cycles. Every at-risk account is assessed in near real time with a full audit trail of every decision.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Order Fulfilment Risk Scoring</div>
+          <div class="puc-desc">Score each open order on delivery risk using current inventory levels, production schedule status and carrier performance data from the third-party tracker.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Prioritise at-risk orders before they breach customer SLAs and escalate to disputes.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Order Exception Prioritisation</div>
+          <div class="puc-desc">Rank all stuck orders in SAP SD by revenue at risk, customer SLA proximity and days blocked - with a recommended resolution action for each.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Teams work the right exceptions first. No high-value order slips through while low-value ones are resolved.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Order Exception Agent</div>
+          <div class="puc-desc">Monitors SAP SD continuously for stuck orders. Diagnoses root cause - credit hold, inventory, pricing - drafts resolution steps and routes to the responsible owner for approval before any action is taken.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates manual exception triage. Every stuck order is seen, diagnosed and actioned - with a full audit trail.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Delivery Delay Prediction</div>
+          <div class="puc-desc">Model live tracking signals, carrier history and route data from the third-party system to predict which in-transit shipments are likely to arrive late.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Enable proactive customer communication and reduce claims and penalties from late deliveries.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Delivery Re-routing Guidance</div>
+          <div class="puc-desc">When a shipment is flagged at risk, surface the best alternative carrier and routing options ranked by cost, speed and availability for dispatcher decision.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Logistics teams act on options immediately rather than spending time identifying them manually.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Delivery Risk Agent</div>
+          <div class="puc-desc">Monitors live third-party tracking data continuously. On delay detection, flags the shipment, surfaces rerouting options and notifies the logistics coordinator for a decision - before the customer is impacted.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Closes the visibility gap between the third-party tracker and the business. At-risk deliveries are caught and escalated in minutes, not days.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">AR Default Risk Scoring</div>
+          <div class="puc-desc">Score all open invoices daily by late payment and default probability using customer payment history, invoice age, dispute patterns and macro signals.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Collections effort concentrates on the accounts that matter most, not the ones at the top of an aging report.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Regional Plan vs Actuals Variance Alert</div>
+          <div class="puc-desc">Compare live SAP sales actuals against ingested Excel plan targets by region. Flag deviations above threshold and recommend reforecast or reallocation actions to sales leadership.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Sales leaders see regional performance against plan in real time - not at month-end when it is too late to act.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Sales Plan Ingestion Agent</div>
+          <div class="puc-desc">Reads uploaded Excel Sales Business Plan files, validates structure and regional target data, normalises formats and loads confirmed targets into the platform for live comparison against SAP actuals.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates the manual effort of reconciling Excel plans against SAP. Regional targets are live in the platform within minutes of upload.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Deduction Validity Prediction</div>
+          <div class="puc-desc">Score each short payment on the probability that the deduction is valid versus disputable - using claim type, shipment records, invoice history and prior resolution patterns for that customer.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Teams focus dispute effort on the deductions most likely to recover cash rather than processing the full queue uniformly.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Dispute Routing and Resolution Recommendations</div>
+          <div class="puc-desc">For each deduction, recommend the optimal resolution path - credit memo, short shipment adjustment, pricing correction or escalation - with the relevant supporting documents retrieved and attached automatically.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Deduction handlers receive a pre-built case file rather than spending hours gathering evidence. Resolution cycle time cut from weeks to days.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Dispute Resolution Agent</div>
+          <div class="puc-desc">Detects deduction patterns in incoming payments, classifies claim type, retrieves supporting documentation and routes each case to the responsible team with full context and a recommended action. Tracks resolution status and escalates stalled cases.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates the spreadsheet-driven deduction queue. At 2-4% of sales, systematic resolution of unwarranted deductions delivers direct revenue recovery.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Cash Application Match Rate Prediction</div>
+          <div class="puc-desc">Predict which incoming payments are likely to require manual intervention based on remittance quality, partial payment patterns and historical exception rates by customer.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Finance teams prepare for exception volume before the matching run - improving close predictability.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Collections Outreach Recommendations</div>
+          <div class="puc-desc">Prescribe the right collections action per invoice - automated reminder, personal follow-up or escalation to dispute team - based on risk score, account value and relationship history.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Collections strategy is consistent, evidence-based and applied across every account - not dependent on individual judgement.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Cash Application Agent</div>
+          <div class="puc-desc">Auto-matches incoming payments to open SAP FI invoices using remittance data and pattern matching. Classifies and enriches unmatched exceptions and routes only genuine edge cases to the finance team for manual review.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates 60-70% of manual cash matching effort and accelerates the financial close with a full exception audit trail.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Predictive Cash Forecasting</div>
+          <div class="puc-desc">Generate 30, 60 and 90-day cash receipt forecasts by combining AR aging, customer payment patterns, risk scores and open order pipeline - giving the CFO a data-driven view of expected cash position.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Replaces spreadsheet-based treasury estimates. Finance leadership plans liquidity and working capital deployment on a forecast grounded in live AR signals.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Working Capital Optimisation Recommendations</div>
+          <div class="puc-desc">Identify the highest-impact levers across DSO reduction, collections timing and credit policy adjustment - quantified by expected cash release and ranked by effort - for the finance leadership team to action.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Working capital decisions move from intuition to evidence. Each recommendation is backed by AR data and shows the expected impact before action is taken.</div>
+        </div>
+
+        <div class="pod-use-case">
+          <div class="puc-title">Cash Position Report Agent</div>
+          <div class="puc-desc">Generates the weekly cash position and O2C health report automatically - pulling actuals from SAP FI, forecast from the predictive model and exceptions from across the chain - and distributes it to the CFO and finance leadership on schedule.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates the manual weekly finance reporting cycle. Leadership receives a consistent, data-driven O2C health view without any analyst prep time.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── The Advantage ──────────────────────────────────────── -->
+    <div class="journey-section">
+      <div class="section-heading">
+        <h2 class="eyebrow">The Advantage</h2>
+      </div>
+
+      <div class="proof-grid">
+        <div class="proof-card">
+          <div class="proof-header">
+            <div class="proof-tick">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <div class="proof-label">Three disconnected systems unified under one intelligence layer</div>
+          </div>
+          <ul class="proof-bullets">
+            <li>SAP SD, MM and FI connected through prebuilt accelerator connectors - not custom integrations</li>
+            <li>Third-party delivery tracker feeds the platform in real time for the first time</li>
+            <li>Excel sales plans are ingested and live - no more month-end manual reconciliation</li>
+          </ul>
+        </div>
+        <div class="proof-card">
+          <div class="proof-header">
+            <div class="proof-tick">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <div class="proof-label">Measurable impact across the O2C chain</div>
+          </div>
+          <ul class="proof-bullets">
+            <li>DSO reduction of 20-40% reported by manufacturers deploying AR risk scoring and intelligent collections</li>
+            <li>Cash application auto-match rates reaching 90-95% with ML-based payment matching, versus 50-60% manual baseline</li>
+            <li>Deduction resolution cycle cut from 4-6 weeks to under 7 days through automated case routing and document retrieval</li>
+            <li>2-4% of annual revenue recovered from systematic deduction management previously tracked only in spreadsheets</li>
+          </ul>
+        </div>
+        <div class="proof-card">
+          <div class="proof-header">
+            <div class="proof-tick">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <div class="proof-label">Reusable Foundation Layer assets compress delivery time</div>
+          </div>
+          <ul class="proof-bullets">
+            <li>SAP connectors, canonical data models and O2C KPI definitions deployed from the accelerator library</li>
+            <li>Delivery delay, AR risk and revenue variance models adapted from existing validated templates</li>
+            <li>No greenfield build - every layer starts from a proven, production-tested baseline</li>
+          </ul>
+        </div>
+        <div class="proof-card">
+          <div class="proof-header">
+            <div class="proof-tick">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <div class="proof-label">O2C is the entry point - not the ceiling</div>
+          </div>
+          <ul class="proof-bullets">
+            <li>The SAP data foundation and platform layer built here extend directly into Procurement and Finance pods</li>
+            <li>Each additional use case adds to the same platform - no repeated infrastructure investment</li>
+            <li>The Foundation Accelerator compounds in value with every pod activated on top of it</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
