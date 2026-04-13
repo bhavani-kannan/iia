@@ -520,7 +520,7 @@
             <span class="pain-stage">Credit Management</span>
           </div>
           <div class="pain-title">Credit decisions are static and manually governed</div>
-          <div class="pain-desc">Credit limits are set periodically and rarely adjusted based on live payment behaviour. Credit holds are managed manually across sales and finance teams with no risk-based prioritisation, causing delays on legitimate orders and missed signals on high-risk accounts.</div>
+          <div class="pain-desc">Credit limits are static with no adjustment for actual payment behaviour. Holds are managed manually with no risk scoring, delaying good orders and missing bad risk.</div>
         </div>
         <div class="pain-card">
           <div class="pain-meta">
@@ -528,7 +528,7 @@
             <span class="pain-stage">Sales Planning</span>
           </div>
           <div class="pain-title">Regional targets locked in Excel</div>
-          <div class="pain-desc">Sales Business Plans are maintained in spreadsheets and reconciled manually against SAP actuals. No live variance visibility, no automated escalation when regions drift from plan.</div>
+          <div class="pain-desc">Sales targets live in Excel and are reconciled against SAP actuals manually at month end. No live variance view or automated alert when a region drifts from plan.</div>
         </div>
         <div class="pain-card">
           <div class="pain-meta">
@@ -536,7 +536,7 @@
             <span class="pain-stage">Order Management</span>
           </div>
           <div class="pain-title">Order exceptions handled reactively</div>
-          <div class="pain-desc">Stuck orders - blocked by credit holds, pricing mismatches or inventory shortages - require manual cross-team coordination. No systematic prioritisation by revenue impact or SLA risk.</div>
+          <div class="pain-desc">Stuck orders need manual triage across teams to diagnose and resolve. No prioritisation by revenue at risk or SLA deadline - every exception looks the same.</div>
         </div>
         <div class="pain-card">
           <div class="pain-meta">
@@ -544,7 +544,7 @@
             <span class="pain-stage">Delivery Tracking</span>
           </div>
           <div class="pain-title">Live delivery data invisible to the business</div>
-          <div class="pain-desc">Real-time delivery status lives in the third-party tracking system with no feed into SAP. Customer-facing teams and logistics coordinators operate blind, reacting to delays after they occur with no proactive alert mechanism.</div>
+          <div class="pain-desc">Live delivery status sits in the third-party tracker with no feed into SAP. Teams react to delays after the fact - never before the customer is impacted.</div>
         </div>
         <div class="pain-card">
           <div class="pain-meta">
@@ -552,7 +552,7 @@
             <span class="pain-stage">Invoice Quality</span>
           </div>
           <div class="pain-title">Billing errors create rework before cash is even collected</div>
-          <div class="pain-desc">Invoices generated with pricing mismatches, incorrect part numbers or wrong customer billing details are not caught before dispatch. For a discrete manufacturer processing complex, multi-line orders, error rates of 5-10% are common - each one triggering a correction cycle that extends DSO and loads the disputes queue downstream.</div>
+          <div class="pain-desc">Pricing mismatches and billing errors are not caught before invoice dispatch. At 5-10% error rates on complex orders, each correction extends DSO and feeds the disputes queue.</div>
         </div>
         <div class="pain-card">
           <div class="pain-meta">
@@ -560,7 +560,7 @@
             <span class="pain-stage">Collections</span>
           </div>
           <div class="pain-title">Collections driven by aging reports, not risk</div>
-          <div class="pain-desc">The collections team works from static AR aging reports with no scoring of which invoices are most at risk of default. High-value at-risk accounts receive the same attention as low-risk ones, leaving significant cash exposure unaddressed.</div>
+          <div class="pain-desc">Collections run from static aging reports with no scoring by default probability. High-risk accounts get the same attention as low-risk ones.</div>
         </div>
         <div class="pain-card">
           <div class="pain-meta">
@@ -568,7 +568,7 @@
             <span class="pain-stage">Deductions and Disputes</span>
           </div>
           <div class="pain-title">Customer deductions managed on spreadsheets</div>
-          <div class="pain-desc">Short payments linked to quality claims, short shipments and pricing disputes are tracked manually, with claim validation and document retrieval taking weeks per case. At 2-4% of sales, unresolved deductions represent significant revenue leakage with no systematic visibility across the business.</div>
+          <div class="pain-desc">Customer deductions are tracked manually on spreadsheets with weeks-long resolution cycles. At 2-4% of sales, the revenue leakage is material but largely invisible to the business.</div>
         </div>
         <div class="pain-card">
           <div class="pain-meta">
@@ -576,7 +576,7 @@
             <span class="pain-stage">Cash Application</span>
           </div>
           <div class="pain-title">Manual payment matching creates close delays</div>
-          <div class="pain-desc">Incoming payments are matched to open invoices manually. Partial payments, reference mismatches and deductions generate a high volume of exceptions that delay the financial close each month.</div>
+          <div class="pain-desc">Incoming payments are matched to open invoices manually in SAP FI. Partial payments and reference errors generate exception volumes that delay the monthly close.</div>
         </div>
       </div>
     </div>
