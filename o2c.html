@@ -105,33 +105,76 @@
     /* ── Pain point cards ────────────────────────────────────── */
     .pain-grid{
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
     .pain-card{
-      background: rgba(255,154,102,0.04);
-      border: 1px solid rgba(255,154,102,0.18);
+      background: rgba(255,154,102,0.035);
+      border: 1px solid rgba(255,154,102,0.15);
+      border-left: 3px solid rgba(255,154,102,0.5);
       border-radius: 14px;
-      padding: 18px 20px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+    .pain-card:hover{
+      background: rgba(255,154,102,0.065);
+    }
+    .pain-card:last-child:nth-child(odd){
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 32px;
+    }
+    .pain-card:last-child:nth-child(odd) .pain-desc{
+      flex: 1;
+    }
+    .pain-card:last-child:nth-child(odd) .pain-title{
+      margin-bottom: 0;
+    }
+    .pain-meta{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pain-num{
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: rgba(255,154,102,0.35);
+      line-height: 1;
+      flex-shrink: 0;
+      min-width: 34px;
+      font-variant-numeric: tabular-nums;
     }
     .pain-stage{
-      font-size: 0.68rem;
+      font-size: 0.67rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.11em;
       text-transform: uppercase;
       color: var(--accent-3);
-      margin-bottom: 8px;
+      background: rgba(255,154,102,0.1);
+      border: 1px solid rgba(255,154,102,0.2);
+      border-radius: 999px;
+      padding: 3px 10px;
+      white-space: nowrap;
     }
     .pain-title{
-      font-size: 0.95rem;
+      font-size: 0.93rem;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 6px;
+      line-height: 1.35;
+      margin-bottom: 2px;
     }
     .pain-desc{
       font-size: 0.82rem;
       color: var(--muted);
-      line-height: 1.55;
+      line-height: 1.6;
+    }
+    @media (max-width: 700px){
+      .pain-grid{ grid-template-columns: 1fr; }
+      .pain-card:last-child:nth-child(odd){ flex-direction: column; gap: 10px; }
     }
 
     /* ── Framework mapping ───────────────────────────────────── */
@@ -472,37 +515,58 @@
 
       <div class="pain-grid">
         <div class="pain-card">
-          <div class="pain-stage">Credit Management</div>
+          <div class="pain-meta">
+            <span class="pain-num">01</span>
+            <span class="pain-stage">Credit Management</span>
+          </div>
           <div class="pain-title">Credit decisions are static and manually governed</div>
           <div class="pain-desc">Credit limits are set periodically and rarely adjusted based on live payment behaviour. Credit holds are managed manually across sales and finance teams with no risk-based prioritisation, causing delays on legitimate orders and missed signals on high-risk accounts.</div>
         </div>
         <div class="pain-card">
-          <div class="pain-stage">Sales Planning</div>
+          <div class="pain-meta">
+            <span class="pain-num">02</span>
+            <span class="pain-stage">Sales Planning</span>
+          </div>
           <div class="pain-title">Regional targets locked in Excel</div>
           <div class="pain-desc">Sales Business Plans are maintained in spreadsheets and reconciled manually against SAP actuals. No live variance visibility, no automated escalation when regions drift from plan.</div>
         </div>
         <div class="pain-card">
-          <div class="pain-stage">Order Management - SAP SD</div>
+          <div class="pain-meta">
+            <span class="pain-num">03</span>
+            <span class="pain-stage">Order Management</span>
+          </div>
           <div class="pain-title">Order exceptions handled reactively</div>
           <div class="pain-desc">Stuck orders - blocked by credit holds, pricing mismatches or inventory shortages - require manual cross-team coordination. No systematic prioritisation by revenue impact or SLA risk.</div>
         </div>
         <div class="pain-card">
-          <div class="pain-stage">Delivery - 3rd Party Tracker</div>
+          <div class="pain-meta">
+            <span class="pain-num">04</span>
+            <span class="pain-stage">Delivery Tracking</span>
+          </div>
           <div class="pain-title">Live delivery data invisible to the business</div>
           <div class="pain-desc">Real-time delivery status lives in the third-party tracking system. SAP has no feed from it. Customer-facing teams and logistics coordinators operate without live visibility, reacting to delays after the fact.</div>
         </div>
         <div class="pain-card">
-          <div class="pain-stage">Collections - SAP FI</div>
+          <div class="pain-meta">
+            <span class="pain-num">05</span>
+            <span class="pain-stage">Collections</span>
+          </div>
           <div class="pain-title">Collections driven by aging reports, not risk</div>
           <div class="pain-desc">The collections team works from static AR aging reports. No scoring of which invoices are most at risk of default. High-value at-risk accounts receive the same attention as low-risk ones.</div>
         </div>
         <div class="pain-card">
-          <div class="pain-stage">Deductions and Disputes - SAP FI</div>
+          <div class="pain-meta">
+            <span class="pain-num">06</span>
+            <span class="pain-stage">Deductions and Disputes</span>
+          </div>
           <div class="pain-title">Customer deductions managed on spreadsheets</div>
           <div class="pain-desc">Short payments linked to quality claims, short shipments and pricing disputes are tracked manually. Validating claims, retrieving supporting documents and resolving deductions takes weeks. At 2-4% of sales, unresolved deductions represent significant revenue leakage with no systematic visibility.</div>
         </div>
         <div class="pain-card">
-          <div class="pain-stage">Cash Application - SAP FI</div>
+          <div class="pain-meta">
+            <span class="pain-num">07</span>
+            <span class="pain-stage">Cash Application</span>
+          </div>
           <div class="pain-title">Manual payment matching creates close delays</div>
           <div class="pain-desc">Incoming payments are matched to open invoices manually. Partial payments, reference mismatches and deductions generate a high volume of exceptions that delay the financial close each month.</div>
         </div>
