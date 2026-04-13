@@ -8,7 +8,6 @@ const categoryData = {
     description: "Reusable process frameworks, governance templates and workflow design patterns built from successful client engagement across multiple industries - establishing process maturity as the foundation for automation.",
     assets: [
       { label: "As-is process mapping templates", desc: "Rapid assessment frameworks that document current workflows, bottlenecks, handoffs and decision points across core business processes." },
-      { label: "Use Case Identification", desc: "Structured discovery templates powered by Procedure Eater that analyse client policy, procedure and headcount documents to surface a prioritised use case backlog, each candidate scoped with target users, system requirements, cost analysis and agent-ready prompts." },
       { label: "To-be workflow design patterns", desc: "Industry-proven process designs for common functions (onboarding, procurement, order-to-cash) that serve as blueprints for automation-ready workflows." },
       { label: "SLA and KPI governance frameworks", desc: "Standardised definitions for service levels, KPIs and escalation thresholds that make process expectations explicit and measurable." },
       { label: "Decision logic and escalation rules", desc: "Reusable rule libraries for when to escalate, who owns each decision, and what conditions trigger different process paths." },
@@ -21,7 +20,7 @@ const categoryData = {
       { label: "HR onboarding workflow - mapped, redesigned and optimization targets defined" },
       { label: "Procurement approval hierarchy and escalation rules - documented and standardised" },
       { label: "Order-to-cash SLAs and decision thresholds - defined for agent decision-making" },
-      { label: "Account servicing operations - Procedure Eater processed 11 policies across 19 processes and surfaced 84 prioritised agent use cases spanning Finance and Procurement" }
+      { label: "Account servicing operations - process bottlenecks, decision handoffs and escalation rules mapped and standardised across 19 core processes" }
     ],
     outcomes: [
       "Explicit process documentation",
@@ -86,8 +85,9 @@ const categoryData = {
   modelLibrary: {
     title: "Intelligence Model Library",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>`,
-    description: "A growing catalogue of analytics and ML assets developed from live client deployments - forecasting, anomaly detection, optimisation and more, ready to deploy into any domain.",
+    description: "A growing catalogue of analytics, ML and LLM-based assets developed from live client deployments - spanning use case discovery, forecasting, anomaly detection, optimisation and more, ready to deploy into any domain.",
     assets: [
+      { label: "Use Case Discovery", desc: "Structured approach to identifying and prioritising AI automation candidates from existing policy, procedure and headcount documentation - accelerated through Procedure Eater to create a scoped, cost-justified use case backlog before model build begins." },
       { label: "Forecasting templates", desc: "Demand and revenue forecasting models validated and refined across multiple industries." },
       { label: "Anomaly detection models", desc: "Statistical and ML-based outlier detection applied to quality, ops and finance." },
       { label: "Optimization algorithms", desc: "Mathematical solvers configured for scheduling, routing and resource allocation problems." },
@@ -96,6 +96,7 @@ const categoryData = {
       { label: "Monitoring & drift alerts", desc: "Dashboards and alert rules that keep deployed models accurate and reliable over time." }
     ],
     examples: [
+      { label: "Account servicing function - 84 AI automation use cases identified and prioritised from 11 policies across 19 processes" },
       { label: "Forecasting model reused across three pods" },
       { label: "Anomaly detector plugged into ops dashboard" },
       { label: "Optimization algorithm applied to inventory planning" },
