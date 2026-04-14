@@ -849,129 +849,57 @@
         <div class="tier-badge" style="background:#f26cbf22; color:#f26cbf; border:1px solid #f26cbf44;">AGENTIC</div>
 
         <div class="pod-use-case">
-          <div class="puc-title">Customer Credit Risk Scoring</div>
-          <div class="puc-desc">Score each customer continuously on payment default probability using AR aging trends, days sales outstanding history and order pipeline exposure - refreshed on every payment event.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Credit decisions are grounded in live risk signals, not periodic manual reviews. High-risk accounts are identified before orders are placed.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Credit Limit Adjustment Recommendations</div>
-          <div class="puc-desc">When risk score changes materially, recommend the appropriate credit limit adjustment or hold action to the credit controller - with the supporting evidence and expected impact on exposure.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Controllers act on evidence, not instinct. Limit decisions are faster, consistent and defensible.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Credit Risk Agent</div>
-          <div class="puc-desc">Monitors payment behaviour and AR signals across the customer base. When a threshold is breached, surfaces the credit recommendation to the controller and - upon approval - triggers the limit or hold update in SAP FI automatically.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates manual credit review cycles. Every at-risk account is assessed in near real time with a full audit trail of every decision.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Order Fulfilment Risk Scoring</div>
-          <div class="puc-desc">Score each open order on delivery risk using current inventory levels, production schedule status and carrier performance data from the third-party tracker.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Prioritise at-risk orders before they breach customer SLAs and escalate to disputes.</div>
+          <div class="puc-title">Delivery Delay Prediction</div>
+          <div class="puc-desc">Model live tracking signals, carrier history and route data from the third-party system to predict which in-transit shipments are likely to arrive late.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Enables proactive customer communication and reduces claims and penalties from late deliveries.</div>
         </div>
 
         <div class="pod-use-case">
           <div class="puc-title">Order Exception Prioritisation</div>
-          <div class="puc-desc">Rank all stuck orders in SAP SD by revenue at risk, customer SLA proximity and days blocked - with a recommended resolution action for each.</div>
+          <div class="puc-desc">Rank all stuck orders in SAP SD by revenue at risk, SLA proximity and days blocked - with a recommended resolution action for each.</div>
           <div class="puc-value"><span class="value-label">Business value:</span> Teams work the right exceptions first. No high-value order slips through while low-value ones are resolved.</div>
         </div>
 
         <div class="pod-use-case">
           <div class="puc-title">Order Exception Agent</div>
-          <div class="puc-desc">Monitors SAP SD continuously for stuck orders. Diagnoses root cause - credit hold, inventory, pricing - drafts resolution steps and routes to the responsible owner for approval before any action is taken.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates manual exception triage. Every stuck order is seen, diagnosed and actioned - with a full audit trail.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Delivery Delay Prediction</div>
-          <div class="puc-desc">Model live tracking signals, carrier history and route data from the third-party system to predict which in-transit shipments are likely to arrive late.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Enable proactive customer communication and reduce claims and penalties from late deliveries.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Delivery Re-routing Guidance</div>
-          <div class="puc-desc">When a shipment is flagged at risk, surface the best alternative carrier and routing options ranked by cost, speed and availability for dispatcher decision.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Logistics teams act on options immediately rather than spending time identifying them manually.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Delivery Risk Agent</div>
-          <div class="puc-desc">Monitors live third-party tracking data continuously. On delay detection, flags the shipment, surfaces rerouting options and notifies the logistics coordinator for a decision - before the customer is impacted.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Closes the visibility gap between the third-party tracker and the business. At-risk deliveries are caught and escalated in minutes, not days.</div>
+          <div class="puc-desc">Monitors SAP SD continuously for stuck orders. Diagnoses root cause - credit hold, inventory, pricing - drafts resolution steps and routes to the responsible owner for approval.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates manual exception triage. Every stuck order is seen, diagnosed and actioned with a full audit trail.</div>
         </div>
 
         <div class="pod-use-case">
           <div class="puc-title">AR Default Risk Scoring</div>
-          <div class="puc-desc">Score all open invoices daily by late payment and default probability using customer payment history, invoice age, dispute patterns and macro signals.</div>
+          <div class="puc-desc">Score all open invoices daily by late payment and default probability using payment history, invoice age, dispute patterns and macro signals.</div>
           <div class="puc-value"><span class="value-label">Business value:</span> Collections effort concentrates on the accounts that matter most, not the ones at the top of an aging report.</div>
         </div>
 
         <div class="pod-use-case">
-          <div class="puc-title">Regional Plan vs Actuals Variance Alert</div>
-          <div class="puc-desc">Compare live SAP sales actuals against ingested Excel plan targets by region. Flag deviations above threshold and recommend reforecast or reallocation actions to sales leadership.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Sales leaders see regional performance against plan in real time - not at month-end when it is too late to act.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Sales Plan Ingestion Agent</div>
-          <div class="puc-desc">Reads uploaded Excel Sales Business Plan files, validates structure and regional target data, normalises formats and loads confirmed targets into the platform for live comparison against SAP actuals.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates the manual effort of reconciling Excel plans against SAP. Regional targets are live in the platform within minutes of upload.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Deduction Validity Prediction</div>
-          <div class="puc-desc">Score each short payment on the probability that the deduction is valid versus disputable - using claim type, shipment records, invoice history and prior resolution patterns for that customer.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Teams focus dispute effort on the deductions most likely to recover cash rather than processing the full queue uniformly.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Dispute Routing and Resolution Recommendations</div>
-          <div class="puc-desc">For each deduction, recommend the optimal resolution path - credit memo, short shipment adjustment, pricing correction or escalation - with the relevant supporting documents retrieved and attached automatically.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Deduction handlers receive a pre-built case file rather than spending hours gathering evidence. Resolution cycle time cut from weeks to days.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Dispute Resolution Agent</div>
-          <div class="puc-desc">Detects deduction patterns in incoming payments, classifies claim type, retrieves supporting documentation and routes each case to the responsible team with full context and a recommended action. Tracks resolution status and escalates stalled cases.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates the spreadsheet-driven deduction queue. At 2-4% of sales, systematic resolution of unwarranted deductions delivers direct revenue recovery.</div>
-        </div>
-
-        <div class="pod-use-case">
-          <div class="puc-title">Cash Application Match Rate Prediction</div>
-          <div class="puc-desc">Predict which incoming payments are likely to require manual intervention based on remittance quality, partial payment patterns and historical exception rates by customer.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Finance teams prepare for exception volume before the matching run - improving close predictability.</div>
-        </div>
-
-        <div class="pod-use-case">
           <div class="puc-title">Collections Outreach Recommendations</div>
-          <div class="puc-desc">Prescribe the right collections action per invoice - automated reminder, personal follow-up or escalation to dispute team - based on risk score, account value and relationship history.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Collections strategy is consistent, evidence-based and applied across every account - not dependent on individual judgement.</div>
+          <div class="puc-desc">Prescribe the right action per invoice - automated reminder, personal follow-up or dispute escalation - based on risk score, account value and relationship history.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Collections strategy is consistent and evidence-based across every account, not dependent on individual judgement.</div>
         </div>
 
         <div class="pod-use-case">
           <div class="puc-title">Cash Application Agent</div>
-          <div class="puc-desc">Auto-matches incoming payments to open SAP FI invoices using remittance data and pattern matching. Classifies and enriches unmatched exceptions and routes only genuine edge cases to the finance team for manual review.</div>
+          <div class="puc-desc">Auto-matches incoming payments to open SAP FI invoices using remittance data and pattern matching. Routes only genuine exceptions to the finance team for manual review.</div>
           <div class="puc-value"><span class="value-label">Business value:</span> Eliminates 60-70% of manual cash matching effort and accelerates the financial close with a full exception audit trail.</div>
         </div>
 
         <div class="pod-use-case">
           <div class="puc-title">Predictive Cash Forecasting</div>
-          <div class="puc-desc">Generate 30, 60 and 90-day cash receipt forecasts by combining AR aging, customer payment patterns, risk scores and open order pipeline - giving the CFO a data-driven view of expected cash position.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Replaces spreadsheet-based treasury estimates. Finance leadership plans liquidity and working capital deployment on a forecast grounded in live AR signals.</div>
+          <div class="puc-desc">Generate 30, 60 and 90-day cash receipt forecasts from AR aging, payment patterns and open order pipeline - giving finance a data-driven view of expected cash position.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Replaces spreadsheet treasury estimates with a live, AR-grounded forecast for liquidity planning.</div>
         </div>
 
         <div class="pod-use-case">
-          <div class="puc-title">Working Capital Optimisation Recommendations</div>
-          <div class="puc-desc">Identify the highest-impact levers across DSO reduction, collections timing and credit policy adjustment - quantified by expected cash release and ranked by effort - for the finance leadership team to action.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Working capital decisions move from intuition to evidence. Each recommendation is backed by AR data and shows the expected impact before action is taken.</div>
+          <div class="puc-title">Working Capital Optimisation</div>
+          <div class="puc-desc">Surface the highest-impact levers across DSO reduction, collections timing and credit policy - quantified by expected cash release and ranked by effort.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> Working capital decisions move from intuition to evidence, with expected impact shown before action is taken.</div>
         </div>
 
         <div class="pod-use-case">
-          <div class="puc-title">Cash Position Report Agent</div>
-          <div class="puc-desc">Generates the weekly cash position and O2C health report automatically - pulling actuals from SAP FI, forecast from the predictive model and exceptions from across the chain - and distributes it to the CFO and finance leadership on schedule.</div>
-          <div class="puc-value"><span class="value-label">Business value:</span> Eliminates the manual weekly finance reporting cycle. Leadership receives a consistent, data-driven O2C health view without any analyst prep time.</div>
+          <div class="puc-title">Dispute Resolution Agent</div>
+          <div class="puc-desc">Detects deduction patterns in incoming payments, classifies claim type, retrieves supporting documents and routes each case with a recommended resolution action. Escalates stalled cases automatically.</div>
+          <div class="puc-value"><span class="value-label">Business value:</span> At 2-4% of sales, systematic resolution of unwarranted deductions delivers direct, measurable revenue recovery.</div>
         </div>
 
       </div>
@@ -993,7 +921,7 @@
           </div>
           <ul class="proof-bullets">
             <li>SAP SD, MM and FI via prebuilt connectors - no custom integrations</li>
-            <li>Delivery tracker and Excel plans on the same platform for the first time</li>
+            <li>Delivery tracker and Excel plans on the same platform</li>
           </ul>
         </div>
         <div class="proof-card">
