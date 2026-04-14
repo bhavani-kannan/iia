@@ -183,47 +183,54 @@
       grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
       gap: 14px;
     }
-    .mapping-card{
-      border-radius: 14px;
-      padding: 18px 20px;
-      border: 1px solid var(--line);
+    .accel-grid{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .accel-card{
       display: flex;
       gap: 14px;
       align-items: flex-start;
+      border: 1px solid rgba(145,242,216,0.2);
+      border-radius: 14px;
+      padding: 16px 18px;
+      background: rgba(145,242,216,0.04);
     }
-    .mapping-card.active{
-      background: rgba(145,242,216,0.06);
-      border-color: rgba(145,242,216,0.25);
-    }
-    .mapping-badge{
-      flex-shrink: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
+    .accel-icon{
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid rgba(145,242,216,0.2);
+      background: rgba(145,242,216,0.09);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 700;
-      margin-top: 2px;
-      background: rgba(145,242,216,0.2);
-      color: var(--accent-2);
+      flex-shrink: 0;
     }
-    .mapping-title{ font-weight: 700; font-size: 0.9rem; color: var(--text); margin-bottom: 4px; }
-    .mapping-desc{ font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
-    .mapping-chips{
+    .accel-icon svg{ stroke: var(--accent-2); }
+    .accel-title{
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 9px;
+      line-height: 1.3;
+    }
+    .accel-chips{
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
+      gap: 5px;
     }
-    .mapping-chip{
-      font-size: 0.7rem;
+    .accel-chip{
+      font-size: 0.68rem;
       color: var(--accent-2);
       border: 1px solid rgba(145,242,216,0.22);
       border-radius: 999px;
       background: rgba(145,242,216,0.06);
-      padding: 3px 10px;
+      padding: 3px 9px;
+    }
+    @media (max-width: 700px){
+      .accel-grid{ grid-template-columns: 1fr; }
     }
 
     /* ── Architecture lane system ───────────────────────────── */
@@ -430,6 +437,63 @@
       padding: 9px 10px;
       line-height: 1.35;
     }
+    .readiness-row{
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+    .readiness-icon{
+      width: 60px;
+      height: 60px;
+      border-radius: 999px;
+      border: 2px solid rgba(145,242,216,0.3);
+      background: rgba(145,242,216,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .readiness-icon svg{ stroke: var(--accent-2); }
+    .readiness-frame{
+      border: 1px solid rgba(145,242,216,0.2);
+      border-radius: 12px;
+      background: rgba(145,242,216,0.03);
+      padding: 11px 14px;
+    }
+    .readiness-header{
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .readiness-checks{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(200px,1fr));
+      gap: 8px;
+    }
+    .readiness-check{
+      font-size: 0.72rem;
+      color: var(--text);
+      text-align: center;
+      border: 1px solid rgba(145,242,216,0.22);
+      border-radius: 8px;
+      background: rgba(145,242,216,0.05);
+      padding: 9px 10px;
+      line-height: 1.35;
+    }
+    .exception-strip{
+      margin-top: 10px;
+      border-left: 3px solid rgba(242,108,191,0.35);
+      border-radius: 8px;
+      background: rgba(242,108,191,0.04);
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .exception-strip strong{ color: var(--accent-4); }
     .outcomes-strip{
       margin-top: 10px;
       border: 1px solid rgba(145,242,216,0.16);
@@ -462,8 +526,10 @@
       .flow-parallel-2col{ grid-template-columns: 1fr; }
       .parallel-lane{ grid-template-columns: 1fr; }
       .governance-row{ grid-template-columns: 1fr; }
+      .readiness-row{ grid-template-columns: 1fr; }
       .lane-blocks{ grid-template-columns: 1fr; }
       .governance-checks{ grid-template-columns: 1fr; }
+      .readiness-checks{ grid-template-columns: 1fr; }
     }
 
     /* ── O2C process flow ────────────────────────────────────── */
@@ -590,6 +656,34 @@
       color: var(--muted);
       font-weight: 400;
     }
+    .output-surfaces-bar{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(127,216,255,0.15);
+      border-radius: 10px;
+      background: rgba(127,216,255,0.025);
+    }
+    .surfaces-label{
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+    .surface-pill{
+      font-size: 0.72rem;
+      color: var(--accent);
+      border: 1px solid rgba(127,216,255,0.22);
+      border-radius: 999px;
+      background: rgba(127,216,255,0.06);
+      padding: 4px 12px;
+    }
 
     /* ── P/P/A pod reuse ─────────────────────────────────────── */
     .hr-pod-intro{
@@ -697,7 +791,7 @@
       </div>
       <a href="index.html" class="header-nav-btn">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline><polyline points="9 18 3 12 9 6"></polyline></svg>
-        Back to Catalogue
+        Back
       </a>
     </div>
   </header>
@@ -828,106 +922,129 @@
         <p class="intro-copy">This is a full Foundation Accelerator deployment. All six layers are activated - each addressing a specific gap in the current O2C landscape. Unlike a lightweight agent deployment, O2C requires a connected data foundation to enable cross-stage intelligence.</p>
       </div>
 
-      <div class="mapping-grid">
-        <div class="mapping-card active">
-          <div class="mapping-badge">+</div>
+      <div class="accel-grid">
+
+        <div class="accel-card">
+          <div class="accel-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          </div>
           <div>
-            <div class="mapping-title">Process Intelligence and Design</div>
-            <div class="mapping-desc">End-to-end O2C process mapped across all five stages. SLAs defined for order fulfilment, delivery and collections. Decision logic for exception routing and credit holds documented and standardised.</div>
-            <div class="mapping-chips">
-              <span class="mapping-chip">O2C process mapping</span>
-              <span class="mapping-chip">Credit hold rules</span>
-              <span class="mapping-chip">Collections escalation logic</span>
-              <span class="mapping-chip">Use Case Discovery</span>
+            <div class="accel-title">Process Intelligence and Design</div>
+            <div class="accel-chips">
+              <span class="accel-chip">O2C process mapping</span>
+              <span class="accel-chip">SLA definitions</span>
+              <span class="accel-chip">Credit hold rules</span>
+              <span class="accel-chip">Collections escalation logic</span>
+              <span class="accel-chip">Use Case Discovery</span>
             </div>
           </div>
         </div>
-        <div class="mapping-card active">
-          <div class="mapping-badge">+</div>
+
+        <div class="accel-card">
+          <div class="accel-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          </div>
           <div>
-            <div class="mapping-title">Data Foundation</div>
-            <div class="mapping-desc">Canonical data models built for SAP SD, MM and FI. Delivery API schema normalised and mapped to the order entity. Excel sales plan structure standardised and validated for ingestion. O2C KPI definitions locked: OTIF, DSO, order cycle time, dispute rate.</div>
-            <div class="mapping-chips">
-              <span class="mapping-chip">SAP canonical models</span>
-              <span class="mapping-chip">Delivery API schema</span>
-              <span class="mapping-chip">Excel plan normalisation</span>
-              <span class="mapping-chip">DSO, OTIF, cycle time KPIs</span>
+            <div class="accel-title">Data Foundation</div>
+            <div class="accel-chips">
+              <span class="accel-chip">SAP canonical models</span>
+              <span class="accel-chip">Delivery API schema</span>
+              <span class="accel-chip">Excel plan normalisation</span>
+              <span class="accel-chip">DSO, OTIF, cycle time KPIs</span>
             </div>
           </div>
         </div>
-        <div class="mapping-card active">
-          <div class="mapping-badge">+</div>
+
+        <div class="accel-card">
+          <div class="accel-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v4a2 2 0 0 1-2 2H3"></path><path d="M14 21v-4a2 2 0 0 1 2-2h5"></path><line x1="14" y1="7" x2="21" y2="7"></line><line x1="3" y1="17" x2="10" y2="17"></line></svg>
+          </div>
           <div>
-            <div class="mapping-title">Data Ingestion Accelerators</div>
-            <div class="mapping-desc">Prebuilt SAP connectors deployed for SD, MM and FI modules. Third-party delivery API wired to the ingestion layer with real-time event streaming. Excel sales plan ingested on upload with automated validation and normalisation.</div>
-            <div class="mapping-chips">
-              <span class="mapping-chip">SAP SD connector</span>
-              <span class="mapping-chip">SAP MM connector</span>
-              <span class="mapping-chip">SAP FI connector</span>
-              <span class="mapping-chip">Delivery API feed</span>
-              <span class="mapping-chip">Excel ingestion pipeline</span>
+            <div class="accel-title">Data Ingestion Accelerators</div>
+            <div class="accel-chips">
+              <span class="accel-chip">SAP integration (RFC / OData)</span>
+              <span class="accel-chip">SD, MM and FI extraction jobs</span>
+              <span class="accel-chip">Delivery event feed</span>
+              <span class="accel-chip">Excel ingestion pipeline</span>
             </div>
           </div>
         </div>
-        <div class="mapping-card active">
-          <div class="mapping-badge">+</div>
+
+        <div class="accel-card">
+          <div class="accel-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          </div>
           <div>
-            <div class="mapping-title">Intelligence Model Library</div>
-            <div class="mapping-desc">Use Case Discovery applied to O2C SOPs and policies to seed the initial backlog. Delivery delay prediction, AR default risk scoring and revenue vs plan variance models deployed from the library, validated and adapted for the O2C context.</div>
-            <div class="mapping-chips">
-              <span class="mapping-chip">Use Case Discovery</span>
-              <span class="mapping-chip">Delivery delay model</span>
-              <span class="mapping-chip">AR risk scoring</span>
-              <span class="mapping-chip">Revenue variance model</span>
+            <div class="accel-title">Intelligence Model Library</div>
+            <div class="accel-chips">
+              <span class="accel-chip">Delivery delay prediction</span>
+              <span class="accel-chip">AR default risk scoring</span>
+              <span class="accel-chip">Revenue variance model</span>
+              <span class="accel-chip">Use Case Discovery</span>
             </div>
           </div>
         </div>
-        <div class="mapping-card active">
-          <div class="mapping-badge">+</div>
+
+        <div class="accel-card">
+          <div class="accel-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"></polyline></svg>
+          </div>
           <div>
-            <div class="mapping-title">Visualization and Decision Layer</div>
-            <div class="mapping-desc">O2C Control Tower gives operations a live end-to-end view across order status, delivery risk and collections. Collections workbench surfaces risk-ranked AR with recommended actions. Regional sales vs plan dashboard replaces the manual Excel review.</div>
-            <div class="mapping-chips">
-              <span class="mapping-chip">O2C Control Tower</span>
-              <span class="mapping-chip">Collections workbench</span>
-              <span class="mapping-chip">Regional sales vs plan</span>
-              <span class="mapping-chip">Delivery performance view</span>
+            <div class="accel-title">Visualization and Decision Layer</div>
+            <div class="accel-chips">
+              <span class="accel-chip">O2C Control Tower</span>
+              <span class="accel-chip">Collections workbench</span>
+              <span class="accel-chip">Credit risk dashboard</span>
+              <span class="accel-chip">Regional sales vs plan</span>
+              <span class="accel-chip">Delivery performance view</span>
             </div>
           </div>
         </div>
-        <div class="mapping-card active">
-          <div class="mapping-badge">+</div>
+
+        <div class="accel-card">
+          <div class="accel-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </div>
           <div>
-            <div class="mapping-title">Platform Accelerator</div>
-            <div class="mapping-desc">Cloud-native data and agent platform deployed on existing infrastructure. Pipeline orchestration manages SAP batch feeds, real-time delivery events and Excel uploads in a single governed layer. Full audit logging for every agent decision and human approval.</div>
-            <div class="mapping-chips">
-              <span class="mapping-chip">Pipeline orchestration</span>
-              <span class="mapping-chip">Agent runtime</span>
-              <span class="mapping-chip">Governance framework</span>
-              <span class="mapping-chip">Audit logging</span>
+            <div class="accel-title">Platform Accelerator</div>
+            <div class="accel-chips">
+              <span class="accel-chip">Pipeline orchestration</span>
+              <span class="accel-chip">Agent runtime</span>
+              <span class="accel-chip">Governance framework</span>
+              <span class="accel-chip">Audit logging</span>
             </div>
           </div>
         </div>
+
       </div>
 
       <div class="insight-box">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
         <div>
           <h4>Why a full deployment is required here</h4>
-          <p>O2C intelligence spans three disconnected source systems - SAP, a third-party tracker and Excel. Unlike a single-system agent deployment, cross-stage insight (linking a delivery delay to AR risk to collections priority) requires a shared data foundation. The six-layer approach is not overhead here - it is what makes the agents coherent across the process chain.</p>
+          <p>O2C spans three disconnected systems - SAP, a third-party delivery tracker and Excel. Linking a delivery delay to AR risk to collections priority is only possible with a shared data foundation underneath. All six layers are active here because that cross-stage coherence is the point.</p>
         </div>
       </div>
     </div>
 
-    <!-- ── O2C Process and Agent Architecture ─────────────────── -->
+    <!-- ── O2C Intelligence Architecture ─────────────────────── -->
     <div class="journey-section">
       <div class="section-heading">
-        <h2 class="eyebrow">O2C Process Architecture</h2>
-        <p class="intro-copy">Six agents run in parallel across the enterprise O2C portfolio - not as sequential steps, but as independent capabilities each operating on their own data domain and trigger. At enterprise scale, orders, deliveries, invoices and payments are all active simultaneously. The agents work across all of them, all the time.</p>
+        <h2 class="eyebrow">O2C Intelligence Architecture</h2>
+        <p class="intro-copy">SAP remains the system of record. Six agents run in parallel on top of it - reading signals, scoring risk, generating decisions, and writing back only on explicit human approval. At enterprise scale, orders, deliveries, invoices and payments are all active simultaneously. The agents operate across all of them, all the time.</p>
       </div>
 
       <div class="flow-wrapper">
-        <div class="flow-kicker">Six agents run in parallel across the enterprise O2C portfolio. On any given day, orders are being placed, shipments are in transit, invoices are outstanding and payments are arriving - all at once. Each agent operates continuously on its own data domain and trigger, independent of the others. Data dependencies exist within the record lifecycle; agent execution does not wait.</div>
+        <div class="flow-kicker">SAP SD, SAP MM and SAP FI remain the systems of record. The intelligence layer sits on top - reading live signals, scoring risk across the full portfolio, and surfacing decisions to business users. Nothing writes back to SAP without explicit human approval. Data dependencies exist within the record lifecycle; agent execution does not wait.</div>
+
+        <div class="output-surfaces-bar">
+          <span class="surfaces-label">Users act via</span>
+          <span class="surface-pill">O2C Control Tower</span>
+          <span class="surface-pill">Collections Workbench</span>
+          <span class="surface-pill">Credit Risk Dashboard</span>
+          <span class="surface-pill">Regional Sales vs Plan</span>
+          <span class="surface-pill">Approval &amp; Alert Queue</span>
+        </div>
 
         <div class="parallel-lanes">
 
@@ -955,22 +1072,22 @@
 
           <div class="parallel-lane">
             <div class="lane-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
             </div>
             <div class="lane-frame">
-              <div class="lane-header">Sales Plan Ingestion Agent</div>
+              <div class="lane-header">Revenue Intelligence Agent</div>
               <div class="lane-meta">
-                <span class="meta-pill">Excel Sales Business Plan</span>
-                <span class="meta-pill">Trigger: file upload event</span>
+                <span class="meta-pill">Excel Sales Business Plan + SAP SD actuals</span>
+                <span class="meta-pill">Trigger: plan upload + continuous actuals feed</span>
               </div>
               <div class="lane-sla">
-                <span class="sla-pill">Runs: on each plan upload, monthly cycle</span>
-                <span class="sla-pill">Output: live regional actuals vs plan</span>
+                <span class="sla-pill">Runs: on upload; actuals refreshed continuously</span>
+                <span class="sla-pill">HOTL: sales leadership reviews variance alerts</span>
               </div>
               <div class="lane-blocks">
-                <div class="lane-block">Excel plan validated on upload</div>
-                <div class="lane-block">Regional targets loaded to platform</div>
-                <div class="lane-block">Variance vs SAP actuals tracked live</div>
+                <div class="lane-block">Excel plan mapped to SAP SD actuals in real time - no manual export or reconciliation</div>
+                <div class="lane-block">At-risk regions scored by forecast gap and trend</div>
+                <div class="lane-block">Variance alerts surfaced to sales leadership for action</div>
               </div>
             </div>
           </div>
@@ -1035,9 +1152,9 @@
                 <span class="sla-pill">HITL: controller approves all outreach before sending</span>
               </div>
               <div class="lane-blocks">
-                <div class="lane-block">AR scored daily by default probability</div>
-                <div class="lane-block">Outreach drafted and queued for approval</div>
-                <div class="lane-block">Deductions classified and routed with evidence</div>
+                <div class="lane-block">AR scored daily by ML-driven default probability and customer payment behaviour</div>
+                <div class="lane-block">Outreach drafted, approved and sent; SAP FI activity logged</div>
+                <div class="lane-block">Deductions classified, dispute routed with supporting evidence</div>
               </div>
             </div>
           </div>
@@ -1058,7 +1175,7 @@
               </div>
               <div class="lane-blocks">
                 <div class="lane-block">Payer identified from bank account; remittance parsed for invoice references</div>
-                <div class="lane-block">Open AR matched by amount, reference and payment pattern</div>
+                <div class="lane-block">Complex lump and multi-invoice payments correlated using learned payer behaviour and remittance data</div>
                 <div class="lane-block">Unmatched items enriched and routed to finance team</div>
               </div>
             </div>
@@ -1069,9 +1186,9 @@
         <!-- Dependencies -->
         <div class="dependency-row">
           <div class="dependency-item">Credit block cleared by Credit Risk Agent - order released for fulfilment</div>
-          <div class="dependency-item">Goods issue posted in SAP MM - billing document triggered in SAP SD</div>
-          <div class="dependency-item">Dispute resolved - AR open item updated before cash application run</div>
-          <div class="dependency-item">Payment applied in FI - credit exposure recalculated by Credit Risk Agent</div>
+          <div class="dependency-item">Goods issue confirmed - Delivery Risk Agent closes in-transit flag and updates OTIF score</div>
+          <div class="dependency-item">Dispute resolved by agent - deduction validated and AR updated before remittance correlation cycle</div>
+          <div class="dependency-item">Payment posted in SAP FI - Credit Risk Agent refreshes default score across customer portfolio</div>
         </div>
 
         <!-- Governance -->
@@ -1089,6 +1206,27 @@
           </div>
         </div>
 
+        <!-- Period Close Gate -->
+        <div class="readiness-row">
+          <div class="readiness-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="readiness-frame">
+            <div class="readiness-header">Period Close Gate</div>
+            <div class="readiness-checks">
+              <div class="readiness-check">All agent-flagged order exceptions resolved or escalated with assigned owner</div>
+              <div class="readiness-check">High-risk AR accounts reviewed by controller - agent-identified items confirmed or escalated</div>
+              <div class="readiness-check">Remittance correlation complete - agent-flagged unmatched payments reviewed and cleared by finance</div>
+              <div class="readiness-check">Customer default scores refreshed across portfolio - approved limit changes applied before next order cycle</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exception strip -->
+        <div class="exception-strip">
+          <strong>Exception path:</strong> Any agent flag, SLA breach or unmatched payment is escalated with owner, context and recovery action - loop remains open until resolved and confirmed in SAP.
+        </div>
+
         <!-- KPIs -->
         <div class="outcomes-strip">
           <div class="outcomes-title">Target KPIs</div>
@@ -1102,7 +1240,7 @@
         </div>
 
         <div class="flow-agent-bar">
-          O2C Intelligence Layer: six agents running in parallel across the enterprise portfolio - each operating on its own domain and trigger, all coordinated through a single governed platform with full HITL and audit control
+          O2C Intelligence Layer: SAP stays intact as the system of record. Six agents augment it - reading signals, scoring risk, and surfacing decisions. Nothing executes in SAP without human approval. Every action is logged.
         </div>
       </div>
     </div>
