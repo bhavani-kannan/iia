@@ -923,89 +923,75 @@
     <div class="journey-section">
       <div class="section-heading">
         <h2 class="eyebrow">O2C Process Architecture</h2>
-        <p class="intro-copy">The O2C architecture separates into two zones. Always-on enablers - credit management and sales planning - run continuously across the full cycle, not as sequential steps. The four-stage transactional chain follows the order lifecycle from entry through to cash. Each zone has dedicated intelligence; agents eliminate the manual effort around decisions, not the decisions themselves.</p>
+        <p class="intro-copy">Six agents run in parallel across the enterprise O2C portfolio - not as sequential steps, but as independent capabilities each operating on their own data domain and trigger. At enterprise scale, orders, deliveries, invoices and payments are all active simultaneously. The agents work across all of them, all the time.</p>
       </div>
 
       <div class="flow-wrapper">
-        <div class="flow-kicker">Credit management and sales planning run as always-on parallel enablers across the full cycle. The four-stage sequential chain follows the order from entry to cash. Cross-stage signals between both zones are coordinated through the shared intelligence layer.</div>
+        <div class="flow-kicker">Six agents run in parallel across the enterprise O2C portfolio. On any given day, orders are being placed, shipments are in transit, invoices are outstanding and payments are arriving - all at once. Each agent operates continuously on its own data domain and trigger, independent of the others. Data dependencies exist within the record lifecycle; agent execution does not wait.</div>
 
-        <!-- Always-On Enablers -->
-        <div class="flow-zone-label">Always-On Enablers</div>
-        <div class="flow-parallel-2col">
-
-          <div class="parallel-lane always-on-lane">
-            <div class="lane-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            </div>
-            <div class="lane-frame">
-              <div class="lane-header">Credit Management</div>
-              <div class="lane-meta">
-                <span class="meta-pill">SAP FI-AR Credit Management</span>
-                <span class="meta-pill">Agent: Credit Risk Agent</span>
-              </div>
-              <div class="lane-sla">
-                <span class="sla-pill">Continuous: live AR monitoring</span>
-                <span class="sla-pill">Gates order entry and period close</span>
-              </div>
-              <div class="lane-blocks">
-                <div class="lane-block">Customer risk scored continuously</div>
-                <div class="lane-block">Limit or hold recommended to controller</div>
-                <div class="lane-block">SAP FI updated on approval</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="parallel-lane always-on-lane">
-            <div class="lane-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-            </div>
-            <div class="lane-frame">
-              <div class="lane-header">Sales Planning</div>
-              <div class="lane-meta">
-                <span class="meta-pill">Excel Sales Business Plan</span>
-                <span class="meta-pill">Agent: Sales Plan Ingestion Agent</span>
-              </div>
-              <div class="lane-sla">
-                <span class="sla-pill">Ongoing: monthly planning cycle</span>
-                <span class="sla-pill">Output: live regional variance vs plan</span>
-              </div>
-              <div class="lane-blocks">
-                <div class="lane-block">Excel plan uploaded and validated</div>
-                <div class="lane-block">Regional targets ingested to platform</div>
-                <div class="lane-block">Live actuals vs plan tracked continuously</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Divider -->
-        <div class="flow-zone-divider">
-          <div class="flow-zone-divider-line"></div>
-          <div class="flow-zone-divider-label">Sequential Process Chain</div>
-          <div class="flow-zone-divider-line"></div>
-        </div>
-
-        <!-- Sequential Chain -->
         <div class="parallel-lanes">
 
           <div class="parallel-lane trigger-lane">
             <div class="lane-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <div class="lane-frame">
+              <div class="lane-header">Credit Risk Agent</div>
+              <div class="lane-meta">
+                <span class="meta-pill">SAP FI-AR Credit Management</span>
+                <span class="meta-pill">Trigger: payment event or AR signal change</span>
+              </div>
+              <div class="lane-sla">
+                <span class="sla-pill">Runs: continuously across full customer base</span>
+                <span class="sla-pill">HITL: controller approves all limit or hold changes</span>
+              </div>
+              <div class="lane-blocks">
+                <div class="lane-block">Customer default probability scored from live AR</div>
+                <div class="lane-block">Limit adjustment or hold recommended</div>
+                <div class="lane-block">SAP FI updated on controller approval</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="parallel-lane">
+            <div class="lane-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            </div>
+            <div class="lane-frame">
+              <div class="lane-header">Sales Plan Ingestion Agent</div>
+              <div class="lane-meta">
+                <span class="meta-pill">Excel Sales Business Plan</span>
+                <span class="meta-pill">Trigger: file upload event</span>
+              </div>
+              <div class="lane-sla">
+                <span class="sla-pill">Runs: on each plan upload, monthly cycle</span>
+                <span class="sla-pill">Output: live regional actuals vs plan</span>
+              </div>
+              <div class="lane-blocks">
+                <div class="lane-block">Excel plan validated on upload</div>
+                <div class="lane-block">Regional targets loaded to platform</div>
+                <div class="lane-block">Variance vs SAP actuals tracked live</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="parallel-lane">
+            <div class="lane-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
             </div>
             <div class="lane-frame">
-              <div class="lane-header">Stage 01 - Order Entry and Exception Management</div>
+              <div class="lane-header">Order Exception Agent</div>
               <div class="lane-meta">
                 <span class="meta-pill">SAP SD</span>
-                <span class="meta-pill">Agent: Order Exception Agent</span>
+                <span class="meta-pill">Trigger: order block or status change event</span>
               </div>
               <div class="lane-sla">
-                <span class="sla-pill">Credit check: real-time at order save</span>
-                <span class="sla-pill">Exception SLA: same-day resolution</span>
+                <span class="sla-pill">Runs: continuously across all open orders</span>
+                <span class="sla-pill">HITL: owner approves resolution before SAP update</span>
               </div>
               <div class="lane-blocks">
-                <div class="lane-block">Order created, credit check fired in SAP SD</div>
-                <div class="lane-block">Exceptions scored by revenue and SLA impact</div>
+                <div class="lane-block">Stuck orders detected and root cause diagnosed</div>
+                <div class="lane-block">Exceptions ranked by revenue and SLA risk</div>
                 <div class="lane-block">Resolution drafted and routed for approval</div>
               </div>
             </div>
@@ -1016,20 +1002,20 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 20 13 16 13"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="13.5" cy="18.5" r="2.5"></circle></svg>
             </div>
             <div class="lane-frame">
-              <div class="lane-header">Stage 02 - Fulfilment and Delivery</div>
+              <div class="lane-header">Delivery Risk Agent</div>
               <div class="lane-meta">
                 <span class="meta-pill">SAP SD + SAP MM</span>
                 <span class="meta-pill">3rd Party Delivery Tracker</span>
-                <span class="meta-pill">Agent: Delivery Risk Agent</span>
+                <span class="meta-pill">Trigger: live carrier signal or status change</span>
               </div>
               <div class="lane-sla">
-                <span class="sla-pill">Target: OTIF</span>
-                <span class="sla-pill">Delay detection: continuous from tracker</span>
+                <span class="sla-pill">Runs: continuously across all in-transit shipments</span>
+                <span class="sla-pill">HITL: logistics coordinator approves reroute</span>
               </div>
               <div class="lane-blocks">
-                <div class="lane-block">Outbound delivery processed in SAP SD/LE</div>
-                <div class="lane-block">Delay risk scored from live tracker signals</div>
-                <div class="lane-block">Reroute options surfaced before impact</div>
+                <div class="lane-block">Delay probability scored from tracker signals</div>
+                <div class="lane-block">Reroute options surfaced and ranked</div>
+                <div class="lane-block">Logistics coordinator notified for decision</div>
               </div>
             </div>
           </div>
@@ -1039,20 +1025,19 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
             </div>
             <div class="lane-frame">
-              <div class="lane-header">Stage 03 - Billing, Collections and Disputes</div>
+              <div class="lane-header">Collections and Dispute Resolution Agent</div>
               <div class="lane-meta">
-                <span class="meta-pill">SAP SD Billing</span>
-                <span class="meta-pill">SAP FI / AR</span>
-                <span class="meta-pill">Agents: Collections + Dispute Resolution</span>
+                <span class="meta-pill">SAP SD Billing / SAP FI</span>
+                <span class="meta-pill">Trigger: new invoice, payment event or short payment</span>
               </div>
               <div class="lane-sla">
-                <span class="sla-pill">DSO target: 20-40% reduction</span>
-                <span class="sla-pill">Dispute resolution: under 7 days</span>
+                <span class="sla-pill">Runs: daily scoring across full AR ledger</span>
+                <span class="sla-pill">HITL: controller approves all outreach before sending</span>
               </div>
               <div class="lane-blocks">
-                <div class="lane-block">Invoice raised in SD, posted to FI/AR</div>
                 <div class="lane-block">AR scored daily by default probability</div>
-                <div class="lane-block">Dispute cases routed with evidence file</div>
+                <div class="lane-block">Outreach drafted and queued for approval</div>
+                <div class="lane-block">Deductions classified and routed with evidence</div>
               </div>
             </div>
           </div>
@@ -1062,19 +1047,19 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
             </div>
             <div class="lane-frame">
-              <div class="lane-header">Stage 04 - Cash Application and Period Close</div>
+              <div class="lane-header">Cash Application Agent</div>
               <div class="lane-meta">
                 <span class="meta-pill">SAP FI</span>
-                <span class="meta-pill">Agent: Cash Application Agent</span>
+                <span class="meta-pill">Trigger: incoming bank statement or payment advice</span>
               </div>
               <div class="lane-sla">
-                <span class="sla-pill">Auto-match target: 90-95%</span>
-                <span class="sla-pill">Close gate: all exceptions cleared</span>
+                <span class="sla-pill">Runs: on each payment receipt event</span>
+                <span class="sla-pill">HITL: finance team handles genuine exceptions only</span>
               </div>
               <div class="lane-blocks">
-                <div class="lane-block">Payments matched to open AR items</div>
-                <div class="lane-block">Exceptions classified and enriched</div>
-                <div class="lane-block">Period close gate checked and confirmed</div>
+                <div class="lane-block">Payments matched to open AR items automatically</div>
+                <div class="lane-block">Exceptions classified and enriched with context</div>
+                <div class="lane-block">Unresolved exceptions routed to finance team</div>
               </div>
             </div>
           </div>
@@ -1117,7 +1102,7 @@
         </div>
 
         <div class="flow-agent-bar">
-          O2C Intelligence Layer: two always-on agents (Credit Risk + Sales Planning) running in parallel with four operational agents across the sequential chain - coordinated through a single governed platform
+          O2C Intelligence Layer: six agents running in parallel across the enterprise portfolio - each operating on its own domain and trigger, all coordinated through a single governed platform with full HITL and audit control
         </div>
       </div>
     </div>
