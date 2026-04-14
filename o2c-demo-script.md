@@ -40,15 +40,15 @@ You do not need to read all eight. Pick the three most relevant to the executive
 
 ## Section 2: Foundation Accelerator Layer
 
-**What is on screen:** A tabbed view showing six layers - Process Intelligence, Data Foundation, Data Ingestion, Intelligence Models, Visualization, Platform.
+**What is on screen:** A 2-column grid of six compact cards - all visible at once. Each card shows an icon, a layer name, and what is already built.
 
 **How to walk it:**
 
-> "Before I show you the architecture, I want to show you what we are not building from scratch. These are reusable components our team has built and validated across previous engagements. When we come into your O2C landscape, we are not inventing connectors for SAP SD, MM and FI - those exist. We are not building credit risk models from blank paper - those exist. The delivery delay prediction model has been tuned on real carrier and shipment data. What we are doing is configuring and adapting these to your specific process, your SAP instance, and your customer base."
+> "Before I show you the architecture, I want to show you what we are not building from scratch. These are reusable components our team has built and validated across previous engagements. When we come into your O2C landscape, we establish a single integration to your SAP system - one connection via standard RFC or OData interfaces, and then we configure extraction jobs for the specific data objects we need: SD orders, MM inventory positions, FI AR and payment data. We are not building credit risk models from blank paper either - those exist. The delivery delay prediction model has been tuned on real carrier and shipment data. What we are doing is configuring and adapting these to your specific process, your SAP instance, and your customer base."
 
-Click through to Data Ingestion.
+Point to the Data Ingestion card.
 
-> "Specifically for O2C in a discrete manufacturing environment: SAP SD, MM and FI connectors are prebuilt. Your third-party delivery tracker is wired in. And the Excel sales plan your commercial team manages outside SAP - that gets a dedicated ingestion pipeline so it is no longer a manual reconciliation at month-end."
+> "Specifically for O2C in a discrete manufacturing environment: the SAP integration is established once and we pull from the modules we need. Your third-party delivery tracker is connected with a near-real-time event feed. And the Excel sales plan your commercial team manages outside SAP - that gets a dedicated ingestion pipeline so it is no longer a manual reconciliation at month-end."
 
 This section answers the "how long will this take" question before it is asked. The accelerators are your time-to-value story.
 
@@ -204,7 +204,7 @@ Do not give a price on the spot. Commit to a modelled ROI case with their actual
 
 **Answer:**
 
-> "We structure it in two phases. The foundation - SAP connectors, data layer, the first two or three agent use cases - lands in eight to twelve weeks. That is enough to be running a live credit risk agent and order exception agent against your real data. The full architecture you saw today is typically live within five to six months. The reason we can move at that pace is the foundation accelerators - the SAP connectors, the base models, the platform infrastructure - these are not built from scratch on your engagement."
+> "We structure it in two phases. The foundation - SAP integration, data layer, the first two or three agent use cases - lands in eight to twelve weeks. That is enough to be running a live credit risk agent and order exception agent against your real data. The full architecture you saw today is typically live within five to six months. The reason we can move at that pace is the foundation accelerators - the SAP integration layer, the base models, the platform infrastructure - these are not built from scratch on your engagement."
 
 ---
 
@@ -257,6 +257,24 @@ Do not give a price on the spot. Commit to a modelled ROI case with their actual
 **Answer:**
 
 > "The intelligence layer reads from your SAP instance and your delivery tracker. It does not replicate your full SAP database. It ingests the specific transactional data needed for each agent - AR open items, order status, delivery events, bank statement lines. That data sits in your cloud environment - on your infrastructure or on a dedicated tenant depending on your preference. No customer data leaves your controlled environment. All access is role-based and audited."
+
+### "We are on SAP ECC, not S/4HANA. Does this still work?"
+
+This will come up in most discrete manufacturing rooms. A large portion of the market is still on ECC 6.0 with no near-term upgrade plan.
+
+**Answer:**
+
+> "Yes, and this is where we differ from SAP's own embedded tools. SAP's AI and analytics roadmap is largely S/4HANA-first - if you are on ECC, many of those capabilities are not available to you. Our integration layer uses RFC and BAPI interfaces that have been stable since ECC 5.0. Every agent you saw today works against an ECC landscape. We have done it. The data models and extraction jobs are configured for ECC table structures where they differ from S/4HANA - that is part of what the foundation accelerators cover. Your upgrade timeline does not need to be the blocker here."
+
+---
+
+### "Our delivery tracking comes via EDI or email from the carrier, not an API"
+
+Very common in discrete manufacturing, particularly with regional or specialist 3PLs who do not expose a REST API.
+
+**Answer:**
+
+> "That is a standard scenario and the ingestion layer handles it. If your carrier sends ASN and status updates via EDIFACT or flat file over SFTP, we have a pipeline for that. If status updates arrive as structured emails or PDF attachments, we parse those into the event feed. The Delivery Risk Agent does not need a real-time API to be useful - it needs a reliable, timely feed of shipment status, and EDI typically provides that. Where a carrier has no digital feed at all, we would have a separate conversation about what manual inputs are available and whether the agent can still add value on that lane."
 
 ---
 
