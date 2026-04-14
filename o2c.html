@@ -1050,16 +1050,16 @@
               <div class="lane-header">Cash Application Agent</div>
               <div class="lane-meta">
                 <span class="meta-pill">SAP FI</span>
-                <span class="meta-pill">Trigger: incoming bank statement or payment advice</span>
+                <span class="meta-pill">Trigger: bank statement posting (MT940) correlated with remittance advice</span>
               </div>
               <div class="lane-sla">
-                <span class="sla-pill">Runs: on each payment receipt event</span>
+                <span class="sla-pill">Runs: on each bank statement import cycle</span>
                 <span class="sla-pill">HITL: finance team handles genuine exceptions only</span>
               </div>
               <div class="lane-blocks">
-                <div class="lane-block">Payments matched to open AR items automatically</div>
-                <div class="lane-block">Exceptions classified and enriched with context</div>
-                <div class="lane-block">Unresolved exceptions routed to finance team</div>
+                <div class="lane-block">Payer identified from bank account; remittance parsed for invoice references</div>
+                <div class="lane-block">Open AR matched by amount, reference and payment pattern</div>
+                <div class="lane-block">Unmatched items enriched and routed to finance team</div>
               </div>
             </div>
           </div>
