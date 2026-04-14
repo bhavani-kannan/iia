@@ -226,6 +226,97 @@
       padding: 3px 10px;
     }
 
+    /* ── Parallel enabler zone ──────────────────────────────── */
+    .flow-zone-label{
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .flow-zone-label::after{
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.07);
+    }
+    .flow-parallel-grid{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 4px;
+    }
+    .parallel-card{
+      border: 1px solid rgba(127,216,255,0.14);
+      border-radius: 12px;
+      background: rgba(127,216,255,0.02);
+      overflow: hidden;
+    }
+    .parallel-card-header{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .parallel-card-name{
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .always-on-badge{
+      margin-left: auto;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      background: rgba(127,216,255,0.08);
+      border: 1px solid rgba(127,216,255,0.2);
+      border-radius: 999px;
+      padding: 2px 8px;
+      flex-shrink: 0;
+    }
+    .parallel-card-row{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .parallel-card-row .stage-current{
+      border-radius: 0;
+      border: none;
+      border-right: 1px solid rgba(255,154,102,0.12);
+    }
+    .parallel-card-row .stage-future{
+      border-radius: 0;
+      border: none;
+    }
+    .flow-zone-divider{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0 16px;
+    }
+    .flow-zone-divider-line{
+      flex: 1;
+      height: 1px;
+      background: rgba(127,216,255,0.15);
+    }
+    .flow-zone-divider-label{
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(127,216,255,0.55);
+      white-space: nowrap;
+    }
+    @media (max-width: 900px){
+      .flow-parallel-grid{ grid-template-columns: 1fr; }
+      .parallel-card-row{ grid-template-columns: 1fr; }
+    }
+
     /* ── O2C process flow ────────────────────────────────────── */
     .flow-wrapper{
       border: 1px solid var(--line);
@@ -683,71 +774,83 @@
     <div class="journey-section">
       <div class="section-heading">
         <h2 class="eyebrow">O2C Process Architecture</h2>
-        <p class="intro-copy">Each stage of the O2C process transitions from its current manual or disconnected state to an agent-supported future state. Agents do not replace human decisions - they eliminate the manual effort around them.</p>
+        <p class="intro-copy">The O2C architecture separates into two zones. Always-on enablers - credit management and sales planning - run continuously across the full cycle, not as sequential steps. The four-stage transactional chain follows the order lifecycle from entry through to cash. Each zone has dedicated intelligence; agents eliminate the manual effort around decisions, not the decisions themselves.</p>
       </div>
 
       <div class="flow-wrapper">
-        <div class="flow-kicker">Six sequential stages, each with a dedicated intelligence and agent layer. Cross-stage signals - credit risk gating order entry, delivery risk feeding collections priority, deduction patterns feeding dispute resolution - are enabled by the shared data foundation.</div>
+        <div class="flow-kicker">Credit management and sales planning are not sequential steps - they run continuously in parallel to the transactional chain. The four-stage sequential chain covers the order lifecycle from capture through to cash. Signals from both zones feed into a shared intelligence layer.</div>
 
+        <!-- Always-On Parallel Enablers -->
+        <div class="flow-zone-label">Always-On Enablers</div>
+        <div class="flow-parallel-grid">
+
+          <div class="parallel-card">
+            <div class="parallel-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="parallel-card-name">Credit Management</span>
+              <span class="always-on-badge">CONTINUOUS</span>
+            </div>
+            <div class="parallel-card-row">
+              <div class="stage-current">
+                <div class="stage-col-label">Current State</div>
+                <div class="stage-title">Static Limits and Manual Holds</div>
+                <div class="stage-body">Credit limits set periodically from static rules. Holds applied manually with no risk-based prioritisation. Exposure decisions lag behind actual payment behaviour.</div>
+                <span class="stage-system">SAP FI-AR Credit Management</span>
+              </div>
+              <div class="stage-future">
+                <div class="stage-col-label">Intelligent Future State</div>
+                <div class="stage-title">Continuous Scoring and Automated Recommendations</div>
+                <div class="stage-body">Credit Risk Agent scores each customer continuously from live AR signals. Recommends limit or hold actions to the controller. High-risk accounts surfaced before an order is placed, not after it ships.</div>
+                <span class="stage-system">Credit Risk Agent</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="parallel-card">
+            <div class="parallel-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              <span class="parallel-card-name">Sales Planning</span>
+              <span class="always-on-badge">ONGOING</span>
+            </div>
+            <div class="parallel-card-row">
+              <div class="stage-current">
+                <div class="stage-col-label">Current State</div>
+                <div class="stage-title">Excel Plans, Month-End Reconciliation</div>
+                <div class="stage-body">Regional targets maintained in Excel and reconciled against SAP SD actuals manually at month end. No live variance visibility during the trading period.</div>
+                <span class="stage-system">Excel Sales Business Plan</span>
+              </div>
+              <div class="stage-future">
+                <div class="stage-col-label">Intelligent Future State</div>
+                <div class="stage-title">Live Ingestion and Continuous Variance Tracking</div>
+                <div class="stage-body">Sales Plan Ingestion Agent validates and loads Excel uploads automatically. Regional performance vs plan is visible in real time - no month-end manual reconciliation.</div>
+                <span class="stage-system">Sales Plan Ingestion Agent</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Divider -->
+        <div class="flow-zone-divider">
+          <div class="flow-zone-divider-line"></div>
+          <div class="flow-zone-divider-label">Sequential Process Chain</div>
+          <div class="flow-zone-divider-line"></div>
+        </div>
+
+        <!-- Sequential Chain -->
         <div class="process-chain">
-
-          <div class="process-stage">
-            <div class="stage-label-wrap">
-              <div class="stage-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-              </div>
-              <div class="stage-num">Stage 01</div>
-            </div>
-            <div class="stage-current">
-              <div class="stage-col-label">Current State</div>
-              <div class="stage-title">Credit Assessment and Limit Management</div>
-              <div class="stage-body">Credit limits set periodically based on static rules and manual review. Credit holds applied manually with no risk-based prioritisation. No live view of payment behaviour or customer exposure - decisions lag behind actual risk.</div>
-              <span class="stage-system">SAP FI + Manual Process</span>
-            </div>
-            <div class="stage-future">
-              <div class="stage-col-label">Intelligent Future State</div>
-              <div class="stage-title">Dynamic Credit Scoring and Automated Hold Management</div>
-              <div class="stage-body">Credit Risk Agent scores each customer continuously using payment history, days outstanding trends and order pipeline data. Recommends limit adjustments and hold actions to the credit controller. High-risk accounts flagged before orders are placed, not after.</div>
-              <span class="stage-system">Credit Risk Agent</span>
-            </div>
-          </div>
-
-          <div class="stage-connector"><div class="stage-connector-line"></div></div>
-
-          <div class="process-stage">
-            <div class="stage-label-wrap">
-              <div class="stage-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-              </div>
-              <div class="stage-num">Stage 02</div>
-            </div>
-            <div class="stage-current">
-              <div class="stage-col-label">Current State</div>
-              <div class="stage-title">Sales Planning</div>
-              <div class="stage-body">Regional sales targets maintained in Excel Business Plan files. Reconciliation against SAP actuals done manually at month end. No live variance visibility between plan and actuals during the month.</div>
-              <span class="stage-system">Excel Sales Business Plan</span>
-            </div>
-            <div class="stage-future">
-              <div class="stage-col-label">Intelligent Future State</div>
-              <div class="stage-title">Automated Plan Ingestion and Live Variance Tracking</div>
-              <div class="stage-body">Sales Plan Ingestion Agent reads uploaded Excel files, validates structure and regional target data, normalises and loads into the platform. Live regional performance vs plan dashboards replace the manual month-end review.</div>
-              <span class="stage-system">Sales Plan Ingestion Agent</span>
-            </div>
-          </div>
-
-          <div class="stage-connector"><div class="stage-connector-line"></div></div>
 
           <div class="process-stage">
             <div class="stage-label-wrap">
               <div class="stage-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
               </div>
-              <div class="stage-num">Stage 03</div>
+              <div class="stage-num">Stage 01</div>
             </div>
             <div class="stage-current">
               <div class="stage-col-label">Current State</div>
               <div class="stage-title">Order Entry and Exception Management</div>
-              <div class="stage-body">Orders entered and managed in SAP SD. Exceptions - credit holds, inventory shortages, pricing errors - trigger manual cross-team coordination. No systematic prioritisation by impact or SLA risk.</div>
+              <div class="stage-body">Sales orders created in SAP SD and subject to real-time credit check at save. Exceptions - credit blocks, inventory shortages, pricing errors - trigger manual cross-team coordination with no prioritisation by revenue impact or SLA risk.</div>
               <span class="stage-system">SAP SD</span>
             </div>
             <div class="stage-future">
@@ -765,18 +868,18 @@
               <div class="stage-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 20 13 16 13"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="13.5" cy="18.5" r="2.5"></circle></svg>
               </div>
-              <div class="stage-num">Stage 04</div>
+              <div class="stage-num">Stage 02</div>
             </div>
             <div class="stage-current">
               <div class="stage-col-label">Current State</div>
               <div class="stage-title">Fulfilment and Delivery Tracking</div>
-              <div class="stage-body">Fulfilment managed in SAP MM. Live delivery status sits in the third-party tracking system with no feed into SAP. Logistics teams and customer-facing functions react to delays after they occur, with no proactive alert mechanism.</div>
-              <span class="stage-system">SAP MM + 3rd Party Tracker</span>
+              <div class="stage-body">Outbound delivery processed in SAP SD (LE) with inventory movements confirmed in SAP MM. Live delivery status sits in the third-party tracking system with no feed into SAP. Teams react to delays after they occur with no proactive alert mechanism.</div>
+              <span class="stage-system">SAP SD + SAP MM + 3rd Party Tracker</span>
             </div>
             <div class="stage-future">
               <div class="stage-col-label">Intelligent Future State</div>
               <div class="stage-title">Proactive Delivery Risk Management</div>
-              <div class="stage-body">Delivery Risk Agent monitors live tracking data continuously. When delay risk is detected, it flags the shipment, surfaces alternative carrier or routing options and notifies the logistics coordinator for action - before the customer is impacted.</div>
+              <div class="stage-body">Delivery Risk Agent monitors live tracking data continuously. When delay risk is detected it flags the shipment, surfaces alternative carrier or routing options and notifies the logistics coordinator for action - before the customer is impacted.</div>
               <span class="stage-system">Delivery Risk Agent</span>
             </div>
           </div>
@@ -788,18 +891,18 @@
               <div class="stage-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
               </div>
-              <div class="stage-num">Stage 05</div>
+              <div class="stage-num">Stage 03</div>
             </div>
             <div class="stage-current">
               <div class="stage-col-label">Current State</div>
-              <div class="stage-title">Invoicing, Disputes and AR Collections</div>
-              <div class="stage-body">Invoices generated in SAP FI SD. Collections managed from static AR aging reports with no risk scoring. High-value at-risk accounts treated the same as low-risk ones. Disputes managed manually with inconsistent resolution times.</div>
-              <span class="stage-system">SAP FI</span>
+              <div class="stage-title">Billing, Disputes and AR Collections</div>
+              <div class="stage-body">Billing documents raised in SAP SD and posted to SAP FI as open AR items. Collections managed from static aging reports with no risk scoring. Disputes handled manually with no systematic workflow, inconsistent resolution times and no visibility on deduction patterns.</div>
+              <span class="stage-system">SAP SD Billing / SAP FI</span>
             </div>
             <div class="stage-future">
               <div class="stage-col-label">Intelligent Future State</div>
-              <div class="stage-title">Risk-Scored Collections, Dispute Detection and Automated Outreach</div>
-              <div class="stage-body">AR invoices scored daily by default probability. Collections Agent drafts personalised follow-up for highest-risk accounts, queued for controller approval. Dispute Resolution Agent detects deduction patterns, classifies claim types and routes each case with supporting context to the responsible team - cutting resolution time from weeks to days.</div>
+              <div class="stage-title">Risk-Scored Collections and Automated Dispute Handling</div>
+              <div class="stage-body">AR invoices scored daily by default probability. Collections Agent drafts prioritised outreach queued for controller approval. Dispute Resolution Agent detects deduction patterns, classifies claim types and routes each case with a pre-built evidence file to the responsible team.</div>
               <span class="stage-system">Collections Agent + Dispute Resolution Agent</span>
             </div>
           </div>
@@ -811,18 +914,18 @@
               <div class="stage-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
               </div>
-              <div class="stage-num">Stage 06</div>
+              <div class="stage-num">Stage 04</div>
             </div>
             <div class="stage-current">
               <div class="stage-col-label">Current State</div>
-              <div class="stage-title">Cash Application and Close</div>
-              <div class="stage-body">Incoming payments matched to open invoices manually in SAP FI. Partial payments, reference mismatches and deductions generate high exception volumes that delay the monthly financial close.</div>
+              <div class="stage-title">Cash Application and Period Close</div>
+              <div class="stage-body">Incoming payments matched to open AR items manually in SAP FI. Partial payments, remittance mismatches and unresolved deductions generate high exception volumes that delay the monthly financial close.</div>
               <span class="stage-system">SAP FI</span>
             </div>
             <div class="stage-future">
               <div class="stage-col-label">Intelligent Future State</div>
               <div class="stage-title">Automated Cash Matching and Exception Routing</div>
-              <div class="stage-body">Cash Application Agent auto-matches incoming payments to open invoices using remittance data and pattern matching. Genuine exceptions are classified, enriched with context and routed to the finance team - only the cases that need human judgement reach a person.</div>
+              <div class="stage-body">Cash Application Agent auto-matches incoming payments to open SAP FI items using remittance data and pattern matching. Exceptions are classified, enriched with context and routed to finance - only cases requiring human judgement reach the team.</div>
               <span class="stage-system">Cash Application Agent</span>
             </div>
           </div>
@@ -830,7 +933,7 @@
         </div>
 
         <div class="flow-agent-bar">
-          O2C Intelligence Layer: six agents operating across SAP SD, SAP MM, SAP FI, the third-party delivery tracker and the Excel sales plan - from credit assessment through cash application - coordinated through a single governed platform
+          O2C Intelligence Layer: two always-on agents managing credit and planning in parallel, with four operational agents across the sequential chain - all coordinated through a single governed platform
         </div>
       </div>
     </div>
