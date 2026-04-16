@@ -1,0 +1,1325 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O2C Intelligence Platform</title>
+<style>
+/* ─────────────────────────────────────────────────────
+   DESIGN TOKENS
+───────────────────────────────────────────────────── */
+:root{
+  --bg:#07101e;
+  --panel:#0c1626;
+  --panel2:#101d30;
+  --panel3:#152236;
+  --line:rgba(255,255,255,0.07);
+  --line2:rgba(255,255,255,0.04);
+  --text:#d8e6f2;
+  --text2:#8aa4bc;
+  --muted:#50687e;
+  --red:#f05050;
+  --amber:#f0b840;
+  --green:#38d490;
+  --cyan:#38c0e8;
+  --teal:#28c898;
+  --blue:#4888f0;
+  --purple:#8858e0;
+  --orange:#f07030;
+  --red-bg:rgba(240,80,80,0.1);
+  --amber-bg:rgba(240,184,64,0.1);
+  --green-bg:rgba(56,212,144,0.1);
+  --cyan-bg:rgba(56,192,232,0.08);
+  --nav-w:228px;
+  --topbar-h:50px;
+  --drawer-w:440px;
+}
+
+/* ─────────────────────────────────────────────────────
+   RESET + BASE
+───────────────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.45;}
+button,select,input,textarea{font-family:inherit;}
+
+/* ─────────────────────────────────────────────────────
+   APP SHELL
+───────────────────────────────────────────────────── */
+#app{display:flex;flex-direction:column;height:100vh;}
+#topbar{height:var(--topbar-h);background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;z-index:100;}
+#body{display:flex;flex:1;overflow:hidden;}
+#nav{width:var(--nav-w);background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0;}
+#content{flex:1;overflow-y:auto;padding:22px;transition:flex .3s cubic-bezier(.4,0,.2,1),opacity .25s ease,padding .3s,min-width .3s;}
+#content.drawer-open{flex:0 0 0;min-width:0;overflow:hidden;padding:0;opacity:0;pointer-events:none;}
+#content.drawer-open.table-visible{flex:1;min-width:0;overflow-y:auto;padding:22px;opacity:1;pointer-events:auto;margin-right:var(--drawer-w);}
+
+/* ─────────────────────────────────────────────────────
+   TOP BAR
+───────────────────────────────────────────────────── */
+.tb-brand{display:flex;align-items:center;gap:12px;}
+.tb-logo{font-size:15px;font-weight:800;letter-spacing:-.2px;color:var(--text);}
+.tb-logo em{color:var(--cyan);font-style:normal;}
+.tb-sap{font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--teal);background:rgba(40,200,152,0.1);border:1px solid rgba(40,200,152,0.22);border-radius:4px;padding:3px 9px;}
+.tb-right{display:flex;align-items:center;gap:14px;}
+.tb-period{font-size:11px;color:var(--muted);background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:4px 10px;letter-spacing:.1px;}
+.tb-clock{font-size:11.5px;color:var(--text2);font-variant-numeric:tabular-nums;min-width:82px;text-align:right;}
+.tb-audit{font-size:11px;font-weight:700;color:var(--cyan);background:var(--cyan-bg);border:1px solid rgba(56,192,232,0.22);border-radius:5px;padding:5px 13px;cursor:pointer;letter-spacing:.3px;transition:background .15s;}
+.tb-audit:hover{background:rgba(56,192,232,0.15);}
+
+/* ─────────────────────────────────────────────────────
+   LEFT NAV
+───────────────────────────────────────────────────── */
+.nav-section-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;color:var(--muted);padding:14px 16px 5px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 16px;cursor:pointer;transition:background .12s,color .12s;color:var(--text2);font-size:12.5px;font-weight:500;border-left:2px solid transparent;user-select:none;}
+.nav-item:hover{background:var(--panel2);color:var(--text);}
+.nav-item.active{background:rgba(56,192,232,0.07);color:var(--cyan);border-left-color:var(--cyan);font-weight:600;}
+.nav-icon{font-size:11px;font-weight:800;width:20px;height:20px;border-radius:4px;background:var(--panel3);display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:-.5px;}
+.nav-item.active .nav-icon{background:rgba(56,192,232,0.15);color:var(--cyan);}
+.nav-badge{margin-left:auto;background:rgba(240,80,80,0.15);color:var(--red);font-size:10px;font-weight:700;border-radius:10px;padding:1px 7px;min-width:20px;text-align:center;}
+.nav-badge.warn{background:rgba(240,184,64,0.15);color:var(--amber);}
+.nav-badge.ok{background:rgba(56,212,144,0.12);color:var(--green);}
+.nav-divider{height:1px;background:var(--line);margin:8px 14px;}
+.nav-footer{margin-top:auto;padding:12px 16px;font-size:10px;color:var(--muted);border-top:1px solid var(--line);line-height:1.6;}
+
+/* ─────────────────────────────────────────────────────
+   SCREENS
+───────────────────────────────────────────────────── */
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* ─────────────────────────────────────────────────────
+   WORKBENCH HEADER
+───────────────────────────────────────────────────── */
+.wb-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;}
+.wb-title{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.2px;}
+.wb-sub{font-size:11.5px;color:var(--muted);margin-top:3px;}
+.wb-toolbar{display:flex;gap:8px;align-items:center;}
+
+/* ─────────────────────────────────────────────────────
+   KPI STRIP
+───────────────────────────────────────────────────── */
+.kpi-strip{display:grid;gap:10px;margin-bottom:18px;}
+.kpi-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;}
+.kpi-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kpi-accent,var(--line));}
+.kpi-val{font-size:22px;font-weight:800;line-height:1;margin-bottom:4px;}
+.kpi-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:700;}
+.kpi-delta{font-size:10.5px;margin-top:6px;}
+.kpi-delta.up{color:var(--red);}
+.kpi-delta.dn{color:var(--green);}
+.kpi-delta.flat{color:var(--muted);}
+
+/* ─────────────────────────────────────────────────────
+   TABLE PANEL
+───────────────────────────────────────────────────── */
+.tpanel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+.tpanel-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);}
+.tpanel-title{font-size:12px;font-weight:700;color:var(--text);}
+.tpanel-meta{font-size:11px;color:var(--muted);}
+.data-table{width:100%;max-width:1100px;border-collapse:collapse;table-layout:fixed;}
+.data-table th{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);background:var(--panel2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.data-table td{padding:10px 12px;border-bottom:1px solid var(--line2);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.data-table td:nth-child(3),.data-table td:nth-child(9){white-space:normal;}
+.data-table th:nth-child(1),.data-table td:nth-child(1){width:36px;}
+.data-table th:nth-child(2),.data-table td:nth-child(2){width:28px;}
+.data-table th:nth-child(3),.data-table td:nth-child(3){width:180px;}
+.data-table th:nth-child(4),.data-table td:nth-child(4){width:88px;}
+.data-table th:nth-child(5),.data-table td:nth-child(5){width:78px;}
+.data-table th:nth-child(6),.data-table td:nth-child(6){width:128px;}
+.data-table th:nth-child(7),.data-table td:nth-child(7){width:88px;}
+.data-table th:nth-child(8),.data-table td:nth-child(8){width:88px;}
+.data-table th:nth-child(9),.data-table td:nth-child(9){width:195px;}
+.data-table th:nth-child(10),.data-table td:nth-child(10){width:88px;}
+.data-table tbody tr{cursor:pointer;transition:background .1s;}
+.data-table tbody tr:hover{background:rgba(255,255,255,0.025);}
+.data-table tbody tr.selected{background:rgba(56,192,232,0.05);}
+.data-table tbody tr.acted{opacity:.5;pointer-events:none;}
+.data-table tbody tr:last-child td{border-bottom:none;}
+.td-num{font-size:12.5px;font-weight:700;color:var(--text);}
+.td-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+
+/* ─────────────────────────────────────────────────────
+   FILTER CHIPS
+───────────────────────────────────────────────────── */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.fchip{font-size:11px;font-weight:600;padding:4px 13px;border-radius:20px;cursor:pointer;border:1px solid var(--line);color:var(--text2);background:transparent;transition:all .12s;user-select:none;}
+.fchip:hover{border-color:rgba(56,192,232,.4);color:var(--cyan);}
+.fchip.active{background:rgba(56,192,232,0.1);border-color:rgba(56,192,232,0.35);color:var(--cyan);}
+
+/* ─────────────────────────────────────────────────────
+   BULK BAR
+───────────────────────────────────────────────────── */
+.bulk-bar{display:none;align-items:center;gap:8px;padding:8px 14px;background:rgba(56,192,232,0.05);border:1px solid rgba(56,192,232,0.15);border-radius:8px;margin-bottom:10px;}
+.bulk-bar.visible{display:flex;}
+.bulk-count{font-size:12px;font-weight:700;color:var(--cyan);margin-right:4px;}
+.bulk-btn{font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:6px;border:1px solid var(--line);color:var(--text2);background:var(--panel2);cursor:pointer;transition:all .12s;}
+.bulk-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+.bulk-clear{margin-left:auto;font-size:11px;color:var(--muted);cursor:pointer;padding:3px 6px;border-radius:4px;}
+.bulk-clear:hover{color:var(--red);}
+
+/* ─────────────────────────────────────────────────────
+   PILLS (status)
+───────────────────────────────────────────────────── */
+.pill{display:inline-flex;align-items:center;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.2px;white-space:nowrap;}
+.pill-blocked{background:rgba(240,80,80,0.12);color:var(--red);border:1px solid rgba(240,80,80,0.2);}
+.pill-review{background:rgba(240,184,64,0.12);color:var(--amber);border:1px solid rgba(240,184,64,0.2);}
+.pill-submitted{background:rgba(56,192,232,0.1);color:var(--cyan);border:1px solid rgba(56,192,232,0.2);}
+.pill-approved,.pill-released{background:rgba(56,212,144,0.1);color:var(--green);border:1px solid rgba(56,212,144,0.18);}
+.pill-overridden{background:rgba(136,88,224,0.12);color:var(--purple);border:1px solid rgba(136,88,224,0.2);}
+.pill-deferred{background:rgba(80,104,126,0.15);color:var(--muted);border:1px solid var(--line);}
+.pill-pending{background:rgba(240,184,64,0.1);color:var(--amber);border:1px solid rgba(240,184,64,0.2);}
+
+/* ─────────────────────────────────────────────────────
+   CONFIDENCE BADGES
+───────────────────────────────────────────────────── */
+.conf{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:4px;}
+.conf::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.conf-h{background:rgba(56,212,144,0.1);color:var(--green);border:1px solid rgba(56,212,144,0.2);}
+.conf-m{background:rgba(240,184,64,0.1);color:var(--amber);border:1px solid rgba(240,184,64,0.2);}
+.conf-l{background:rgba(240,80,80,0.1);color:var(--red);border:1px solid rgba(240,80,80,0.2);}
+
+/* ─────────────────────────────────────────────────────
+   EXECUTION MODE BADGES
+───────────────────────────────────────────────────── */
+.execm{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;letter-spacing:.2px;white-space:nowrap;}
+.execm-direct{background:rgba(56,212,144,0.1);color:var(--green);}
+.execm-review{background:rgba(240,184,64,0.1);color:var(--amber);}
+.execm-approval{background:rgba(56,192,232,0.1);color:var(--cyan);}
+
+/* ─────────────────────────────────────────────────────
+   ISSUE TYPE TAGS
+───────────────────────────────────────────────────── */
+.itag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;}
+.itag-credit{background:rgba(240,80,80,0.12);color:var(--red);}
+.itag-pricing{background:rgba(136,88,224,0.12);color:var(--purple);}
+.itag-supply{background:rgba(240,184,64,0.12);color:var(--amber);}
+.itag-delivery{background:rgba(56,192,232,0.12);color:var(--cyan);}
+.itag-billing{background:rgba(240,112,48,0.12);color:var(--orange);}
+.itag-data{background:rgba(80,104,126,0.15);color:var(--text2);}
+.itag-compliance{background:rgba(240,80,80,0.12);color:var(--red);}
+.itag-dispute{background:rgba(240,112,48,0.12);color:var(--orange);}
+.itag-orders{background:rgba(56,192,232,0.1);color:var(--cyan);}
+.itag-receivables{background:rgba(240,112,48,0.12);color:var(--orange);}
+.itag-cash{background:rgba(56,212,144,0.1);color:var(--green);}
+
+/* ─────────────────────────────────────────────────────
+   SEVERITY INDICATOR DOT
+───────────────────────────────────────────────────── */
+.sev{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:800;cursor:default;position:relative;flex-shrink:0;}
+.sev-h{background:rgba(240,80,80,0.15);color:var(--red);}
+.sev-m{background:rgba(240,184,64,0.15);color:var(--amber);}
+.sev-l{background:rgba(56,212,144,0.12);color:var(--green);}
+.sev[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:24px;top:50%;transform:translateY(-50%);background:#070f1c;border:1px solid var(--line);border-radius:6px;padding:5px 10px;font-size:11px;color:var(--text);white-space:nowrap;z-index:500;pointer-events:none;font-weight:400;}
+
+/* ─────────────────────────────────────────────────────
+   OBSERVABILITY UNDERLINE + TOOLTIP
+───────────────────────────────────────────────────── */
+.obs{border-bottom:1px dotted rgba(56,192,232,0.5);cursor:help;position:relative;display:inline;}
+.obs:hover::after{content:attr(data-tip);position:absolute;left:0;top:calc(100% + 4px);background:#070f1c;border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--text);white-space:normal;max-width:240px;line-height:1.45;z-index:600;pointer-events:none;}
+
+/* ─────────────────────────────────────────────────────
+   CHECKBOX CELL
+───────────────────────────────────────────────────── */
+.cb-cell{width:32px!important;padding:0 0 0 14px!important;}
+.cb-cell input[type=checkbox]{accent-color:var(--cyan);width:13px;height:13px;cursor:pointer;}
+
+/* ─────────────────────────────────────────────────────
+   DECISION DRAWER
+───────────────────────────────────────────────────── */
+#drawer{position:fixed;top:var(--topbar-h);right:0;width:var(--drawer-w);height:calc(100vh - var(--topbar-h));background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);z-index:200;overflow:visible;}
+#drawer.open{transform:translateX(0);width:calc(100vw - var(--nav-w));}
+#drawer.open.narrow{width:var(--drawer-w);}
+.dw-tab-toggle{position:absolute;left:-26px;top:50%;transform:translateY(-50%);width:26px;height:52px;background:var(--panel);border:1px solid var(--line);border-right:none;border-radius:8px 0 0 8px;cursor:pointer;color:var(--text2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;line-height:1;padding-bottom:1px;}
+.dw-tab-toggle:hover{background:var(--panel3);color:var(--cyan);}
+.dw-head{padding:14px 16px 12px;border-bottom:1px solid var(--line);flex-shrink:0;}
+.dw-agent{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);margin-bottom:3px;}
+.dw-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.dw-title{font-size:14px;font-weight:700;color:var(--text);line-height:1.3;}
+.dw-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:4px;line-height:1;flex-shrink:0;margin-top:1px;}
+.dw-close:hover{background:var(--panel2);color:var(--red);}
+.dw-body{flex:1;overflow-y:auto;padding:16px;}
+.dw-foot{padding:12px 16px;border-top:1px solid var(--line);flex-shrink:0;}
+.dw-btns{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* Drawer - meta row */
+.dw-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line2);}
+.dw-val{font-size:20px;font-weight:800;color:var(--teal);}
+
+/* Drawer - decision block */
+.dw-decision{background:rgba(56,192,232,0.05);border:1px solid rgba(56,192,232,0.16);border-radius:9px;padding:12px 14px;margin-bottom:12px;}
+.dw-dec-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);margin-bottom:5px;}
+.dw-dec-text{font-size:13px;font-weight:500;color:var(--text);line-height:1.55;margin-bottom:7px;}
+.dw-impact{font-size:11.5px;color:var(--amber);line-height:1.4;}
+
+/* Drawer - context grid */
+.dw-ctx{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.dw-ctx-cell{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:8px 6px;text-align:center;}
+.dw-ctx-v{font-size:11px;font-weight:700;line-height:1.3;}
+.dw-ctx-l{font-size:9px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.4px;}
+
+/* Drawer - diagnosis block */
+.dw-diag{border-left:2px solid var(--line);padding:8px 12px;margin-bottom:12px;background:rgba(255,255,255,0.015);border-radius:0 6px 6px 0;}
+.dw-diag-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:5px;}
+.dw-diag-w{font-size:12px;color:var(--text);line-height:1.5;margin-bottom:3px;}
+.dw-diag-i{font-size:11.5px;color:var(--text2);line-height:1.4;font-style:italic;}
+
+/* Drawer - rationale section */
+.dw-sect{margin-bottom:12px;}
+.dw-sect-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:7px;}
+.dw-rat-item{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12px;color:var(--text2);line-height:1.5;}
+.dw-rat-item:last-child{border:none;}
+.dw-rat-item::before{content:">";color:var(--cyan);flex-shrink:0;font-weight:700;}
+
+/* Drawer - SAP workflow hint */
+.dw-workflow{font-size:11px;color:var(--muted);padding:8px 12px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:7px;line-height:1.6;margin-top:10px;}
+.dw-workflow b{color:var(--text2);}
+
+/* Drawer - SAP Probes */
+.sap-probes{margin:10px 0 6px;}
+.sap-probe-lbl{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.sap-probe-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--line2);font-size:11.5px;}
+.sap-probe-row:last-child{border-bottom:none;}
+.sap-probe-key{color:var(--text2);flex:1;}
+.sap-probe-val{font-weight:600;font-size:11px;}
+.sap-probe-found{color:var(--green);}
+.sap-probe-partial{color:var(--amber);}
+.sap-probe-none{color:var(--muted);}
+.sap-probe-later{color:var(--cyan);}
+
+/* Drawer - Options Grid */
+.opts-grid{display:flex;flex-direction:column;gap:7px;margin:8px 0 4px;}
+.opt-row{border:1px solid var(--line);border-radius:8px;padding:10px 12px;position:relative;}
+.opt-rec{border-color:rgba(56,212,144,0.35);background:rgba(56,212,144,0.04);}
+.opt-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.opt-id{font-size:10px;font-weight:700;color:var(--muted);background:var(--panel3);padding:1px 6px;border-radius:4px;flex-shrink:0;}
+.opt-label{font-size:12px;font-weight:600;color:var(--text);flex:1;line-height:1.3;}
+.opt-score{font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0;}
+.opt-score-h{color:var(--green);background:rgba(56,212,144,0.12);}
+.opt-score-m{color:var(--amber);background:rgba(240,184,64,0.12);}
+.opt-score-l{color:var(--red);background:rgba(240,80,80,0.12);}
+.opt-rec-tag{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green);background:rgba(56,212,144,0.15);padding:2px 6px;border-radius:4px;position:absolute;top:8px;right:10px;}
+.opt-detail{font-size:11.5px;color:var(--text2);line-height:1.55;}
+.opt-tradeoff{font-size:11px;color:var(--muted);margin-top:4px;font-style:italic;}
+.opt-row[data-opt]{cursor:pointer;transition:border-color .15s,background .15s;}
+.opt-row[data-opt]:hover{background:rgba(255,255,255,0.02);}
+.opt-row.opt-active{border-color:rgba(56,192,232,0.5);background:rgba(56,192,232,0.04);}
+.opt-row.opt-active.opt-rec{border-color:rgba(56,212,144,0.5);background:rgba(56,212,144,0.05);}
+.opt-sel-indicator{width:14px;height:14px;border-radius:50%;border:2px solid var(--line2);flex-shrink:0;transition:all .15s;display:inline-block;margin-right:2px;}
+.opt-row.opt-active .opt-sel-indicator{border-color:var(--cyan);background:var(--cyan);box-shadow:0 0 0 3px rgba(56,192,232,0.15);}
+.opt-row.opt-active.opt-rec .opt-sel-indicator{border-color:var(--green);background:var(--green);box-shadow:0 0 0 3px rgba(56,212,144,0.15);}
+
+/* Drawer - Feedback Loop */
+.feedback-loop{background:rgba(72,136,240,0.07);border:1px solid rgba(72,136,240,0.2);border-radius:7px;padding:8px 12px;margin-top:8px;}
+.feedback-lbl{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.feedback-text{font-size:11.5px;color:var(--text2);line-height:1.55;}
+
+/* Drawer - expandable details */
+.dw-exp-btn{background:none;border:none;color:var(--cyan);font-size:11.5px;cursor:pointer;padding:5px 0;font-family:inherit;display:block;margin-top:2px;}
+.dw-exp-btn:hover{text-decoration:underline;}
+.dw-exp-body{padding-top:8px;font-size:12px;color:var(--text2);line-height:1.6;}
+
+/* ─────────────────────────────────────────────────────
+   ACTION BUTTONS (drawer)
+───────────────────────────────────────────────────── */
+.btn{border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;padding:9px 12px;transition:all .15s;font-family:inherit;flex:1;min-width:0;}
+.btn-primary{background:rgba(56,192,232,0.12);color:var(--cyan);border:1px solid rgba(56,192,232,0.24);}
+.btn-primary:hover{background:rgba(56,192,232,0.2);}
+.btn-secondary{background:rgba(255,255,255,0.05);color:var(--text2);border:1px solid var(--line);}
+.btn-secondary:hover{background:rgba(255,255,255,0.09);}
+.btn-warn{background:rgba(240,184,64,0.08);color:var(--amber);border:1px solid rgba(240,184,64,0.2);}
+.btn-warn:hover{background:rgba(240,184,64,0.16);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--line);font-size:11.5px;}
+.btn-ghost:hover{color:var(--text2);background:var(--panel2);}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+
+/* Small utility buttons (toolbar etc.) */
+.btn-sm{padding:5px 11px;font-size:11.5px;font-weight:600;border-radius:6px;border:1px solid var(--line);background:var(--panel2);color:var(--text2);cursor:pointer;transition:all .12s;}
+.btn-sm:hover{border-color:var(--cyan);color:var(--cyan);}
+
+/* ─────────────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────────────── */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px 18px;min-width:290px;max-width:420px;display:flex;gap:12px;align-items:flex-start;opacity:0;transition:opacity .25s,transform .25s;z-index:1000;box-shadow:0 8px 32px rgba(0,0,0,.45);}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.t-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px;}
+.t-ok{background:var(--green-bg);color:var(--green);}
+.t-warn{background:var(--amber-bg);color:var(--amber);}
+.t-info{background:var(--cyan-bg);color:var(--cyan);}
+#toast-msg{font-size:12.5px;font-weight:600;color:var(--text);}
+#toast-sub{font-size:11.5px;color:var(--text2);margin-top:2px;line-height:1.4;}
+
+/* ─────────────────────────────────────────────────────
+   AUDIT TRAIL OVERLAY
+───────────────────────────────────────────────────── */
+#audit-overlay{position:fixed;inset:0;background:rgba(7,16,30,.72);backdrop-filter:blur(3px);z-index:300;display:none;align-items:flex-end;}
+#audit-overlay.open{display:flex;}
+#audit-panel{background:var(--panel);width:100%;height:76vh;border-top:1px solid var(--line);border-radius:16px 16px 0 0;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+#audit-overlay.open #audit-panel{transform:translateY(0);}
+.aud-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line);flex-shrink:0;}
+.aud-head-title{font-size:14px;font-weight:700;}
+.aud-head-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.aud-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:4px 8px;border-radius:5px;}
+.aud-close:hover{color:var(--red);background:var(--panel2);}
+.aud-filters{display:flex;gap:8px;align-items:center;padding:10px 20px;border-bottom:1px solid var(--line);flex-shrink:0;flex-wrap:wrap;}
+.aud-sel{background:var(--panel2);border:1px solid var(--line);color:var(--text2);border-radius:5px;padding:5px 9px;font-size:11.5px;cursor:pointer;outline:none;}
+.aud-sel:focus{border-color:var(--cyan);}
+.aud-count{margin-left:auto;font-size:11px;color:var(--muted);}
+.aud-body{flex:1;overflow-y:auto;}
+.aud-table{width:100%;border-collapse:collapse;}
+.aud-table th{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);padding:8px 14px;border-bottom:1px solid var(--line);background:var(--panel2);text-align:left;white-space:nowrap;}
+.aud-table td{padding:10px 14px;border-bottom:1px solid var(--line2);font-size:12px;vertical-align:top;}
+.aud-table tbody tr:hover{background:rgba(255,255,255,0.02);}
+.aud-empty{text-align:center;padding:32px!important;color:var(--muted);}
+
+/* ─────────────────────────────────────────────────────
+   OVERRIDE DIALOG
+───────────────────────────────────────────────────── */
+#override-dlg{position:fixed;inset:0;background:rgba(7,16,30,.78);z-index:400;display:none;align-items:center;justify-content:center;}
+#override-dlg.open{display:flex;}
+.od-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;width:370px;box-shadow:0 16px 48px rgba(0,0,0,.5);}
+.od-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.od-sub{font-size:11.5px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
+.od-textarea{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--text);font-size:12.5px;padding:10px;resize:vertical;min-height:82px;outline:none;line-height:1.5;}
+.od-textarea:focus{border-color:var(--cyan);}
+.od-foot{display:flex;gap:8px;margin-top:12px;}
+
+/* ─────────────────────────────────────────────────────
+   PLACEHOLDER SCREENS (replaced each iteration)
+───────────────────────────────────────────────────── */
+.wip-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:64vh;gap:10px;}
+.wip-icon{font-size:28px;font-weight:800;color:var(--muted);opacity:.4;}
+.wip-label{font-size:15px;font-weight:700;color:var(--muted);}
+.wip-sub{font-size:12px;color:var(--muted);opacity:.55;}
+
+/* ─────────────────────────────────────────────────────
+   UTILITY
+───────────────────────────────────────────────────── */
+.text-red{color:var(--red);}
+.text-amber{color:var(--amber);}
+.text-green{color:var(--green);}
+.text-cyan{color:var(--cyan);}
+.text-muted{color:var(--muted);}
+.text-teal{color:var(--teal);}
+.fw7{font-weight:700;}
+.fw8{font-weight:800;}
+.fs11{font-size:11px;}
+.fs12{font-size:12px;}
+.lh15{line-height:1.5;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════════════════════════
+     TOP BAR
+═══════════════════════════════════════════════════════ -->
+<div id="topbar">
+  <div class="tb-brand">
+    <div class="tb-logo">O2C <em>Intelligence</em></div>
+    <div class="tb-sap">SAP S/4HANA</div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-period" id="period-lbl">Q2 FY2026 &middot; Period 1 Open</div>
+    <div class="tb-clock" id="clock">--:--:-- IST</div>
+    <button class="tb-audit" onclick="openAudit()">Audit Log</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     BODY
+═══════════════════════════════════════════════════════ -->
+<div id="body">
+
+  <!-- LEFT NAV ─────────────────────────────────────── -->
+  <nav id="nav">
+    <div class="nav-section-lbl">Workbenches</div>
+
+    <div class="nav-item active" data-screen="orders" onclick="showScreen('orders',this)">
+      <span class="nav-icon">OR</span>
+      Orders
+      <span class="nav-badge" id="badge-orders">6</span>
+    </div>
+    <div class="nav-item" data-screen="credit" onclick="showScreen('credit',this)">
+      <span class="nav-icon">CR</span>
+      Credit
+      <span class="nav-badge warn" id="badge-credit">4</span>
+    </div>
+    <div class="nav-item" data-screen="deliveries" onclick="showScreen('deliveries',this)">
+      <span class="nav-icon">DL</span>
+      Deliveries
+      <span class="nav-badge warn" id="badge-deliveries">3</span>
+    </div>
+    <div class="nav-item" data-screen="receivables" onclick="showScreen('receivables',this)">
+      <span class="nav-icon">RE</span>
+      Receivables
+      <span class="nav-badge" id="badge-receivables">8</span>
+    </div>
+    <div class="nav-item" data-screen="cash" onclick="showScreen('cash',this)">
+      <span class="nav-icon">CA</span>
+      Cash
+      <span class="nav-badge warn" id="badge-cash">5</span>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-item" data-screen="tower" onclick="showScreen('tower',this)">
+      <span class="nav-icon">CT</span>
+      Control Tower
+    </div>
+
+    <div class="nav-footer">
+      Agent Platform v2.0<br>
+      Last sync: <span id="last-sync">--:--</span> IST
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT ─────────────────────────────────── -->
+  <main id="content">
+
+    <div id="screen-orders" class="screen active">
+      <div class="wb-head">
+        <div>
+          <div class="wb-title">Order Exceptions</div>
+          <div class="wb-sub">Order Management Agent &middot; Ranked by revenue at risk and SLA status</div>
+        </div>
+      </div>
+      <div class="kpi-strip" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi-card" style="--kpi-accent:var(--red)">
+          <div class="kpi-val text-red">$218,700</div>
+          <div class="kpi-label">Blocked Revenue</div>
+          <div class="kpi-delta up">+$34,100 since yesterday</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--amber)">
+          <div class="kpi-val text-amber" id="kpi-orders-blocked">6</div>
+          <div class="kpi-label">Orders Blocked</div>
+          <div class="kpi-delta flat">5 high severity</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--red)">
+          <div class="kpi-val text-red">2</div>
+          <div class="kpi-label">SLA Breached</div>
+          <div class="kpi-delta up"><span onclick="openOrder(0)" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;">MetroPlex (4d)</span> &middot; <span onclick="openOrder(4)" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;">Dalton (5d)</span></div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--green)">
+          <div class="kpi-val text-green">$81,900</div>
+          <div class="kpi-label">Revenue Recoverable Today</div>
+          <div class="kpi-delta dn"><span onclick="openOrder(1)" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;">Axford Global</span>, <span onclick="openOrder(3)" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;">Kensworth Ltd</span>, <span onclick="openOrder(5)" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;">Frontier Corp</span></div>
+        </div>
+      </div>
+      <div class="bulk-bar" id="orders-bulk">
+        <span class="bulk-count" id="orders-bulk-count">0 selected</span>
+        <button class="bulk-btn" onclick="orderBulkAction('assign')">Assign Owner</button>
+        <button class="bulk-btn" onclick="orderBulkAction('approve')">Send for Approval</button>
+        <button class="bulk-btn" onclick="orderBulkAction('review')">Mark for Review</button>
+        <span class="bulk-clear" onclick="orderClearSel()">Clear X</span>
+      </div>
+      <div class="filter-bar">
+        <div class="fchip active" onclick="orderFilter(this,'all')">All</div>
+        <div class="fchip" onclick="orderFilter(this,'credit')">Credit</div>
+        <div class="fchip" onclick="orderFilter(this,'pricing')">Pricing</div>
+        <div class="fchip" onclick="orderFilter(this,'supply')">Supply</div>
+        <div class="fchip" onclick="orderFilter(this,'delivery')">Delivery</div>
+      </div>
+      <div class="tpanel">
+        <div class="tpanel-head">
+          <div class="tpanel-title">Blocked Orders - Ranked by Business Impact</div>
+          <div class="tpanel-meta">6 items &middot; Sorted by revenue at risk</div>
+        </div>
+        <table class="data-table" id="orders-table">
+          <thead>
+            <tr>
+              <th class="cb-cell"><input type="checkbox" id="orders-sel-all" onchange="orderToggleAll(this)"></th>
+              <th></th>
+              <th>Order / Customer</th>
+              <th>Value</th>
+              <th>Issue Type</th>
+              <th>Block Reason</th>
+              <th>Days Blocked</th>
+              <th>Confidence</th>
+              <th>Next Action</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="screen-credit" class="screen">
+      <div class="wip-screen">
+        <div class="wip-icon">CR</div>
+        <div class="wip-label">Credit Workbench</div>
+        <div class="wip-sub">Coming in Iteration 3</div>
+      </div>
+    </div>
+
+    <div id="screen-deliveries" class="screen">
+      <div class="wip-screen">
+        <div class="wip-icon">DL</div>
+        <div class="wip-label">Deliveries Workbench</div>
+        <div class="wip-sub">Coming in Iteration 4</div>
+      </div>
+    </div>
+
+    <div id="screen-receivables" class="screen">
+      <div class="wip-screen">
+        <div class="wip-icon">RE</div>
+        <div class="wip-label">Receivables Workbench</div>
+        <div class="wip-sub">Coming in Iteration 5</div>
+      </div>
+    </div>
+
+    <div id="screen-cash" class="screen">
+      <div class="wip-screen">
+        <div class="wip-icon">CA</div>
+        <div class="wip-label">Cash Workbench</div>
+        <div class="wip-sub">Coming in Iteration 6</div>
+      </div>
+    </div>
+
+    <div id="screen-tower" class="screen">
+      <div class="wip-screen">
+        <div class="wip-icon">CT</div>
+        <div class="wip-label">Control Tower</div>
+        <div class="wip-sub">Coming in Iteration 7</div>
+      </div>
+    </div>
+
+  </main>
+</div><!-- /#body -->
+
+<!-- ══════════════════════════════════════════════════════
+     DECISION DRAWER
+═══════════════════════════════════════════════════════ -->
+<aside id="drawer">
+  <button class="dw-tab-toggle" id="dw-tab-toggle" onclick="toggleDrawerTable()" title="Show table alongside">&#8249;</button>
+  <div class="dw-head">
+    <div class="dw-agent" id="dw-agent">Agent</div>
+    <div class="dw-title-row">
+      <div class="dw-title" id="dw-title">--</div>
+      <button class="dw-close" onclick="closeDrawer()">X</button>
+    </div>
+  </div>
+  <div class="dw-body" id="dw-body"></div>
+  <div class="dw-foot">
+    <div class="dw-btns" id="dw-btns"></div>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════
+     AUDIT TRAIL OVERLAY
+═══════════════════════════════════════════════════════ -->
+<div id="audit-overlay">
+  <div id="audit-panel">
+    <div class="aud-head">
+      <div>
+        <div class="aud-head-title">Action Audit Trail</div>
+        <div class="aud-head-sub">All agent recommendations, executions, approvals, and overrides</div>
+      </div>
+      <button class="aud-close" onclick="closeAudit()">X</button>
+    </div>
+    <div class="aud-filters">
+      <select class="aud-sel" id="aud-wb" onchange="renderAudit()">
+        <option value="">All Workbenches</option>
+        <option value="Orders">Orders</option>
+        <option value="Credit">Credit</option>
+        <option value="Deliveries">Deliveries</option>
+        <option value="Receivables">Receivables</option>
+        <option value="Cash">Cash</option>
+      </select>
+      <select class="aud-sel" id="aud-mode" onchange="renderAudit()">
+        <option value="">All Execution Modes</option>
+        <option value="Execute Action">Execute Action</option>
+        <option value="Execute with Review">Execute with Review</option>
+        <option value="Request Approval">Request Approval</option>
+      </select>
+      <select class="aud-sel" id="aud-status" onchange="renderAudit()">
+        <option value="">All Statuses</option>
+        <option value="Submitted">Submitted</option>
+        <option value="Approved">Approved</option>
+        <option value="Overridden">Overridden</option>
+        <option value="Deferred">Deferred</option>
+        <option value="Pending">Pending</option>
+      </select>
+      <div class="aud-count" id="aud-count">0 entries</div>
+    </div>
+    <div class="aud-body">
+      <table class="aud-table">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Workbench</th>
+            <th>Entity</th>
+            <th>Agent Recommendation</th>
+            <th>User Action</th>
+            <th>Agent Action Taken</th>
+            <th>Confidence</th>
+            <th>Execution Mode</th>
+            <th>Status</th>
+            <th>Pending With</th>
+            <th>Actioned By</th>
+          </tr>
+        </thead>
+        <tbody id="aud-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     OVERRIDE DIALOG
+═══════════════════════════════════════════════════════ -->
+<div id="override-dlg">
+  <div class="od-card">
+    <div class="od-title">Override with Reason</div>
+    <div class="od-sub">This override will be logged in the audit trail with your justification. It cannot be undone.</div>
+    <textarea class="od-textarea" id="override-input" placeholder="Enter business justification for override..."></textarea>
+    <div class="od-foot">
+      <button class="btn btn-warn" style="flex:1" onclick="confirmOverride()">Confirm Override</button>
+      <button class="btn btn-secondary" style="flex:1" onclick="cancelOverride()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TOAST
+═══════════════════════════════════════════════════════ -->
+<div id="toast">
+  <div class="t-icon" id="t-icon"></div>
+  <div>
+    <div id="toast-msg"></div>
+    <div id="toast-sub"></div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// AUDIT LOG - data model
+// ════════════════════════════════════════════════════════
+const auditLog = [];
+
+function logAudit(e) {
+  auditLog.unshift({
+    ts: new Date(),
+    workbench: e.workbench || '',
+    entity: e.entity || '',
+    rec: e.rec || '',
+    userAction: e.userAction || '',
+    agentAction: e.agentAction || '',
+    confidence: e.confidence || '',
+    execMode: e.execMode || '',
+    status: e.status || '',
+    pendingWith: e.pendingWith || 'N/A',
+    by: e.by || 'System'
+  });
+}
+
+function renderAudit() {
+  const wb = document.getElementById('aud-wb').value;
+  const mode = document.getElementById('aud-mode').value;
+  const st = document.getElementById('aud-status').value;
+  const rows = auditLog.filter(e =>
+    (!wb || e.workbench === wb) &&
+    (!mode || e.execMode === mode) &&
+    (!st || e.status === st)
+  );
+  document.getElementById('aud-count').textContent = rows.length + ' entr' + (rows.length === 1 ? 'y' : 'ies');
+  const cmap = { High: 'conf-h', Medium: 'conf-m', Low: 'conf-l' };
+  const mmap = { 'Execute Action': 'execm-direct', 'Execute with Review': 'execm-review', 'Request Approval': 'execm-approval' };
+  const pmap = { Submitted: 'pill-submitted', Approved: 'pill-approved', Overridden: 'pill-overridden', Deferred: 'pill-deferred', Pending: 'pill-pending', Blocked: 'pill-blocked' };
+  document.getElementById('aud-tbody').innerHTML = rows.length === 0
+    ? `<tr><td colspan="11" class="aud-empty">No entries match the selected filters</td></tr>`
+    : rows.map(e => `
+      <tr>
+        <td class="text-muted fs11">${fmtTs(e.ts)}</td>
+        <td><span class="itag itag-${e.workbench.toLowerCase()}">${e.workbench}</span></td>
+        <td class="fw7 fs12">${e.entity}</td>
+        <td style="max-width:160px;font-size:11.5px;color:var(--text2);line-height:1.4">${e.rec}</td>
+        <td style="font-size:11.5px;color:var(--text);font-weight:600">${e.userAction || '-'}</td>
+        <td style="max-width:180px;font-size:11.5px;color:var(--teal);line-height:1.4">${e.agentAction || '-'}</td>
+        <td><span class="conf ${cmap[e.confidence] || 'conf-l'}">${e.confidence}</span></td>
+        <td><span class="execm ${mmap[e.execMode] || ''}">${e.execMode}</span></td>
+        <td><span class="pill ${pmap[e.status] || 'pill-deferred'}">${e.status}</span></td>
+        <td style="font-size:11.5px;color:${e.pendingWith && e.pendingWith!=='N/A'?'var(--amber)':'var(--muted)'};font-weight:${e.pendingWith&&e.pendingWith!=='N/A'?'600':'400'}">${e.pendingWith || '-'}</td>
+        <td class="fs11 text-muted">${e.by}</td>
+      </tr>`).join('');
+}
+
+// ════════════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════════════
+function showScreen(id, el) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sc = document.getElementById('screen-' + id);
+  if (sc) sc.classList.add('active');
+  const ni = el || document.querySelector(`.nav-item[data-screen="${id}"]`);
+  if (ni) ni.classList.add('active');
+  closeDrawer();
+}
+
+function updateBadge(id, delta) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const next = Math.max(0, (parseInt(el.textContent) || 0) + delta);
+  el.textContent = next;
+  if (next === 0) el.style.visibility = 'hidden';
+}
+
+// ════════════════════════════════════════════════════════
+// DECISION DRAWER
+// ════════════════════════════════════════════════════════
+let activeRow = null;
+let _selectedOpts = {};
+
+function openDrawer(agent, title, bodyHtml, btnsHtml) {
+  document.getElementById('dw-agent').textContent = agent;
+  document.getElementById('dw-title').textContent = title;
+  document.getElementById('dw-body').innerHTML = bodyHtml;
+  document.getElementById('dw-btns').innerHTML = btnsHtml;
+  const dw = document.getElementById('drawer');
+  dw.classList.add('open');
+  dw.classList.remove('narrow');
+  const content = document.getElementById('content');
+  content.classList.add('drawer-open');
+  content.classList.remove('table-visible');
+  const tab = document.getElementById('dw-tab-toggle');
+  tab.innerHTML = '&#8249;';
+  tab.title = 'Show table alongside';
+  if (activeRow) activeRow.classList.add('selected');
+}
+
+function closeDrawer() {
+  const dw = document.getElementById('drawer');
+  dw.classList.remove('open', 'narrow');
+  const content = document.getElementById('content');
+  content.classList.remove('drawer-open', 'table-visible');
+  if (activeRow) { activeRow.classList.remove('selected'); activeRow = null; }
+}
+
+function toggleDrawerTable() {
+  const dw = document.getElementById('drawer');
+  const content = document.getElementById('content');
+  const tab = document.getElementById('dw-tab-toggle');
+  const goNarrow = !dw.classList.contains('narrow');
+  dw.classList.toggle('narrow', goNarrow);
+  content.classList.toggle('table-visible', goNarrow);
+  tab.innerHTML = goNarrow ? '&#8250;' : '&#8249;';
+  tab.title = goNarrow ? 'Expand drawer' : 'Show table alongside';
+}
+
+// ════════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════════
+let _toastTimer = null;
+function showToast(msg, sub, type) {
+  type = type || 'ok';
+  clearTimeout(_toastTimer);
+  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast-sub').textContent = sub || '';
+  const ic = document.getElementById('t-icon');
+  ic.className = 't-icon t-' + type;
+  ic.textContent = type === 'ok' ? 'OK' : type === 'warn' ? '!' : 'i';
+  document.getElementById('toast').classList.add('show');
+  _toastTimer = setTimeout(() => document.getElementById('toast').classList.remove('show'), 4200);
+}
+
+// ════════════════════════════════════════════════════════
+// AUDIT TRAIL PANEL
+// ════════════════════════════════════════════════════════
+function openAudit() {
+  renderAudit();
+  document.getElementById('audit-overlay').classList.add('open');
+}
+function closeAudit() {
+  document.getElementById('audit-overlay').classList.remove('open');
+}
+
+// ════════════════════════════════════════════════════════
+// OVERRIDE DIALOG
+// ════════════════════════════════════════════════════════
+let _overrideCb = null;
+function openOverride(cb) {
+  _overrideCb = cb;
+  document.getElementById('override-input').value = '';
+  document.getElementById('override-input').style.borderColor = '';
+  document.getElementById('override-dlg').classList.add('open');
+}
+function confirmOverride() {
+  const reason = document.getElementById('override-input').value.trim();
+  if (!reason) { document.getElementById('override-input').style.borderColor = 'var(--red)'; return; }
+  document.getElementById('override-dlg').classList.remove('open');
+  if (_overrideCb) _overrideCb(reason);
+}
+function cancelOverride() {
+  document.getElementById('override-dlg').classList.remove('open');
+}
+
+// ════════════════════════════════════════════════════════
+// CLOCK
+// ════════════════════════════════════════════════════════
+function updateClock() {
+  const ist = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const h = String(ist.getHours()).padStart(2, '0');
+  const m = String(ist.getMinutes()).padStart(2, '0');
+  const s = String(ist.getSeconds()).padStart(2, '0');
+  document.getElementById('clock').textContent = h + ':' + m + ':' + s + ' IST';
+  document.getElementById('last-sync').textContent = h + ':' + m;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ════════════════════════════════════════════════════════
+// SHARED HELPERS  (used by all workbenches)
+// ════════════════════════════════════════════════════════
+function fmtTs(d) {
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
+    + ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+}
+
+function confBadge(level) {
+  const m = { High: 'conf-h', Medium: 'conf-m', Low: 'conf-l' };
+  return `<span class="conf ${m[level] || 'conf-l'}">${level}</span>`;
+}
+
+function execBadge(mode) {
+  const m = { 'Execute Action': 'execm-direct', 'Execute with Review': 'execm-review', 'Request Approval': 'execm-approval' };
+  return `<span class="execm ${m[mode] || ''}">${mode}</span>`;
+}
+
+function pillFor(status) {
+  const m = { Blocked: 'pill-blocked', 'On Hold': 'pill-review', Submitted: 'pill-submitted', Released: 'pill-approved', Approved: 'pill-approved', Overridden: 'pill-overridden', Deferred: 'pill-deferred', Pending: 'pill-pending' };
+  return `<span class="pill ${m[status] || 'pill-deferred'}">${status}</span>`;
+}
+
+function markActed(tableId, rowId) {
+  const r = document.querySelector('#' + tableId + ' tbody tr[data-id="' + rowId + '"]');
+  if (r) r.classList.add('acted');
+}
+
+function setStatusCell(tableId, rowId, status) {
+  const r = document.querySelector('#' + tableId + ' tbody tr[data-id="' + rowId + '"]');
+  if (!r) return;
+  const cell = r.querySelector('.status-cell');
+  if (cell) cell.innerHTML = pillFor(status);
+}
+
+// ════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// ORDERS - Order Management Agent
+// ════════════════════════════════════════════════════════
+const orderData = [
+  {ref:'5001234',customer:'MetroPlex Industries',val:'$87,400',days:4,
+   issueType:'credit',issueLabel:'Credit',blockReason:'Credit Hold',
+   sev:'h',sevTip:'SLA breached 4 days + $35,400 over credit limit + 3 overdue invoices + no payment expected in 30 days',
+   confidence:'High',confPct:94,execMode:'Request Approval',
+   risk:'High',riskColor:'red',sla:'Breached (4d / 3d)',slaColor:'red',
+   owner:'Credit Controller',status:'Blocked',nextAction:'Submit Pre-Analyzed Case',
+   decision:'Submit the credit case to the controller with a payment demand for $48,000 overdue AR as the release condition. Full analysis packaged - controller can act immediately.',
+   impact:'$87,400 blocked, SLA breached. Paying two of three overdue invoices brings exposure below the limit. Every day without action compounds escalation risk.',
+   diagWhat:'Credit check failed: $135,400 exposure vs $100,000 limit, overage $35,400. The breach is driven entirely by $48,000 in overdue AR - the order itself is commercially valid.',
+   diagImp:'Payment demand + VKM1 release is the fastest credible path. Same approach resolved a MetroPlex hold in Nov 2025 within 8 days.',
+   rationale:[
+     '3 overdue invoices totalling $48,000 are the sole driver of the credit limit breach. <span class="obs" data-tip="FBL5N: INV-90234 $18,400 (28 days overdue), INV-90198 $16,200 (21 days overdue), INV-90167 $13,400 (12 days overdue). Payment terms Net 30. No payment promise or dispute flag recorded against any invoice in FSCM.">The order value is not the problem</span> - the overdue AR is. Resolving the AR resolves the block.',
+     'Risk score has declined from 41 to 28 since Jan 2026 - the last manual review. <span class="obs" data-tip="FSCM risk score: payment behaviour 35% (score 22), credit utilisation 40% (score 30), days overdue 25% (score 28). Automatic review threshold: 35/100. Score dropped below threshold unnoticed because exposure was under limit in Jan.">The deterioration was not flagged</span> because the annual review cadence did not catch the exposure increase in time.',
+     'Credit limit of $100K has not been reviewed since Jan 2026 despite a 42% exposure increase. <span class="obs" data-tip="Exposure Jan 1 2026: $95,200 (under limit). Exposure today: $135,400. Growth: +$40,200 in 3.5 months. Next scheduled annual review: Jan 2027. Annual review cadence is insufficient for a customer with declining payment behaviour.">Annual review cadence is a process gap</span> - flagged to Credit Manager as a separate action item.'
+   ],
+   sapChecks:[
+     {key:'Credit check (UKM_BP) - exposure vs limit',val:'$135,400 vs $100,000 limit',status:'partial'},
+     {key:'FBL5N - overdue AR',val:'3 invoices, $48,000 (12-28 days)',status:'partial'},
+     {key:'S_ALR_87012178 - payment trend',val:'Risk score 41->28 since Jan 2026',status:'partial'},
+     {key:'F-28 history - payments expected',val:'None scheduled in next 30 days',status:'none'},
+     {key:'FSCM - open credit cases',val:'No prior open case for MetroPlex',status:'found'},
+   ],
+   options:[
+     {id:'A',label:'Submit pre-analyzed case - demand overdue AR payment as release condition',score:88,tier:'h',rec:true,
+      detail:'Pre-analyzed case submitted to the controller via UKM_MY_CREDIT_CASE with full AR aging, exposure breakdown, and Nov 2025 precedent. Controller issues payment demand for overdue invoices. On payment receipt (or commitment), controller releases in VKM1 - SAP removes delivery block.',
+      tradeoff:'Fastest credible path. Controller acts without additional research. Requires customer payment commitment - Nov 2025 precedent shows MetroPlex responded within 8 days when payment demand was issued.'},
+     {id:'B',label:'Temporary credit limit increase to $140K via UKM_BP',score:62,tier:'m',rec:false,
+      detail:'Controller approves a temporary limit uplift to $140K in UKM_BP, releasing this order immediately. Limit resets once overdue AR is cleared and exposure returns to normal.',
+      tradeoff:'Unblocks revenue today but releases credit risk without a payment commitment. Increases uninsured exposure reporting obligations. Appropriate only if customer has a confirmed payment plan.'},
+     {id:'C',label:'Partial release - ship line items within current credit headroom',score:38,tier:'m',rec:false,
+      detail:'Evaluate individual line items for partial release via VKM1. Any sub-total keeping exposure below $100K could ship while the full hold is reviewed.',
+      tradeoff:'This order is a single line item - partial release requires a VA02 item quantity split, which adds operational complexity. Customer may object to partial shipment if full order was committed. Low feasibility for this order structure.'},
+     {id:'D',label:'Maintain full hold - wait for standard credit queue',score:12,tier:'l',rec:false,
+      detail:'No action. Order remains in the credit hold queue until the controller picks it up through normal daily processing.',
+      tradeoff:'SLA already breached. No justification for passive wait - the pre-analysis is complete and ready. Each day of delay compounds escalation and customer relationship risk on an $87,400 order.'},
+   ],
+   feedbackLoop:'MetroPlex had a credit hold in Nov 2025. Controller issued a payment demand for the overdue invoice as release condition - payment received 8 days later, order released via VKM1. Same pattern applies here. Separately flagged: annual credit limit review cadence for MetroPlex is insufficient given declining risk score trend - Credit Manager should change to quarterly review with automated trigger at score below 35/100.',
+   workflow:'Agent submits pre-analyzed case to controller (UKM_MY_CREDIT_CASE) -> Controller issues payment demand for overdue AR ($48,000) -> Customer commits to payment plan -> Controller approves release (VKM1) -> SAP removes delivery block -> Order proceeds to outbound delivery (VL01N)',
+   details:'Credit check at order save evaluated total open exposure (open orders + overdue AR) against credit limit in segment 1000 (UKM_BP). Exposure: $87,400 (this order) + $48,000 (overdue AR) = $135,400 vs $100,000 limit. Overage: $35,400.<br><br>FBL5N identified three overdue invoices: INV-90234 ($18,400, 28 days), INV-90198 ($16,200, 21 days), INV-90167 ($13,400, 12 days). All on Net 30 terms. No dispute flag, no payment promise, no deduction recorded in FSCM against any of these invoices.<br><br>S_ALR_87012178 payment trend: risk score dropped from 41/100 to 28/100 since Jan 2026. The automatic review threshold is 35/100, but the decline was missed because exposure was under limit in January and no interim review was triggered. The annual review cadence is the root process gap here.<br><br>VKM1 is the correct SAP transaction to release SD documents blocked by credit once the controller approves. VKM3 handles delivery-level credit blocks. This order is blocked at the sales document level, so VKM1 applies.<br><br>Scoring criteria: payment recovery likelihood (40%), speed to unblock (30%), credit risk to business (20%), operational complexity (10%). Option A scores 88: precedent-backed, low complexity, controller has everything needed. Option B scores 62: fast but increases uninsured exposure without commitment. Option C scores 38: operationally complex for a single-line order. Option D scores 12: SLA already breached, passive wait is indefensible.'},
+
+  {ref:'5001567',customer:'Axford Global',val:'$45,200',days:2,
+   issueType:'pricing',issueLabel:'Pricing',blockReason:'Billing Block B2',
+   sev:'m',sevTip:'PR00 condition record expired + $45,200 uninvoiced + 2 other open orders at risk + SLA breach tomorrow',
+   confidence:'High',confPct:97,execMode:'Execute with Review',
+   risk:'Medium',riskColor:'amber',sla:'At Risk (2d / 3d)',slaColor:'amber',
+   owner:'Pricing Team',status:'Blocked',nextAction:'Recreate Condition + Reprice',
+   decision:'Option A: recreate the PR00 condition record for M-4421 with validity extended to Sep 30 2026 (matching the framework agreement), carry out new pricing in VA02, and release billing block B2. Systemic fix - resolves this order and prevents the same block recurring on 2 other open orders for the same material.',
+   impact:'$45,200 cannot be invoiced. SLA breach falls tomorrow. Two other open orders for M-4421 ($22,200) will hit the same billing block when they reach invoicing unless the condition record is extended now.',
+   diagWhat:'PR00 condition record for M-4421 expired Apr 13, 2026 (VK13 confirmed). SAP found no valid record at billing, applied a $0 price per procedure ZDOM01, and auto-set billing block B2 ("Price Incomplete"). Framework agreement 4500012 confirms $70.00/unit valid through Sep 30 2026 - the expiry is an administrative oversight, not a price change. VA05 identified 2 additional open orders for M-4421 at risk ($22,200 total).',
+   diagImp:'The commercial agreement is intact - only the condition record expired due to an administrative oversight at contract renewal. Recreating the record and carrying out new pricing in VA02 restores the correct price and clears the block. Extending validity to Sep 30 2026 fixes all three affected orders simultaneously.',
+   rationale:[
+     'PR00 condition record for M-4421 expired Apr 13 - SAP found no valid record at billing and applied a $0 price. <span class="obs" data-tip="Condition type PR00, material M-4421. Valid to Apr 13, 2026 (confirmed via VK13). Pricing procedure ZDOM01: no valid PR00 = $0 net price, billing block B2 auto-set. Framework agreement 4500012 was renewed Apr 1 but the condition record validity was not extended - administrative oversight at contract renewal.">This is an administrative gap</span>, not a commercial dispute - the agreed price of $70.00/unit is unchanged.',
+     'Framework agreement 4500012 confirms $70.00/unit and is valid through Sep 30 2026. <span class="obs" data-tip="Agreement 4500012, Axford Global, Apr 1 - Sep 30 2026. Covers material M-4421 at $70.00/unit. Condition record validity was not extended to match the agreement renewal - a process gap in contract administration, not a pricing change.">Recreating the condition record</span> to match agreement validity resolves this order and any others on the same material.',
+     'Two additional open orders for M-4421 will hit the same billing block at invoicing. <span class="obs" data-tip="VA05 query: order 5001598 ($12,400, not yet invoiced) and order 5001612 ($9,800, not yet at billing stage). Both carry the same expired PR00 exposure. Extending the condition record to Sep 30 2026 now prevents both from blocking - no additional action needed for those orders.">Extending validity to Sep 30 2026 now</span> prevents $22,200 in additional billing blocks before they occur.'
+   ],
+   sapChecks:[
+     {key:'VK13 - PR00 condition record, M-4421',val:'Expired Apr 13, 2026',status:'partial'},
+     {key:'Agreement 4500012 - agreed price',val:'$70.00/unit valid to Sep 30 2026',status:'found'},
+     {key:'VA05 - other open orders for M-4421',val:'2 orders at risk ($22,200 total)',status:'partial'},
+     {key:'OVAH - billing block B2 definition',val:'Price Incomplete - auto-set by ZDOM01',status:'found'},
+     {key:'Pricing procedure ZDOM01 - fallback',val:'$0 net price when no valid condition',status:'found'},
+   ],
+   options:[
+     {id:'A',label:'Recreate PR00 to Sep 30 2026 + reprice + release block',score:92,tier:'h',rec:true,
+      detail:'Create new PR00 condition record for M-4421 in VK11, validity Apr 14 - Sep 30 2026 at $70.00/unit. Carry out new pricing in VA02 (conditions tab -> Update -> pricing type B). Remove billing block B2 in VA02 billing tab. All 3 affected orders repriced in one action.',
+      tradeoff:'Slightly more effort than a single-order fix, but eliminates recurrence risk for the 2 other open orders ($22,200). One action resolves three problems - strongly preferred.'},
+     {id:'B',label:'Recreate PR00 for today only + reprice this order',score:64,tier:'m',rec:false,
+      detail:'Create a short-validity condition record (Apr 14-16 only) in VK11 and carry out new pricing in VA02 for this order. Remove billing block B2 via VA02 billing tab.',
+      tradeoff:'Fixes this order but leaves the 2 other open orders exposed to the same billing block at invoicing. Incomplete fix requiring a second intervention.'},
+     {id:'C',label:'Manual price entry in VA02 - bypass condition record',score:38,tier:'m',rec:false,
+      detail:'Enter $70.00/unit directly on the line item in VA02 without recreating the condition record. Depending on ZDOM01 tolerance config, this may trigger billing block B1 (manual deviation) in addition to B2.',
+      tradeoff:'Does not fix the underlying condition record - other orders remain exposed. Manual price entry creates an audit trail complexity and may re-trigger a separate deviation block depending on tolerance rules.'},
+     {id:'D',label:'Defer to pricing team standard queue',score:11,tier:'l',rec:false,
+      detail:'Route to the pricing team through standard ticket process with no immediate SAP action.',
+      tradeoff:'SLA breach is tomorrow - no time for standard queue resolution. Two additional orders remain at risk while waiting. No justification for deferral when the fix is a straightforward condition record recreation.'},
+   ],
+   feedbackLoop:'Second PR00 condition record expiry for Axford Global in Q1 2026 - M-3310 expired Feb 28, resolved in 2 days. Root cause is the same both times: framework agreement renewals do not automatically extend the associated condition records. Flagged to Pricing Manager: configure a 30-day condition record expiry alert tied to framework agreement validity in SAP to prevent recurrence across all customers.',
+   workflow:'Create new PR00 condition record for M-4421, validity to Sep 30 2026 (VK11) -> Carry out new pricing in VA02 conditions tab (pricing type B) -> Remove billing block B2 in VA02 billing tab -> Order released for invoicing (VF01)',
+   details:'VK13 confirmed: PR00 condition record for M-4421 expired Apr 13 2026. No successor record exists. SAP pricing procedure ZDOM01 found no valid PR00 at billing, applied a $0 net price, and auto-set billing block B2 ("Price Incomplete"). Framework agreement 4500012 (Apr 1 - Sep 30 2026) confirms $70.00/unit - the expiry was an administrative oversight, not a price change.<br><br>VA05 identified two additional open orders for M-4421 at risk: order 5001598 ($12,400) and order 5001612 ($9,800). Neither has reached invoicing yet, but both carry the same expired PR00 exposure. Extending the condition record to Sep 30 2026 in Option A resolves all three simultaneously at no additional effort.<br><br>Correct repricing in SAP: VA02 -> item conditions tab -> Update button -> pricing type B ("Carry out new pricing"). This re-runs the pricing procedure with the now-valid PR00 record and recalculates the correct net price. Billing block B2 is then removed in the VA02 billing document tab. VF01 creates the invoice once the block is cleared.<br><br>Note: VKM3 is not applicable here - VKM3 releases credit-blocked deliveries, not pricing billing blocks. VKM1 is similarly for credit releases only. Billing block B2 is released exclusively via VA02.<br><br>Scoring: completeness of fix across affected orders (40%), speed to unblock this order (30%), recurrence risk (20%), effort (10%). Option A: 92 - fixes all 3 orders, prevents recurrence. Option B: 64 - fixes this order, leaves 2 exposed. Option C: 38 - creates audit complexity, no record fix. Option D: 11 - SLA breach certain.'},
+
+  {ref:'5001890',customer:'Pinnacle Systems',val:'$34,100',days:1,
+   issueType:'credit',issueLabel:'Credit',blockReason:'Credit Hold',
+   sev:'m',sevTip:'4.6% over credit limit + zero overdue AR + active FSCM case under review - low risk, likely same-day resolution',
+   confidence:'High',confPct:91,execMode:'Request Approval',
+   risk:'Medium',riskColor:'amber',sla:'Within SLA (1d / 3d)',slaColor:'green',
+   owner:'Credit Controller - J. Mehta',status:'Blocked',nextAction:'Monitor Credit Case',
+   decision:'Do not release from Orders workbench. FSCM credit case FSCM-2026-0441 is under active review by J. Mehta - releasing independently bypasses the control framework. Key context for controller: this is a volume accumulation breach with zero overdue AR, consistent with Pinnacle\'s seasonal pattern. Same-day resolution is likely.',
+   impact:'Releasing independently via VA02 would bypass FSCM controls and create an audit gap. With zero overdue AR and a 4.6% overage, the credit risk here is low - but the process control must be respected.',
+   diagWhat:'Credit check failed: $52,300 total open exposure vs $50,000 limit, overage $2,300 (4.6%). FSCM case FSCM-2026-0441 is already open and assigned to J. Mehta. FBL5N shows zero overdue invoices - the entire overage is from open order accumulation, not unpaid AR.',
+   diagImp:'This is a volume-driven breach, not a payment behaviour issue. Pinnacle has no overdue invoices - they are simply a high-volume customer operating close to their credit limit. The FSCM case is the correct resolution path; independent release from Orders would duplicate and undermine that process.',
+   rationale:[
+     'FSCM credit case FSCM-2026-0441 is already open and under active review. <span class="obs" data-tip="Case FSCM-2026-0441 opened Apr 15, 13:40. Assigned to Credit Controller J. Mehta. Status: Under Review. Releasing this order independently via VA02 would create a parallel action outside the FSCM framework - audit gap and control bypass.">Releasing from Orders bypasses this process</span> entirely and creates an audit compliance gap.',
+     'Zero overdue AR for Pinnacle Systems - the $2,300 overage is entirely from open order accumulation. <span class="obs" data-tip="FBL5N query: no overdue invoices for Pinnacle Systems. All open AR is within payment terms. Exposure breakdown: $34,100 (this order) + $18,200 (other open orders) = $52,300 vs $50,000 limit. No payment behaviour risk - this is a volume issue.">This is not a credit risk concern</span> - it is a credit limit calibration issue for a high-volume customer.',
+     'Pinnacle has operated near their credit limit in Feb 2026 with the same pattern. <span class="obs" data-tip="Feb 2026: similar volume-driven breach, zero overdue AR. Controller approved a temporary limit increase within 4 hours. Limit may need a structural upward revision given Pinnacle\'s consistent order volume growth. Flagged to Credit Manager.">Same-day resolution is likely</span> based on prior precedent - controller has full context in the FSCM case.'
+   ],
+   sapChecks:[
+     {key:'UKM_BP - credit exposure vs limit',val:'$52,300 vs $50,000 (4.6% over)',status:'partial'},
+     {key:'FBL5N - overdue AR',val:'Zero overdue invoices',status:'found'},
+     {key:'FSCM case FSCM-2026-0441',val:'Open - assigned to J. Mehta, Apr 15',status:'found'},
+     {key:'Exposure breakdown',val:'$34,100 this order + $18,200 other open orders',status:'partial'},
+     {key:'Credit limit - last reviewed',val:'Mar 2026 (recently reviewed)',status:'found'},
+   ],
+   options:[
+     {id:'A',label:'Do not release - let FSCM case run its course',score:91,tier:'h',rec:true,
+      detail:'Monitor FSCM case FSCM-2026-0441. Controller J. Mehta has full context. Once approved in UKM_MY_CREDIT_CASE, the delivery block is removed via VKM1 (or auto-release if FSCM workflow is configured). SLA has 2 days remaining - no urgency to act here.',
+      tradeoff:'No SAP action from Orders workbench. Correct control path maintained. Audit trail intact. Estimated resolution: same day based on Feb 2026 precedent.'},
+     {id:'B',label:'Notify controller to expedite - flag as time-sensitive',score:65,tier:'m',rec:false,
+      detail:'Send a prioritization note to J. Mehta referencing this order value ($34,100) and the 2-day SLA window. No SAP action taken - purely a coordination step to accelerate the FSCM review.',
+      tradeoff:'Appropriate if SLA approaches 3 days without resolution. Premature today - case was opened yesterday and is actively under review.'},
+     {id:'C',label:'Override - release independently via VA02',score:8,tier:'l',rec:false,
+      detail:'Remove the delivery block directly in VA02, bypassing the active FSCM credit case.',
+      tradeoff:'Not recommended under any circumstance while an active FSCM case is open. Creates an audit gap, undermines the credit control framework, and could result in a compliance finding. FSCM case would remain open in a conflicted state.'},
+   ],
+   feedbackLoop:'Pinnacle Systems had an identical pattern in Feb 2026 - volume-driven credit limit breach, zero overdue AR, resolved by controller within 4 hours via a temporary limit increase in UKM_BP. Structural observation: Pinnacle\'s order volume has grown consistently - their $50,000 credit limit was set in Mar 2026 and may already be under-calibrated. Credit Manager has been flagged to review the limit against current run-rate.',
+   workflow:'Monitor FSCM case FSCM-2026-0441 (J. Mehta) -> Controller approves in UKM_MY_CREDIT_CASE -> Delivery block removed via VKM1 (or FSCM auto-release if configured) -> Order proceeds to outbound delivery (VL01N)',
+   details:'Credit check at order save evaluated total open exposure (open orders) against credit limit in segment 1000 (UKM_BP). Exposure: $34,100 (this order) + $18,200 (other open orders) = $52,300 vs $50,000 limit. Overage: $2,300 (4.6%).<br><br>FBL5N confirms zero overdue AR for Pinnacle Systems. This is a volume accumulation breach - Pinnacle pays on time but operates at high order volumes relative to their credit limit. Payment behaviour risk is low; the breach is a limit calibration issue.<br><br>FSCM case FSCM-2026-0441 was opened Apr 15 at 13:40 and assigned to controller J. Mehta. The case is under active review. Releasing this order independently via VA02 while the case is open would create an audit gap - the control framework requires the FSCM case to be the single resolution path.<br><br>VKM1 is the correct SAP transaction to release SD documents blocked by credit once the controller approves. Whether VKM1 is run manually or triggered automatically depends on the FSCM workflow configuration - both outcomes are possible. The Orders workbench user does not need to take any SAP action here.<br><br>Structural flag for Credit Manager: Pinnacle\'s credit limit ($50,000, set Mar 2026) may need revision given their consistent order volume growth. A quarterly review cadence with a volume-based limit formula would prevent recurring holds for a customer with clean payment behaviour.'},
+
+  {ref:'5002134',customer:'Kensworth Ltd',val:'$28,600',days:3,
+   issueType:'supply',issueLabel:'Supply',blockReason:'ATP Failure',
+   sev:'m',sevTip:'18 units plant 1100 + 6 units plant 1200 unreserved - split delivery ships today, meets customer commitment Apr 18',
+   confidence:'High',confPct:91,execMode:'Execute with Review',
+   risk:'Medium',riskColor:'amber',sla:'Action Due Today (3d / 3d)',slaColor:'amber',
+   owner:'Warehouse / Supply Planning',status:'Blocked',nextAction:'Split Delivery - Ship Today',
+   decision:'Option A: reduce original item 10 to 18 units (plant 1100) and add new item 20 for 6 units with delivering plant 1200 via VA02. Raise two outbound deliveries - 18 units from plant 1100 and 6 units from plant 1200 - both shipping today. Customer receives full 24 units by Apr 18 (2-day transit confirmed for this zone), meeting their committed delivery date.',
+   impact:'Internal action SLA (3 days from block) expires today - resolution must be initiated now. Without action, the customer\'s Apr 18 delivery commitment is missed and $28,600 is delayed.',
+   diagWhat:'ATP check failed for K-7712 at plant 1100 - only 18 of 24 units in unrestricted stock. MMBE (Stock Overview) confirmed plant 1200 holds 6 units unrestricted; CO09 at plant 1200 confirmed ATP availability with no open reservations. Plant 1200 stock is available for immediate outbound delivery - no inter-plant transfer needed.',
+   diagImp:'Adding item 20 for 6 units with delivering plant 1200 (VA02) and creating two VL01N deliveries avoids any transfer wait. Both deliveries ship today; customer receives the full 24-unit order by Apr 18, meeting the committed delivery date.',
+   rationale:[
+     'Plant 1100 holds 18 of 24 required units in unrestricted stock. <span class="obs" data-tip="Material K-7712, plant 1100. CO09 availability check: 18 units confirmed unrestricted. SAP held the full order - standard ATP logic requires full quantity confirmation at the delivering plant before releasing any delivery.">SAP held the full order</span> pending complete quantity confirmation at plant 1100.',
+     'Plant 1200 has the 6 missing units in unrestricted stock with no open reservations. <span class="obs" data-tip="MMBE confirmed 6 units unrestricted at plant 1200; CO09 confirmed ATP availability. New item 20 added via VA02 for 6 units, delivering plant 1200. Separate VL01N raised - VL01N creation commits the plant 1200 stock. No inter-plant transfer or transit wait required.">Adding a new sales order line</span> for the shortfall quantity enables a same-day outbound delivery from plant 1200.',
+     'Split-plant deliveries were used for 3 similar ATP shortfall orders in this zone this month. <span class="obs" data-tip="Apr 1-15: 3 ATP shortfall orders. New line item added via VA02 with delivering plant set to alternate plant, separate VL01N per plant. All 3 met customer committed delivery date. CRM account notes (Mar 2026): Kensworth preference is full delivery; same-day split accepted when both deliveries meet committed date.">All met the customer committed date</span> - this is a validated resolution path.'
+   ],
+   sapChecks:[
+     {key:'Plant 1100 - K-7712 (CO09 / MMBE)',val:'18 units unrestricted',status:'partial'},
+     {key:'Plant 1200 - K-7712 (CO09 / MMBE)',val:'6 units, no open reservations',status:'found'},
+     {key:'Plant 1300 - K-7712 (CO09 / MMBE)',val:'0 units',status:'none'},
+     {key:'Substitute material M-7713 (CS15 BOM)',val:'24 units at plant 1100',status:'found'},
+     {key:'Replenishment PO 4500198',val:'ETA May 2',status:'later'},
+   ],
+   options:[
+     {id:'A',label:'Split delivery: 18 units plant 1100 + 6 units plant 1200, ships today',score:91,tier:'h',rec:true,
+      detail:'Reduce item 10 to 18 units (plant 1100) and add item 20 for 6 units with delivering plant 1200 via VA02. Create VL01N for item 10 (18 units, plant 1100) and VL01N for item 20 (6 units, plant 1200). Both ship today. Full 24 units at customer Apr 18 - 2-day transit confirmed for this zone.',
+      tradeoff:'Two deliveries mean two delivery notes and two tracking references - proactive shipment notification to Kensworth is recommended (not required per contract CST-K-2024-05). No backorder, no substitution. VL01N creation at plant 1200 commits the stock.'},
+     {id:'B',label:'Partial delivery 18 units today + backorder schedule line May 2',score:72,tier:'m',rec:false,
+      detail:'Ship 18 units from plant 1100 today via VL01N. Add backorder schedule line in the sales order (VA02) for remaining 6 units, committed date May 2.',
+      tradeoff:'Partial quantity ships today but customer receives only 18 of 24 units - committed delivery date missed on 6 units. Written backorder notice required per contract CST-K-2024-05. Two prior backorder lines for Kensworth required follow-up escalations.'},
+     {id:'C',label:'Substitute M-7713 - full 24 units from plant 1100',score:61,tier:'m',rec:false,
+      detail:'M-7713 is functionally equivalent per BOM cross-reference (CS15). Material change in VA02 replaces K-7712 with M-7713, which retriggers ATP check, pricing re-determination (via "Carry out new pricing" in VA02 conditions tab), and credit check before the order can be released.',
+      tradeoff:'Customer confirmation required before substitution. VA02 material change retriggers pricing and credit - adds 1-2 days. Risk of price discrepancy or customer rejection if they have a preference for K-7712.'},
+     {id:'D',label:'Hold - wait for full replenishment at plant 1100',score:18,tier:'l',rec:false,
+      detail:'Wait for replenishment PO 4500198 (vendor Midland Parts Co., ETA May 2). Full K-7712 quantity at plant 1100 with no delivering plant change or split delivery required.',
+      tradeoff:'Customer delivery commitment (Apr 18) certain to be missed. $28,600 revenue delayed 16 days. Customer escalation and potential penalty clause review likely.'},
+   ],
+   feedbackLoop:'Split-plant deliveries were used on 3 similar ATP shortfall orders in this zone in April - all met the customer committed delivery date. CRM account notes (last updated Mar 2026) confirm Kensworth\'s stated preference is full delivery; split deliveries are accepted when both ship same day and meet the committed date. Backorder schedule lines were raised twice for Kensworth in the past 6 months and both required follow-up escalations - Option A avoids that overhead.',
+   workflow:'Reduce item 10 to 18 units + add item 20 for 6 units with delivering plant 1200 (VA02) -> Create outbound deliveries for both items (VL01N) -> Create & confirm transfer orders for picking at each plant (LT01 / LT12) -> Post goods issue once picking confirmed (VL02N) -> Full 24 units shipped today, customer delivery Apr 18 (2-day transit)',
+   details:'SAP availability check: MMBE (Stock Overview) queried across plants 1100, 1200, and 1300 to identify where K-7712 stock exists. Plant 1100: 18 units unrestricted. Plant 1200: 6 units unrestricted, no open reservations. Plant 1300: zero. CO09 (Availability Overview) then run specifically at plant 1200 to confirm ATP availability for the required quantity - confirmed.<br><br>Option A: item 10 is reduced to 18 units (plant 1100, unchanged) and a new item 20 is added for 6 units with delivering plant 1200 via VA02. Two separate VL01N outbound deliveries are created - one per supplying plant. Transfer orders are raised (LT01) and confirmed (LT12) at each plant for picking, after which goods issue is posted via VL02N. No STO or inter-plant transfer needed. Customer receives full 24 units by Apr 18 (2-day transit confirmed for this distribution zone).<br><br>Stock commitment at plant 1200 occurs when VL01N for item 20 is created, not at the VA02 change. Prompt execution after VA02 is important - plant 1200 stock remains uncommitted until the delivery is raised. Internal freight for the second delivery is within standard operational tolerance for this order value. Two deliveries mean two delivery notes; proactive shipment notification to Kensworth is recommended.<br><br>Internal action SLA (3d/3d): today is the last day to initiate resolution. The SLA measures time to action, not delivery date. Executing Option A today satisfies the internal SLA and meets the customer\'s Apr 18 committed delivery date.<br><br>Scoring criteria: delivery speed vs commitment date (35%), customer order completeness (30%), operational complexity (20%), financial risk (15%). Option A: 91 - full commitment met, low complexity. Option B: 72 - partial ships today but misses commitment on 6 units, backorder overhead. Option C: 61 - material available but VA02 material change retriggers ATP, pricing re-determination, and credit check - 1-2 day delay. Option D: 18 - certain delivery date miss.'},
+
+  {ref:'5002456',customer:'Dalton Manufacturing',val:'$15,300',days:5,
+   issueType:'delivery',issueLabel:'Delivery',blockReason:'Export Control Block',
+   sev:'h',sevTip:'SLA breached 5 days + ECCN field blank in material master + compliance non-responsive + regulatory risk regardless of order value',
+   confidence:'Medium',confPct:78,execMode:'Request Approval',
+   risk:'High',riskColor:'red',sla:'Breached (5d / 3d)',slaColor:'red',
+   owner:'Compliance Team',status:'Blocked',nextAction:'Escalate to Compliance Manager',
+   decision:'Option A: escalate to the compliance manager with the pre-packaged GTS case, and simultaneously request the product team to populate the ECCN classification in the material master (MM02). The GTS hold was triggered by a blank ECCN field - an administrative gap, not a confirmed export restriction. Compliance must confirm the classification before any MM02 update is made.',
+   impact:'Order cannot ship without compliance clearance - export control violations carry regulatory and criminal risk regardless of order value. However, if the hold is administrative (blank ECCN field), resolution could be same-day once compliance and product teams act.',
+   diagWhat:'SAP GTS ran three automated checks at delivery creation: embargo check (destination country), denied party screening (FPDK - customer and end-user), and export license check (product classification vs destination). Embargo check: passed. Denied party screening: passed. Export license check: flagged - ECCN classification field is blank in the material master (MM02). GTS cannot complete the export check without a valid classification. GTS case GTS-2026-0892 raised Apr 11.',
+   diagImp:'The GTS hold is almost certainly triggered by a missing ECCN classification in the product master, not a confirmed export control violation. 3 prior shipments of this material to Dalton Manufacturing cleared in 2025 - the classification was likely not maintained when the material was updated or re-registered. Compliance must confirm this before the field can be updated and the check re-run.',
+   rationale:[
+     'SAP GTS applied a delivery block on Apr 11 after the export license check could not complete. <span class="obs" data-tip="GTS case GTS-2026-0892, created Apr 11. Three checks run: embargo (PASSED - destination not on embargo list), denied party screening FPDK (PASSED - Dalton Manufacturing not on any restricted party list), export license check (FLAGGED - ECCN classification blank in material master MM02). GTS requires a valid ECCN to determine license requirements for the destination.">The embargo and denied party checks both passed</span> - the flag is isolated to the missing product classification field.',
+     '3 prior shipments to Dalton Manufacturing cleared GTS without issue in 2025. <span class="obs" data-tip="Shipment history: SO-2025-0312 (Aug 2025), SO-2025-0589 (Nov 2025), SO-2025-0701 (Jan 2026) - all GTS-cleared to the same destination. Suggests the material was re-classified or the ECCN field was cleared during a recent master data update. Prior clearances do not guarantee the current shipment - compliance must confirm.">The likely cause is a recent material master update</span> that cleared the ECCN field, not a new export control risk.',
+     'Compliance was notified Apr 11 with a follow-up Apr 13. <span class="obs" data-tip="GTS case GTS-2026-0892 notification sent Apr 11, 09:30. Follow-up sent Apr 13, 10:15. No response, no ticket update, no status change in 5 days. SLA threshold: 3 days. Breach: +2 days. Escalation path: Compliance Team -> Compliance Manager -> VP Compliance / Legal.">5 days with no acknowledgement</span> is a process failure - standard follow-up has been exhausted and the escalation path must be invoked.'
+   ],
+   sapChecks:[
+     {key:'GTS - embargo check (destination)',val:'PASSED',status:'found'},
+     {key:'GTS - denied party screening (FPDK)',val:'PASSED - Dalton not on any list',status:'found'},
+     {key:'GTS - export license check',val:'FLAGGED - ECCN field blank in MM02',status:'partial'},
+     {key:'MM02 - ECCN classification field',val:'Blank (not maintained)',status:'none'},
+     {key:'Prior GTS clearances - same destination',val:'3 shipments cleared in 2025',status:'found'},
+   ],
+   options:[
+     {id:'A',label:'Escalate to compliance manager + request ECCN field update in MM02',score:85,tier:'h',rec:true,
+      detail:'Escalate GTS case GTS-2026-0892 to Compliance Manager with full agent-packaged case details. Simultaneously request product/master data team to populate the ECCN field in MM02. Once compliance confirms the classification and the field is updated, GTS re-runs the export check automatically. If classification is EAR99 or similar unrestricted, the delivery block clears.',
+      tradeoff:'Two-track action: compliance escalation (mandatory) and administrative fix (parallel). Compliance confirmation must precede any MM02 update - the field must not be populated without compliance sign-off. Fastest credible path given the 5-day non-response.'},
+     {id:'B',label:'Escalate compliance only - no parallel MM02 action',score:62,tier:'m',rec:false,
+      detail:'Escalate GTS case to Compliance Manager through formal channels. Wait for compliance to determine the classification and direct the MM02 update themselves.',
+      tradeoff:'Cleaner from a compliance ownership perspective, but adds 1-2 days while compliance re-investigates what the agent has already surfaced. Given SLA is already breached, the parallel approach in Option A is more appropriate.'},
+     {id:'C',label:'Invoke escalation path to VP Compliance and Legal',score:44,tier:'m',rec:false,
+      detail:'Escalate directly to VP of Compliance and Legal, bypassing the Compliance Manager, given 5-day non-response and SLA breach.',
+      tradeoff:'Appropriate if Compliance Manager does not respond within 24 hours of Option A escalation. Premature as a first action - compliance manager should be given the opportunity to resolve before senior escalation.'},
+     {id:'D',label:'Maintain hold - await compliance queue',score:6,tier:'l',rec:false,
+      detail:'No action. Order remains in the GTS hold queue.',
+      tradeoff:'SLA already breached by 2 days. Non-response for 5 days is a process failure. Passive wait has no justification - regulatory exposure increases with each day a GTS case remains unresolved without documented escalation.'},
+   ],
+   feedbackLoop:'3 prior shipments to Dalton Manufacturing cleared GTS in 2025 with no issues - same destination, same customer. The 2025 clearances suggest the product was classifiable then. The most likely cause is the ECCN field being cleared during a material master update. Master data team has been flagged: ECCN classification fields must be included in change impact review when material master records are updated. Systemic fix: configure a GTS pre-check alert when ECCN field is blank at order creation, not at delivery.',
+   workflow:'Escalate GTS case GTS-2026-0892 to Compliance Manager -> Compliance confirms ECCN classification -> Product team updates ECCN field in material master (MM02) -> GTS re-runs export check automatically -> Delivery block removed by compliance (VA02) -> Create outbound delivery (VL01N) -> Create shipment (VT01N) -> Pick & confirm (LT01/LT12) -> Post goods issue (VL02N)',
+   details:'SAP GTS performs three automated checks at delivery creation: (1) embargo check against sanctioned country lists, (2) denied party screening via FPDK (business partner check against restricted party lists), and (3) export license determination based on product ECCN classification and destination country. Checks 1 and 2 passed. Check 3 flagged because the ECCN classification field in the material master (MM02) is blank - GTS cannot determine license requirements without it.<br><br>GTS case GTS-2026-0892 was raised Apr 11 and assigned to the Compliance Team. Notification sent Apr 11, follow-up Apr 13. No response in 5 days. This is a process failure in compliance response SLA - not evidence of a genuine export restriction.<br><br>Historical context: 3 prior shipments to Dalton Manufacturing cleared GTS in 2025 (Aug, Nov, Jan). The same material shipped without issue, indicating the ECCN was previously maintained or the check was handled differently. A recent material master update likely cleared the field.<br><br>Important: compliance must confirm the ECCN classification before any MM02 update is made. The product team must not populate this field independently - classification requires compliance sign-off to ensure correct determination (EAR99 vs a controlled ECCN like 3A001 or similar). Incorrect classification carries greater regulatory risk than leaving it blank.<br><br>Once classified and GTS clears, the delivery block (GTS-configured, not the standard credit block 01) is removed via VA02, and outbound delivery proceeds via VL01N. Shipment is created in VT01N, picked via LT01/LT12, and goods-issued via VL02N.'},
+
+  {ref:'5002789',customer:'Frontier Corp',val:'$8,100',days:1,
+   issueType:'pricing',issueLabel:'Pricing',blockReason:'Billing Block B1',
+   sev:'l',sevTip:'5.2% deviation vs 5.0% tolerance - borderline case + 4 prior approvals for same customer + low value + SLA not at risk',
+   confidence:'High',confPct:96,execMode:'Execute with Review',
+   risk:'Low',riskColor:'green',sla:'Within SLA (1d / 3d)',slaColor:'green',
+   owner:'Sales Manager',status:'Blocked',nextAction:'Get Countersignature',
+   decision:'Option A: request sales manager countersignature to approve the 5.2% price deviation. All 4 prior Frontier Corp deviation cases in the past 12 months were approved within 1 day. Borderline at 0.2% over the tolerance threshold with no pricing dispute on record.',
+   impact:'$8,100 invoicing delayed. Low financial and commercial risk - billing block B1 is a process control requirement, not an indicator of a disputed price. Based on prior history, same-day resolution is expected.',
+   diagWhat:'Manual price of $66.36/unit on line item 10 against the standard condition price of $70.00/unit (VK13 confirmed - PR00 active and valid). The 5.2% deviation exceeded the 5.0% tolerance in pricing procedure ZDOM01, triggering billing block B1 at order save. VA25 shows no quotation or contract committing a lower price. Prior history: 4 billing block B1 cases for Frontier Corp in the past 12 months, all approved within 1 day.',
+   diagImp:'The deviation is 0.2% over the tolerance threshold - borderline. No quotation or contract commits the $66.36 price. The countersignature is the correct control action. Once the sales manager approves in VA02, billing block B1 releases and invoicing can proceed same day.',
+   rationale:[
+     '$66.36/unit was entered manually against the standard price of $70.00/unit on line item 10. <span class="obs" data-tip="VK13: condition type PR00, material M-8814, Frontier Corp - standard price $70.00/unit, active and valid. Deviation: $3.64/unit (5.2%). Tolerance per ZDOM01: 5.0%. Overage: 0.2%. Billing block B1 auto-set at order save. No quotation found via VA25 committing a lower price.">The 5.2% deviation is 0.2% over threshold</span> - a borderline case with no underlying pricing dispute.',
+     'Agent reviewed VA25 quotation history and found no document committing a lower price for Frontier Corp on this material. <span class="obs" data-tip="VA25 search: no active quotation for Frontier Corp, material M-8814, with a committed price below $70.00/unit. The manual entry appears to be a sales rep commercial accommodation - not a contractual obligation. Sales manager can approve or reject on business judgement.">This is a commercial accommodation</span>, not a pricing obligation - the manager has full discretion to approve or reprice.',
+     'Frontier Corp has had 4 similar price deviation approvals in the past 12 months, all approved within 1 day. <span class="obs" data-tip="Order history: 4 prior billing block B1 cases for Frontier Corp. Deviation range: 4.2% to 5.8%. All approved by sales manager within 24 hours. No rejections, no customer disputes. Recurring pattern suggests this is an established commercial practice that could be formalised as a customer-specific pricing condition.">All were granted within 1 day</span> - high confidence approval will follow.',
+   ],
+   sapChecks:[
+     {key:'VK13 - condition PR00, M-8814',val:'$70.00/unit - active and valid',status:'found'},
+     {key:'VA25 - quotation history, Frontier Corp',val:'No committed lower price found',status:'found'},
+     {key:'Deviation history - billing block B1',val:'4 prior approvals, all within 1 day',status:'found'},
+     {key:'ZDOM01 - manual deviation tolerance',val:'5.0% threshold - this case is 5.2%',status:'partial'},
+     {key:'FBL5N - AR aging, Frontier Corp',val:'No overdue invoices',status:'found'},
+   ],
+   options:[
+     {id:'A',label:'Request countersignature - approve the 5.2% deviation',score:94,tier:'h',rec:true,
+      detail:'Sales manager opens the order in VA02, reviews the deviation, and removes billing block B1 from the billing document tab. Change is recorded in the SAP change document automatically. Invoice raised via VF01 immediately after.',
+      tradeoff:'Correct process path. Full audit trail maintained via SAP change document. Based on prior history, approval is expected same day. No commercial risk given the minor deviation and precedent.'},
+     {id:'B',label:'Reprice at standard $70.00/unit - remove the manual deviation',score:51,tier:'m',rec:false,
+      detail:'Sales manager updates the price in VA02 to the standard $70.00/unit. Billing block B1 clears automatically as the deviation is eliminated. No separate approval step needed.',
+      tradeoff:'Faster to unblock, but may create a customer dispute if the $66.36 price was verbally agreed with the sales rep. Risk of customer deduction against the invoice. Use only if the deviation is confirmed as an error, not an accommodation.'},
+     {id:'C',label:'Reject and escalate for pricing policy review',score:16,tier:'l',rec:false,
+      detail:'Maintain the block and route the case for a formal review of whether Frontier Corp should have a customer-specific pricing condition in SAP to formalise the recurring commercial practice.',
+      tradeoff:'Appropriate as a long-term governance action but not as a resolution for this order. $8,100 remains uninvoiced with no justification given the low risk and strong precedent for approval.'},
+   ],
+   feedbackLoop:'4 prior billing block B1 cases for Frontier Corp in the past 12 months - all approved within 1 day. Deviation range: 4.2% to 5.8%. No rejections, no disputes. Flagged to Sales Manager: if the agreed commercial price for Frontier Corp on this material is approximately $66-67/unit, create a customer-specific pricing condition (customer-material info record or ZPR0 condition type) to reflect the actual practice and eliminate recurring billing blocks.',
+   workflow:'Sales manager removes billing block B1 in VA02 (billing document tab) -> Change logged in SAP change document -> Invoice raised via VF01',
+   details:'Billing block B1 is configured in OVAH as "Manual price deviation." It is auto-set by pricing procedure ZDOM01 when a manually entered price exceeds the 5.0% tolerance. The deviation here is 0.2% over threshold ($66.36 vs $70.00 standard, 5.2% deviation).<br><br>VK13 confirmed PR00 condition for M-8814, Frontier Corp, is active at $70.00/unit. VA25 found no quotation or contract committing a lower price. The manual override appears to be a sales rep commercial accommodation that was not pre-authorised.<br><br>Release path: an authorised sales manager opens the order in VA02 and removes billing block B1 from the billing document tab manually. This action is recorded in the SAP change document log. VF01 then creates the billing document. No separate approval transaction is needed - VA02 with the appropriate SD authorisation object is sufficient.<br><br>Long-term recommendation: if the commercial practice is to price M-8814 for Frontier Corp at approximately $66-67/unit, a customer-specific pricing condition should be created to make this the agreed price for this customer-material combination. This eliminates the deviation, the billing block, and the countersignature overhead on every order.<br><br>Scoring: likelihood of approval (40%), speed to unblock (30%), audit trail quality (20%), commercial risk (10%). Option A: 94 - correct process, precedent-backed, full audit trail. Option B: 51 - faster but carries customer dispute risk if price was agreed. Option C: 16 - governance action only, not a resolution.'},
+];
+
+function renderOrdersTable() {
+  document.getElementById('orders-tbody').innerHTML = orderData.map((d,i) => `
+    <tr data-id="${i}" data-type="${d.issueType}" onclick="orderRowClick(event,${i})">
+      <td class="cb-cell" onclick="event.stopPropagation()"><input type="checkbox" class="order-cb" onchange="updateOrderBulk()"></td>
+      <td><span class="sev sev-${d.sev}" data-tip="${d.sevTip}">${d.sev==='l'?'i':'!'}</span></td>
+      <td><div class="fw7">${d.ref}</div><div class="td-sub">${d.customer}</div></td>
+      <td class="fw7 text-teal">${d.val}</td>
+      <td><span class="itag itag-${d.issueType}">${d.issueLabel}</span></td>
+      <td style="color:var(--${d.riskColor})">${d.blockReason}</td>
+      <td class="fw7" style="color:var(--${d.riskColor})">${d.days}d${d.days>=3?' (!)':''}</td>
+      <td>${confBadge(d.confidence)}</td>
+      <td style="font-size:12px;color:var(--text2)">${d.nextAction}${d.execMode==='Execute with Review'?'<span style="margin-left:6px;font-size:10px;font-weight:700;color:var(--green);background:rgba(56,212,144,0.1);border:1px solid rgba(56,212,144,0.2);border-radius:4px;padding:1px 6px;">Today</span>':''}</td>
+      <td class="status-cell">${pillFor(d.status)}</td>
+    </tr>`).join('');
+}
+
+function openOrder(id) {
+  activeRow = document.querySelector('#orders-table tbody tr[data-id="'+id+'"]');
+  const d = orderData[id];
+  // Reset selection to recommended option on each open
+  _selectedOpts[id] = d.options ? (d.options.find(o=>o.rec) || d.options[0]) : null;
+  const selOptId = _selectedOpts[id] ? _selectedOpts[id].id : null;
+  const execLabel = d.execMode === 'Execute Action' ? 'Execute Action' :
+                    d.execMode === 'Execute with Review' ? 'Execute with Review' :
+                    'Submit for Approval';
+  const primaryLabel = selOptId ? execLabel + ' - Option ' + selOptId : execLabel;
+  openDrawer('Order Management Agent', 'Order '+d.ref+' - '+d.customer, `
+    <div class="dw-meta">
+      <span class="dw-val">${d.val}</span>
+      <span class="fw7" style="color:var(--${d.riskColor})">${d.days}d blocked</span>
+      <span class="itag itag-${d.issueType}">${d.issueLabel}</span>
+      ${execBadge(d.execMode)}
+    </div>
+    <div class="dw-decision">
+      <div class="dw-dec-lbl">Decision Required</div>
+      <div class="dw-dec-text">${d.decision}</div>
+      <div class="dw-impact"><b style="color:var(--amber)">Impact if ignored:</b> ${d.impact}</div>
+    </div>
+    <div class="dw-ctx">
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--${d.riskColor})">${d.risk}</div><div class="dw-ctx-l">Risk Level</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--${d.slaColor});font-size:10px">${d.sla}</div><div class="dw-ctx-l">SLA Status</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="font-size:10px">${d.owner}</div><div class="dw-ctx-l">Action Owner</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--cyan)">${d.confPct}%</div><div class="dw-ctx-l">Confidence</div></div>
+    </div>
+    <div class="dw-diag">
+      <div class="dw-diag-lbl">Diagnosis</div>
+      <div class="dw-diag-w">${d.diagWhat}</div>
+      <div class="dw-diag-i">${d.diagImp}</div>
+    </div>
+    <div class="dw-sect">
+      <div class="dw-sect-lbl">Key Findings</div>
+      ${d.rationale.map(r=>`<div class="dw-rat-item">${r}</div>`).join('')}
+    </div>
+    ${d.sapChecks ? `<div class="sap-probes"><div class="sap-probe-lbl">Agent Investigation</div>${d.sapChecks.map(c=>`<div class="sap-probe-row"><span class="sap-probe-key">${c.key}</span><span class="sap-probe-val sap-probe-${c.status}">${c.val}</span></div>`).join('')}</div>` : ''}
+    ${d.options ? `<div class="dw-sect-lbl" style="margin:10px 0 6px">Options Evaluated <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;font-size:10px">- click to select before executing</span></div><div class="opts-grid">${d.options.map(o=>`<div class="opt-row${o.rec?' opt-rec':''}${o.id===selOptId?' opt-active':''}" data-opt="${o.id}" onclick="selectOpt(${id},'${o.id}')">${o.rec?'<div class="opt-rec-tag">Recommended</div>':''}<div class="opt-head"><span class="opt-sel-indicator"></span><span class="opt-id">${o.id}</span><span class="opt-label">${o.label}</span><span class="opt-score opt-score-${o.tier}">${o.score}</span></div><div class="opt-detail">${o.detail}</div><div class="opt-tradeoff">${o.tradeoff}</div></div>`).join('')}</div>` : ''}
+    ${d.feedbackLoop ? `<div class="feedback-loop"><div class="feedback-lbl">Agent Feedback Loop</div><div class="feedback-text">${d.feedbackLoop}</div></div>` : ''}
+    <button class="dw-exp-btn" onclick="var b=this.nextElementSibling;b.style.display=b.style.display==='none'?'block':'none';this.textContent=this.textContent.includes('+')?'Hide Details -':'View Details +'">View Details +</button>
+    <div class="dw-exp-body" style="display:none">${d.details}</div>
+    <div class="dw-workflow"><b>SAP Workflow:</b> ${d.workflow}</div>`,
+  `<button class="btn btn-primary" id="dw-primary-btn" onclick="submitOrder(${id})">${primaryLabel}</button>
+   <button class="btn btn-warn" onclick="openOverride(r=>overrideOrder(${id},r))">Override with Reason</button>
+   <button class="btn btn-ghost" onclick="deferOrder(${id})">Defer</button>`);
+}
+
+function submitOrder(id) {
+  const d = orderData[id];
+  const selOpt = d.options ? (_selectedOpts[id] || d.options.find(o=>o.rec) || d.options[0]) : null;
+  const status = d.execMode === 'Request Approval' ? 'Submitted' : 'Released';
+  const msg = d.execMode === 'Request Approval' ? 'Submitted for approval' : 'Executed with review';
+  setStatusCell('orders-table', id, status);
+  markActed('orders-table', id);
+  updateBadge('badge-orders', -1);
+  closeDrawer();
+  showToast(msg, 'SAP workflow initiated: ' + d.workflow, 'ok');
+  const baseAction = status === 'Submitted' ? 'Submitted for Approval' : 'Executed with Review';
+  const uAction = selOpt ? baseAction + ' - Option ' + selOpt.id + ': ' + selOpt.label : baseAction;
+  const agentRec = selOpt ? 'Option ' + selOpt.id + ' selected: ' + selOpt.label + '. ' + selOpt.detail : d.decision;
+  const aAction = status === 'Submitted'
+    ? 'Routed to ' + d.owner + ' for approval. SAP workflow queued: ' + d.workflow.split('->')[0].trim()
+    : 'SAP workflow executed: ' + d.workflow;
+  const rec = selOpt ? 'Agent recommended Option ' + (d.options.find(o=>o.rec)||selOpt).id + '. User selected Option ' + selOpt.id + ': ' + selOpt.label : d.decision;
+  logAudit({workbench:'Orders', entity:'Order '+d.ref+' ('+d.customer+')',
+    rec, userAction:uAction, agentAction:aAction, confidence:d.confidence, execMode:d.execMode,
+    status, pendingWith:status==='Submitted'?d.owner:'N/A', by:'Current User'});
+}
+
+function overrideOrder(id, reason) {
+  const d = orderData[id];
+  const selOpt = d.options ? (_selectedOpts[id] || d.options.find(o=>o.rec) || d.options[0]) : null;
+  const rec = selOpt ? 'Agent recommended Option ' + (d.options.find(o=>o.rec)||selOpt).id + '. User selected Option ' + selOpt.id + ': ' + selOpt.label : d.decision;
+  setStatusCell('orders-table', id, 'Overridden');
+  markActed('orders-table', id);
+  updateBadge('badge-orders', -1);
+  closeDrawer();
+  showToast('Override logged', 'Reason recorded. Audit trail updated.', 'warn');
+  logAudit({workbench:'Orders', entity:'Order '+d.ref+' ('+d.customer+')',
+    rec, userAction:'Overridden - ' + reason,
+    agentAction:'User overrode agent recommendation. Override reason recorded in audit trail. No SAP action executed.',
+    confidence:d.confidence, execMode:d.execMode,
+    status:'Overridden', pendingWith:'Audit Review', by:'Current User'});
+}
+
+function deferOrder(id) {
+  const d = orderData[id];
+  const selOpt = d.options ? (_selectedOpts[id] || d.options.find(o=>o.rec) || d.options[0]) : null;
+  const rec = selOpt ? 'Agent recommended Option ' + (d.options.find(o=>o.rec)||selOpt).id + ': ' + (d.options.find(o=>o.rec)||selOpt).label : d.decision;
+  setStatusCell('orders-table', id, 'Deferred');
+  markActed('orders-table', id);
+  updateBadge('badge-orders', -1);
+  closeDrawer();
+  showToast('Deferred', 'Order '+d.ref+' flagged for review later. No SAP action taken.', 'info');
+  logAudit({workbench:'Orders', entity:'Order '+d.ref+' ('+d.customer+')',
+    rec, userAction:'Deferred - flagged for later review',
+    agentAction:'Order added to review queue. No SAP action taken. Agent recommendation remains active.',
+    confidence:d.confidence, execMode:d.execMode,
+    status:'Deferred', pendingWith:'Current User', by:'Current User'});
+}
+
+function selectOpt(orderId, optId) {
+  const d = orderData[orderId];
+  if (!d.options) return;
+  const opt = d.options.find(o => o.id === optId);
+  if (!opt) return;
+  _selectedOpts[orderId] = opt;
+  // Update card highlight
+  document.querySelectorAll('#dw-body .opt-row[data-opt]').forEach(el => el.classList.remove('opt-active'));
+  const card = document.querySelector('#dw-body .opt-row[data-opt="'+optId+'"]');
+  if (card) card.classList.add('opt-active');
+  // Update primary button label
+  const btn = document.getElementById('dw-primary-btn');
+  if (btn) {
+    const execLabel = d.execMode === 'Execute Action' ? 'Execute Action' :
+                      d.execMode === 'Execute with Review' ? 'Execute with Review' :
+                      'Submit for Approval';
+    btn.textContent = execLabel + ' - Option ' + optId;
+  }
+}
+
+function orderRowClick(e, id) {
+  if (e.target.closest('.cb-cell')) return;
+  openOrder(id);
+}
+
+function orderFilter(el, type) {
+  document.querySelectorAll('.filter-bar .fchip').forEach(f => f.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#orders-table tbody tr').forEach(r => {
+    r.style.display = (type === 'all' || r.dataset.type === type) ? 'table-row' : 'none';
+  });
+}
+
+function updateOrderBulk() {
+  const n = document.querySelectorAll('.order-cb:checked').length;
+  document.getElementById('orders-bulk').classList.toggle('visible', n > 0);
+  document.getElementById('orders-bulk-count').textContent = n + ' selected';
+}
+
+function orderToggleAll(el) {
+  document.querySelectorAll('.order-cb').forEach(cb => cb.checked = el.checked);
+  updateOrderBulk();
+}
+
+function orderClearSel() {
+  document.querySelectorAll('.order-cb').forEach(cb => cb.checked = false);
+  const sa = document.getElementById('orders-sel-all');
+  if (sa) sa.checked = false;
+  updateOrderBulk();
+}
+
+function orderBulkAction(type) {
+  const n = document.querySelectorAll('.order-cb:checked').length;
+  const msgs = {assign:'Owner assignment queued for '+n+' orders', approve:'Sent for approval: '+n+' orders', review:n+' orders marked for review'};
+  showToast(msgs[type], 'No SAP action taken. Logged for audit.', 'info');
+  orderClearSel();
+}
+
+renderOrdersTable();
+// ════════════════════════════════════════════════════════
+</script>
+</body>
+</html>
