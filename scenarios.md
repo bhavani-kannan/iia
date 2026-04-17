@@ -16,15 +16,26 @@ The company has a rule: before shipping to any customer, check whether the total
 
 **What the credit controller sees today without the agent**
 
-SAP shows the controller that the order is blocked and displays the exposure versus the limit. What it does not do is explain why the exposure grew, how long the customer's payment behaviour has been deteriorating, what the fastest resolution path looks like, or whether this situation has occurred before. The controller has to piece that together manually - moving between the overdue invoice report, the customer risk score, payment history records, and old case notes. That takes time, and in the meantime the order sits and the SLA clock keeps running.
+SAP shows the controller that the order is blocked and displays the exposure versus the limit. What it does not explain is:
+
+- Why the exposure grew
+- How long the customer's payment behaviour has been deteriorating
+- What the fastest path to releasing the order looks like
+- Whether this situation has happened before and how it was resolved
+
+The controller has to piece that together manually by moving between the overdue invoice report, the customer risk score, payment history records and old case notes. That takes time, and in the meantime the order sits and the SLA clock keeps running.
 
 **What the agent does**
 
-The agent runs that diagnosis automatically. It queries the customer's unpaid invoices and identifies that three specific overdue invoices totalling $48,000 are the sole reason the limit has been breached - the order itself is not the problem. It checks the customer's risk score history and finds it has been declining for three months, from 41 to 28, crossing the internal escalation threshold without triggering a review because the formal review cycle only runs once a year. It then checks prior cases for this customer and finds that in November 2025, the exact same situation was resolved in 8 days by asking the customer to pay the overdue invoices as a condition of releasing the order.
+The agent runs that diagnosis automatically and finds:
+
+- Three overdue invoices totalling $48,000 are the sole reason the credit limit has been breached. The new order itself is not the problem.
+- The customer's risk score has been declining for three months, from 41 to 28, crossing the internal escalation threshold without triggering a review because the formal review only runs once a year.
+- In November 2025, the exact same situation was resolved in 8 days by asking the customer to pay the overdue invoices as a condition of releasing the order.
 
 **The outcome**
 
-The credit controller receives a ready-to-act recommendation: request payment of the overdue invoices, and release the order once the commitment is received. No manual investigation needed. The full context - root cause, resolution path, and a directly comparable precedent - is already packaged. The agent also flags that a once-a-year review cycle is insufficient for a customer whose payment behaviour has been changing month to month, so the same situation does not quietly develop again.
+The credit controller receives a ready-to-act recommendation: request payment of the overdue invoices and release the order once the commitment is received. The full context, root cause, resolution path and a comparable precedent are already packaged. No manual investigation needed. The agent also flags that a once-a-year review cycle is insufficient for a customer whose payment behaviour has been changing month to month, so the same situation does not quietly develop again.
 
 **Scenario 2 — Billing Block: A Contract That Renewed But the System Didn't Know**
 
