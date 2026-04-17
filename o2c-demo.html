@@ -129,6 +129,18 @@ button,select,input,textarea{font-family:inherit;}
 .data-table th:nth-child(8),.data-table td:nth-child(8){width:88px;}
 .data-table th:nth-child(9),.data-table td:nth-child(9){width:195px;}
 .data-table th:nth-child(10),.data-table td:nth-child(10){width:88px;}
+/* Credit table column overrides */
+#credit-table td:nth-child(3),#credit-table td:nth-child(9){white-space:nowrap;}
+#credit-table td:nth-child(2),#credit-table td:nth-child(8){white-space:normal;}
+#credit-table th:nth-child(1),#credit-table td:nth-child(1){width:28px;}
+#credit-table th:nth-child(2),#credit-table td:nth-child(2){width:168px;}
+#credit-table th:nth-child(3),#credit-table td:nth-child(3){width:138px;}
+#credit-table th:nth-child(4),#credit-table td:nth-child(4){width:65px;}
+#credit-table th:nth-child(5),#credit-table td:nth-child(5){width:105px;}
+#credit-table th:nth-child(6),#credit-table td:nth-child(6){width:95px;}
+#credit-table th:nth-child(7),#credit-table td:nth-child(7){width:135px;}
+#credit-table th:nth-child(8),#credit-table td:nth-child(8){width:185px;}
+#credit-table th:nth-child(9),#credit-table td:nth-child(9){width:108px;}
 .data-table tbody tr{cursor:pointer;transition:background .1s;}
 .data-table tbody tr:hover{background:rgba(255,255,255,0.025);}
 .data-table tbody tr.selected{background:rgba(56,192,232,0.05);}
@@ -544,10 +556,61 @@ button,select,input,textarea{font-family:inherit;}
     </div>
 
     <div id="screen-credit" class="screen">
-      <div class="wip-screen">
-        <div class="wip-icon">CR</div>
-        <div class="wip-label">Credit Workbench</div>
-        <div class="wip-sub">Coming in Iteration 3</div>
+      <div class="wb-head">
+        <div>
+          <div class="wb-title">Credit Risk Workbench</div>
+          <div class="wb-sub">Credit Risk Agent &middot; Monitored accounts ranked by exposure overage and payment risk</div>
+        </div>
+      </div>
+      <div class="kpi-strip" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi-card" style="--kpi-accent:var(--red)">
+          <div class="kpi-val text-red">$78,500</div>
+          <div class="kpi-label">Overdue AR (&gt;30d)</div>
+          <div class="kpi-delta up">Across 3 accounts</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--amber)">
+          <div class="kpi-val text-amber">3</div>
+          <div class="kpi-label">Accounts Over Limit</div>
+          <div class="kpi-delta flat">MetroPlex 135% &middot; Thornfield 112% &middot; Pinnacle 105%</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--cyan)">
+          <div class="kpi-val text-cyan">1</div>
+          <div class="kpi-label">FSCM Cases Open</div>
+          <div class="kpi-delta flat">FSCM-2026-0441 &middot; Pinnacle Systems</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--amber)">
+          <div class="kpi-val text-amber">2</div>
+          <div class="kpi-label">Action Required Today</div>
+          <div class="kpi-delta up">MetroPlex (SLA breached) &middot; Thornfield (5d flagged)</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <div class="fchip active" onclick="creditFilter(this,'all')">All</div>
+        <div class="fchip" onclick="creditFilter(this,'overlimit')">Over Limit</div>
+        <div class="fchip" onclick="creditFilter(this,'fscm')">FSCM Active</div>
+        <div class="fchip" onclick="creditFilter(this,'watch')">Watch</div>
+      </div>
+      <div class="tpanel">
+        <div class="tpanel-head">
+          <div class="tpanel-title">Credit Risk Queue - Monitored Accounts</div>
+          <div class="tpanel-meta">4 accounts &middot; Ranked by exposure overage</div>
+        </div>
+        <table class="data-table" id="credit-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Customer / Segment</th>
+              <th>Exposure vs Limit</th>
+              <th>Util %</th>
+              <th>Overdue AR</th>
+              <th>Risk Score</th>
+              <th>FSCM Case</th>
+              <th>Next Action</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="credit-tbody"></tbody>
+        </table>
       </div>
     </div>
 
@@ -1319,6 +1382,311 @@ function orderBulkAction(type) {
 }
 
 renderOrdersTable();
+
+// ════════════════════════════════════════════════════════
+// CREDIT WORKBENCH
+// ════════════════════════════════════════════════════════
+const creditData = [
+  { id:0, customer:'MetroPlex Industries', segment:'1000',
+    creditLimit:100000, exposure:135400, utilPct:135,
+    overdueAR:48000, riskScore:28, riskPrev:41, riskDate:'Jan 2026',
+    fscmCase:null, owner:'Credit Controller', lastReview:'Jan 2026',
+    statusType:'overlimit', sev:'h',
+    sevTip:'SLA breached - $35,400 over limit, $48K overdue AR, risk score 41->28, no FSCM case open',
+    status:'Action Required', execMode:'Request Approval', confidence:'High', confPct:94,
+    nextAction:'Open FSCM Case + Payment Demand',
+    decision:'Open FSCM case and issue payment demand for $48,000 overdue AR as the release condition. Pre-packaged analysis ready - controller can act immediately. Linked order 5001234 ($87,400) remains delivery-blocked until this is resolved.',
+    impact:'$87,400 in blocked orders. $48,000 overdue AR is the sole driver of the limit breach - the $100K limit has not been reviewed since Jan 2026 despite 42% exposure growth.',
+    diagWhat:'UKM_BP (segment 1000): $135,400 total open exposure vs $100,000 limit, overage $35,400. FBL5N: 3 overdue invoices - INV-90234 ($18,400, 28d), INV-90198 ($16,200, 21d), INV-90167 ($13,400, 12d). Risk score: 28/100, down from 41 since Jan 2026. No FSCM case currently open.',
+    diagImp:'The breach is driven entirely by overdue AR, not order volume. Paying two of the three invoices brings exposure below the limit. Annual review cadence missed the risk score decline - flagged to Credit Manager for quarterly review.',
+    rationale:[
+      '3 overdue invoices totalling $48,000 are the sole driver of the breach. <span class="obs" data-tip="FBL5N: INV-90234 $18,400 (28d), INV-90198 $16,200 (21d), INV-90167 $13,400 (12d). Net 30 terms. No dispute flag or payment promise recorded.">Paying two invoices removes the overage</span> without a limit change.',
+      'Risk score has fallen from 41 to 28 since Jan 2026. <span class="obs" data-tip="Score components: payment behaviour 35% (22), credit utilisation 40% (30), days overdue 25% (28). Auto-review threshold: 35/100. Annual cadence means the decline was not caught mid-year.">Missed by annual review cadence</span> - Credit Manager flagged to move to quarterly.',
+      'Linked order 5001234 ($87,400) remains delivery-blocked. <span class="obs" data-tip="Order 5001234 - MetroPlex Industries. Delivery block applied at order save by UKM_BP credit check. VKM1 release required once controller approves the FSCM case.">Revenue at risk escalates</span> each day without a formal payment demand.'
+    ],
+    sapChecks:[
+      {key:'UKM_BP - exposure vs limit (segment 1000)', val:'$135,400 vs $100,000 - overage $35,400', status:'partial'},
+      {key:'FBL5N - overdue AR aging', val:'3 invoices, $48,000 (12-28d overdue)', status:'partial'},
+      {key:'S_ALR_87012178 - payment trend', val:'Risk score 41->28 since Jan 2026', status:'partial'},
+      {key:'FSCM - open credit cases', val:'No open case', status:'found'},
+      {key:'F-28 history - payments expected', val:'None scheduled in next 30 days', status:'none'},
+    ],
+    options:[
+      {id:'A', label:'Open FSCM case + issue payment demand for $48K overdue AR', score:90, tier:'h', rec:true,
+       detail:'Create credit case in UKM_MY_CREDIT_CASE with full AR aging, exposure breakdown, and Nov 2025 payment precedent. Controller issues formal payment demand. On payment receipt or commitment, controller releases via VKM1 - delivery block removed from order 5001234.',
+       tradeoff:'Fastest credible path. Nov 2025 precedent: MetroPlex responded within 8 days. Full analysis pre-packaged - controller needs no additional research.'},
+      {id:'B', label:'Temporary limit increase to $140K in UKM_BP', score:58, tier:'m', rec:false,
+       detail:'Controller approves a temporary credit limit uplift to $140K in UKM_BP segment 1000, releasing the blocked order immediately. Limit resets once overdue AR is cleared.',
+       tradeoff:'Unblocks revenue without requiring payment upfront, but increases uninsured exposure. Appropriate only if a confirmed payment plan is already in place.'},
+      {id:'C', label:'Escalate to Credit Manager for manual override review', score:34, tier:'m', rec:false,
+       detail:'Route to Credit Manager for manual review and decision. No SAP action taken from Credit workbench pending their review.',
+       tradeoff:'Adds a review step that is unnecessary given the complete pre-analysis. SLA already breached. Appropriate only if there is an active dispute on one of the overdue invoices.'},
+      {id:'D', label:'Hold in standard queue - no action', score:8, tier:'l', rec:false,
+       detail:'No action. Credit case remains in queue for standard processing.',
+       tradeoff:'SLA already breached. Pre-analysis complete and ready. Passive wait has no justification and compounds escalation risk on an $87,400 blocked order.'},
+    ],
+    feedbackLoop:'MetroPlex credit hold Nov 2025: payment demand issued, payment received 8 days later, VKM1 release completed. Same pattern applies. Structural gap: annual review cadence insufficient for this account - Credit Manager flagged to move to quarterly with auto-trigger at score below 35/100.',
+    workflow:'Open FSCM credit case (UKM_MY_CREDIT_CASE) -> Controller issues payment demand for $48K overdue AR -> Customer commits to payment -> Controller approves release (VKM1) -> Delivery block removed from order 5001234 -> Order proceeds to outbound delivery (VL01N)'
+  },
+
+  { id:1, customer:'Pinnacle Systems', segment:'1000',
+    creditLimit:50000, exposure:52300, utilPct:104.6,
+    overdueAR:0, riskScore:72, riskPrev:72, riskDate:'Mar 2026',
+    fscmCase:'FSCM-2026-0441', owner:'Credit Controller - J. Mehta', lastReview:'Mar 2026',
+    statusType:'fscm', sev:'m',
+    sevTip:'FSCM-2026-0441 open and under active review - 4.6% over limit, zero overdue AR, same-day resolution expected',
+    status:'Under Review', execMode:'Request Approval', confidence:'High', confPct:91,
+    nextAction:'Monitor FSCM-2026-0441',
+    decision:'No action required from Credit workbench. FSCM case FSCM-2026-0441 is under active review by J. Mehta. Context provided: volume-driven breach, zero overdue AR, consistent with seasonal pattern. Same-day resolution expected.',
+    impact:'Releasing independently via UKM_BP would bypass the active FSCM case and create an audit gap. Credit risk is low given zero overdue AR - process control must be respected.',
+    diagWhat:'UKM_BP: $52,300 total open exposure vs $50,000 limit, overage $2,300 (4.6%). FBL5N: zero overdue invoices for Pinnacle Systems. FSCM case FSCM-2026-0441 opened Apr 15 at 13:40, assigned to J. Mehta, status: Under Review. The overage is entirely from open order accumulation.',
+    diagImp:'Volume-driven breach, not a payment risk. Pinnacle pays on time and operates at high volumes near their limit. The FSCM case is the correct resolution path - any independent action duplicates and undermines the control framework.',
+    rationale:[
+      'FSCM case FSCM-2026-0441 is open and actively under review. <span class="obs" data-tip="Case opened Apr 15, 13:40. Assigned to J. Mehta. Status: Under Review. Acting from the Credit workbench while this case is open creates a parallel workflow and audit compliance gap.">Releasing independently bypasses</span> the FSCM control framework entirely.',
+      'Zero overdue AR - the $2,300 overage is entirely from open order accumulation. <span class="obs" data-tip="FBL5N: no overdue invoices. All AR within payment terms. Exposure: $34,100 (order 5001890) + $18,200 (other open orders) = $52,300. Payment behaviour risk: none.">Payment behaviour risk is zero</span> - this is a limit calibration issue, not a credit concern.',
+      'Feb 2026 identical pattern resolved by J. Mehta within 4 hours. <span class="obs" data-tip="Feb 2026: volume breach, zero overdue AR. Controller approved temporary limit increase to $55,000 within 4 hours. Limit reset 10 days later. Credit Manager flagged to review the $50K limit against current run-rate.">Same-day resolution is expected</span> based on precedent.'
+    ],
+    sapChecks:[
+      {key:'UKM_BP - exposure vs limit (segment 1000)', val:'$52,300 vs $50,000 - overage $2,300 (4.6%)', status:'partial'},
+      {key:'FBL5N - overdue AR', val:'Zero overdue invoices', status:'found'},
+      {key:'FSCM - FSCM-2026-0441', val:'Open - assigned to J. Mehta, Apr 15', status:'found'},
+      {key:'Exposure breakdown', val:'$34,100 this order + $18,200 other open = $52,300', status:'partial'},
+      {key:'Credit limit - last reviewed', val:'Mar 2026', status:'found'},
+    ],
+    options:[
+      {id:'A', label:'Monitor FSCM case - no action from Credit workbench', score:91, tier:'h', rec:true,
+       detail:'Monitor FSCM-2026-0441. Once J. Mehta approves, VKM1 releases the delivery block on order 5001890 (or FSCM auto-release if configured). No SAP action required here.',
+       tradeoff:'Correct control path. Audit trail intact. SLA has 2 days remaining - no urgency. Estimated resolution: same day based on Feb 2026 precedent.'},
+      {id:'B', label:'Notify controller to expedite - flag as time-sensitive', score:65, tier:'m', rec:false,
+       detail:'Send a prioritisation note to J. Mehta referencing order 5001890 ($34,100) and the 2-day SLA window. No SAP action - coordination only.',
+       tradeoff:'Appropriate if SLA approaches day 3 without resolution. Premature today - case was opened yesterday and is actively under review.'},
+      {id:'C', label:'Override - release independently via UKM_BP', score:6, tier:'l', rec:false,
+       detail:'Remove the delivery block directly, bypassing the active FSCM credit case.',
+       tradeoff:'Not recommended while an active FSCM case is open. Creates an audit gap, undermines the control framework, and leaves the FSCM case in a conflicted state.'},
+    ],
+    feedbackLoop:'Feb 2026 identical pattern - volume breach, zero overdue AR, resolved by J. Mehta within 4 hours via temporary limit increase. Structural observation: Pinnacle order volume has grown consistently - $50,000 limit set Mar 2026 may already be under-calibrated. Credit Manager flagged to review against current run-rate.',
+    workflow:'Monitor FSCM-2026-0441 (J. Mehta) -> Controller approves in UKM_MY_CREDIT_CASE -> VKM1 releases delivery block on order 5001890 (or FSCM auto-release) -> Order proceeds to outbound delivery (VL01N)'
+  },
+
+  { id:2, customer:'Thornfield Holdings', segment:'1000',
+    creditLimit:80000, exposure:89200, utilPct:111.5,
+    overdueAR:21600, riskScore:45, riskPrev:58, riskDate:'Oct 2025',
+    fscmCase:null, owner:'Credit Controller', lastReview:'Oct 2025',
+    statusType:'overlimit', sev:'h',
+    sevTip:'$9,200 over limit + $21,600 overdue AR + risk score 58->45 + last reviewed Oct 2025 + no FSCM case open',
+    status:'Action Required', execMode:'Request Approval', confidence:'High', confPct:88,
+    nextAction:'Open FSCM Case',
+    decision:'Open FSCM case and request payment for $21,600 overdue AR. No orders currently blocked, but the next standard order (~$12K) will push exposure to ~$101K and trigger an automatic credit hold. Acting now is more controlled than reacting to a hold.',
+    impact:'No current order block, but at 111.5% utilisation with declining risk score, any standard inbound order triggers an automatic hold. Pre-emptive FSCM action avoids an unplanned disruption.',
+    diagWhat:'UKM_BP (segment 1000): $89,200 exposure vs $80,000 limit, overage $9,200 (11.5%). FBL5N: 2 overdue invoices - INV-88412 ($14,200, 42d) and INV-88301 ($7,400, 31d). Risk score: 45/100, down from 58 (Oct 2025 review, 6 months ago). No FSCM case open.',
+    diagImp:'Unlike the other credit cases, no order is currently blocked. At 111.5% utilisation with declining risk and $21,600 overdue AR, the next standard inbound order will trigger an automatic hold. Proactive FSCM action now is more controlled than reactive hold management.',
+    rationale:[
+      '2 overdue invoices totalling $21,600 - both past Net 30 terms. <span class="obs" data-tip="FBL5N: INV-88412 $14,200 (42 days overdue, Net 30 terms). INV-88301 $7,400 (31 days overdue, Net 30 terms). No dispute flag on either invoice. No payment promise recorded.">No payment promise or dispute recorded</span> - a formal request has not yet been made.',
+      'Risk score has fallen from 58 to 45 in 3 months. <span class="obs" data-tip="Score Oct 2025: 58/100. Score today: 45/100. Key driver: payment behaviour component declined from 52 to 38 due to increasing days overdue. Last review: Oct 2025 - 6 months ago. Consistent decline over 3 months unreviewed.">Consistent decline unreviewed for 6 months</span> - annual cadence missed two quarterly inflection points.',
+      'Next standard order (~$12K) will breach the $80K limit automatically. <span class="obs" data-tip="Current exposure: $89,200. Typical Thornfield order size: $10K-$14K based on order history. Adding $12K pushes to ~$101K vs $80K limit. Hold would be applied automatically at order save - no pre-warning possible at that point.">Proactive FSCM action now</span> prevents an unplanned hold from disrupting their order cycle.'
+    ],
+    sapChecks:[
+      {key:'UKM_BP - exposure vs limit (segment 1000)', val:'$89,200 vs $80,000 - overage $9,200 (11.5%)', status:'partial'},
+      {key:'FBL5N - overdue AR', val:'2 invoices, $21,600 (31-42d overdue)', status:'partial'},
+      {key:'S_ALR_87012178 - risk score trend', val:'45/100, down from 58 (Oct 2025)', status:'partial'},
+      {key:'FSCM - open credit cases', val:'No open case', status:'found'},
+      {key:'VA05 - open orders / next order risk', val:'No open orders - next order will breach', status:'none'},
+    ],
+    options:[
+      {id:'A', label:'Open FSCM case + request payment for $21,600 overdue AR', score:87, tier:'h', rec:true,
+       detail:'Create proactive FSCM credit case in UKM_MY_CREDIT_CASE with AR aging detail and risk trend. Controller contacts customer to request payment of both overdue invoices. Simultaneously flag Credit Manager for limit review - $80K may need upward revision given account growth.',
+       tradeoff:'Addresses root cause before it triggers a hold. Gives the customer a formal payment request with context. Limit review runs in parallel.'},
+      {id:'B', label:'Temporary limit increase to $95K in UKM_BP', score:54, tier:'m', rec:false,
+       detail:'Controller approves a temporary limit uplift to $95K in UKM_BP, providing headroom for 1-2 orders while the overdue AR is resolved.',
+       tradeoff:'Prevents the next order hold but does not address the overdue AR or declining risk score. Only appropriate if the customer has confirmed a payment timeline.'},
+      {id:'C', label:'Place new orders on manual credit hold (FD32)', score:38, tier:'m', rec:false,
+       detail:'Configure manual credit check in the customer master (FD32) so all new orders are routed for credit review before confirmation.',
+       tradeoff:'Disruptive to the customer relationship before a formal payment communication has been made. Appropriate as a secondary control if the FSCM case receives no response.'},
+      {id:'D', label:'Monitor without action', score:12, tier:'l', rec:false,
+       detail:'No FSCM case, no payment request. Continue monitoring.',
+       tradeoff:'Deteriorating credit with no intervention means the next order triggers an automatic hold with no pre-packaged analysis ready. Reactive and avoidable.'},
+    ],
+    feedbackLoop:'No prior FSCM cases for Thornfield Holdings in the past 12 months - first time exposure has exceeded limit. Account grew 35% in the past year; credit limit ($80K, last reviewed Oct 2025) may no longer reflect the account size. Credit Manager flagged for a formal limit review using the updated exposure profile.',
+    workflow:'Open FSCM credit case (UKM_MY_CREDIT_CASE) -> Controller contacts Thornfield for payment of INV-88412 and INV-88301 -> Confirm payment timeline -> Credit Manager reviews and adjusts limit in UKM_BP if warranted -> Case closed once AR cleared'
+  },
+
+  { id:3, customer:'Caldera Corp', segment:'1000',
+    creditLimit:50000, exposure:47800, utilPct:95.6,
+    overdueAR:8900, riskScore:38, riskPrev:52, riskDate:'Feb 2026',
+    fscmCase:null, owner:'Credit Controller', lastReview:'Feb 2026',
+    statusType:'watch', sev:'m',
+    sevTip:'95.6% utilisation - next standard order breaches limit + risk score 52->38 in 6 weeks + $8,900 overdue AR',
+    status:'Watch', execMode:'Execute with Review', confidence:'Medium', confPct:80,
+    nextAction:'Pre-emptive AR Request',
+    decision:'Request payment for INV-91203 ($8,900, 35d overdue) now, before the next order triggers an automatic credit hold. Risk score has dropped 14 points in 6 weeks and is 3 points above the FSCM auto-escalation threshold. Any standard order (typical size $8K-$15K) breaches the $50K limit.',
+    impact:'No orders currently blocked. One standard inbound order pushes exposure above $50K and triggers an automatic hold. Risk score velocity (rapid decline) is a leading indicator of a hold event within 4-6 weeks.',
+    diagWhat:'UKM_BP: $47,800 exposure vs $50,000 limit, $2,200 headroom (4.4%). FBL5N: 1 overdue invoice - INV-91203 ($8,900, 35d, Net 30 terms). Risk score: 38/100, down from 52 six weeks ago (Feb 2026 quarterly review). FSCM auto-escalation threshold: 35/100. Next quarterly review: May 2026.',
+    diagImp:'At 95.6% utilisation with a declining risk score, this account needs a pre-emptive touch before it self-escalates. Clearing the overdue invoice reduces exposure by $8,900 and arrests the payment behaviour drag on the risk score.',
+    rationale:[
+      'INV-91203 ($8,900) is 5 days past Net 30 terms with no payment promise. <span class="obs" data-tip="INV-91203: $8,900, invoice date Mar 11, 2026. Due date Apr 10. Overdue by 6 days. No dispute flag, no payment promise. Direct payment request has not been made.">No formal request has been made</span> - this is the lowest-friction intervention available.',
+      'Risk score down from 52 to 38 in 6 weeks. <span class="obs" data-tip="Feb 2026 quarterly review: score 52/100. Current: 38/100. Decline: -14 points. Driver: payment behaviour component, driven by INV-91203 going overdue. FSCM auto-escalation threshold: 35/100.">2 more points triggers FSCM auto-escalation</span> - pre-emptive contact stops the drift.',
+      'Next standard order breaches the $50K limit automatically. <span class="obs" data-tip="Current exposure: $47,800. Credit limit: $50,000. Headroom: $2,200. Typical Caldera order size: $8,000-$15,000. Any standard order immediately exceeds the limit and triggers an automatic hold at order save.">Limit headroom is effectively zero</span> for any standard-sized order.'
+    ],
+    sapChecks:[
+      {key:'UKM_BP - exposure vs limit (segment 1000)', val:'$47,800 vs $50,000 - $2,200 headroom (95.6%)', status:'partial'},
+      {key:'FBL5N - overdue AR', val:'1 invoice, $8,900 (35d overdue)', status:'partial'},
+      {key:'S_ALR_87012178 - risk score trend', val:'38/100, down from 52 (Feb 2026)', status:'partial'},
+      {key:'FSCM - auto-escalation threshold', val:'35/100 - current score 38, 3 points above trigger', status:'partial'},
+      {key:'Quarterly review due', val:'May 2026 - approximately 2 weeks', status:'later'},
+    ],
+    options:[
+      {id:'A', label:'Request payment for INV-91203 + flag for May limit review', score:82, tier:'h', rec:true,
+       detail:'Send payment request for INV-91203 ($8,900) to Caldera accounts payable contact. Flag the May 2026 quarterly review to include a credit limit reassessment using current exposure run-rate. No FSCM case needed at this stage.',
+       tradeoff:'Lowest-friction intervention. Clearing the invoice reduces exposure by $8,900 and removes the payment behaviour drag on the risk score - creating breathing room for the next order.'},
+      {id:'B', label:'Preventive limit increase to $60K in UKM_BP', score:66, tier:'m', rec:false,
+       detail:'Controller approves a preventive limit increase to $60K in UKM_BP, providing headroom for 2-3 standard orders while overdue AR is cleared and risk score stabilises.',
+       tradeoff:'Removes the immediate hold risk but does not address the overdue AR or risk score decline. Appropriate only if the account relationship warrants it and a payment timeline is confirmed.'},
+      {id:'C', label:'Trigger early quarterly review + credit watch alert', score:58, tier:'m', rec:false,
+       detail:'Pull the May 2026 quarterly review forward to this week. Set a credit watch alert so any new order above $2,200 is flagged before confirmation.',
+       tradeoff:'More comprehensive but adds overhead for a small account. The watch alert is worth setting regardless and can run in parallel with Option A.'},
+      {id:'D', label:'Wait for May quarterly review', score:32, tier:'l', rec:false,
+       detail:'No action until the scheduled May 2026 quarterly review.',
+       tradeoff:'The next standard order triggers an automatic hold before then. Risk score is 3 points above the FSCM auto-escalation threshold. Waiting is high-risk for a low-effort intervention.'},
+    ],
+    feedbackLoop:'No prior credit events for Caldera Corp in the past 12 months - clean payment history until now. Pattern observed across 4 similar accounts in Q1: rapid risk score decline (>10 points in 6 weeks) is a reliable leading indicator of a hold event within 4-6 weeks. Early intervention at the 38/100 threshold avoided holds in 3 of those 4 cases.',
+    workflow:'Send payment request for INV-91203 to Caldera AP contact -> Confirm payment commitment -> Update FSCM watch flag if risk score reaches 35 -> May quarterly review includes limit reassessment -> No SAP block expected if payment received before next order'
+  },
+];
+
+function fmtMoney(n) {
+  return '$' + n.toLocaleString('en-US');
+}
+
+const _selectedCreditOpts = {};
+
+function renderCreditTable() {
+  document.getElementById('credit-tbody').innerHTML = creditData.map((d,i) => {
+    const utilColor = d.utilPct > 100 ? 'red' : d.utilPct > 90 ? 'amber' : 'green';
+    const scoreColor = d.riskScore < 35 ? 'red' : d.riskScore < 60 ? 'amber' : 'green';
+    const trendHtml = d.riskScore < d.riskPrev
+      ? `<span style="color:var(--red)">&#9660; from ${d.riskPrev}</span>`
+      : `<span style="color:var(--green)">Stable</span>`;
+    return `<tr data-id="${i}" data-ctype="${d.statusType}" onclick="openCreditCase(${i})">
+      <td><span class="sev sev-${d.sev}" data-tip="${d.sevTip}">${d.sev==='l'?'i':'!'}</span></td>
+      <td><div class="fw7">${d.customer}</div><div class="td-sub">Seg ${d.segment} &middot; Last review: ${d.lastReview}</div></td>
+      <td><div class="fw7" style="color:var(--${utilColor})">${fmtMoney(d.exposure)}</div><div class="td-sub">Limit: ${fmtMoney(d.creditLimit)}</div></td>
+      <td class="fw7" style="color:var(--${utilColor})">${d.utilPct}%</td>
+      <td>${d.overdueAR > 0 ? `<span style="color:var(--amber)">${fmtMoney(d.overdueAR)}</span>` : '<span style="color:var(--muted)">None</span>'}</td>
+      <td><div class="fw7" style="color:var(--${scoreColor})">${d.riskScore}/100</div><div class="td-sub" style="font-size:10px">${trendHtml}</div></td>
+      <td style="font-size:11.5px">${d.fscmCase ? `<span style="color:var(--cyan)">${d.fscmCase}</span>` : '<span style="color:var(--muted)">None</span>'}</td>
+      <td style="font-size:12px;color:var(--text2)">${d.nextAction}</td>
+      <td class="status-cell">${creditPillFor(d.status)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function creditPillFor(s) {
+  const m = {'Action Required':'pill-blocked','Under Review':'pill-review','Watch':'pill-pending',Submitted:'pill-submitted',Released:'pill-approved',Overridden:'pill-overridden',Deferred:'pill-deferred'};
+  return `<span class="pill ${m[s]||'pill-deferred'}">${s}</span>`;
+}
+
+function openCreditCase(id) {
+  activeRow = document.querySelector('#credit-table tbody tr[data-id="'+id+'"]');
+  const d = creditData[id];
+  _selectedCreditOpts[id] = d.options ? (d.options.find(o=>o.rec) || d.options[0]) : null;
+  const selOptId = _selectedCreditOpts[id] ? _selectedCreditOpts[id].id : null;
+  const execLabel = d.execMode === 'Execute with Review' ? 'Execute with Review' : 'Submit for Approval';
+  const primaryLabel = selOptId ? execLabel + ' - Option ' + selOptId : execLabel;
+  const utilColor = d.utilPct > 100 ? 'red' : d.utilPct > 90 ? 'amber' : 'green';
+  const scoreColor = d.riskScore < 35 ? 'red' : d.riskScore < 60 ? 'amber' : 'green';
+  openDrawer('Credit Risk Agent', d.customer + ' - Credit Review', `
+    <div class="dw-meta">
+      <span class="dw-val" style="color:var(--${utilColor})">${d.utilPct}% utilized</span>
+      <span class="fw7" style="color:var(--${utilColor})">${fmtMoney(d.exposure)} exposure</span>
+      <span class="itag itag-credit">Credit</span>
+      ${execBadge(d.execMode)}
+    </div>
+    <div class="dw-decision">
+      <div class="dw-dec-lbl">Decision Required</div>
+      <div class="dw-dec-text">${d.decision}</div>
+      <div class="dw-impact"><b style="color:var(--amber)">Impact if ignored:</b> ${d.impact}</div>
+    </div>
+    <div class="dw-ctx">
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--${utilColor})">${fmtMoney(d.exposure)}</div><div class="dw-ctx-l">Exposure</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v">${fmtMoney(d.creditLimit)}</div><div class="dw-ctx-l">Credit Limit</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--${d.overdueAR>0?'amber':'green'})">${d.overdueAR>0?fmtMoney(d.overdueAR):'None'}</div><div class="dw-ctx-l">Overdue AR</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--${scoreColor})">${d.riskScore}/100</div><div class="dw-ctx-l">Risk Score</div></div>
+    </div>
+    <div class="dw-diag">
+      <div class="dw-diag-lbl">Diagnosis</div>
+      <div class="dw-diag-w">${d.diagWhat}</div>
+      <div class="dw-diag-i">${d.diagImp}</div>
+    </div>
+    <div class="dw-sect">
+      <div class="dw-sect-lbl">Key Findings</div>
+      ${d.rationale.map(r=>`<div class="dw-rat-item">${r}</div>`).join('')}
+    </div>
+    ${d.sapChecks?`<div class="sap-probes"><div class="sap-probe-lbl">Agent Investigation</div>${d.sapChecks.map(c=>`<div class="sap-probe-row"><span class="sap-probe-key">${c.key}</span><span class="sap-probe-val sap-probe-${c.status}">${c.val}</span></div>`).join('')}</div>`:''}
+    ${d.options?`<div class="dw-sect-lbl" style="margin:10px 0 6px">Options Evaluated <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;font-size:10px">- click to select before executing</span></div><div class="opts-grid">${d.options.map(o=>`<div class="opt-row${o.rec?' opt-rec':''}${o.id===selOptId?' opt-active':''}" data-opt="${o.id}" onclick="selectCreditOpt(${id},'${o.id}')">${o.rec?'<div class="opt-rec-tag">Recommended</div>':''}<div class="opt-head"><span class="opt-sel-indicator"></span><span class="opt-id">${o.id}</span><span class="opt-label">${o.label}</span><span class="opt-score opt-score-${o.tier}">${o.score}</span></div><div class="opt-detail">${o.detail}</div><div class="opt-tradeoff">${o.tradeoff}</div></div>`).join('')}</div>`:''}
+    ${d.feedbackLoop?`<div class="feedback-loop"><div class="feedback-lbl">Agent Feedback Loop</div><div class="feedback-text">${d.feedbackLoop}</div></div>`:''}
+    <div class="dw-workflow"><b>SAP Workflow:</b> ${d.workflow}</div>`,
+  `<button class="btn btn-primary" id="dw-credit-btn" onclick="submitCredit(${id})">${primaryLabel}</button>
+   <button class="btn btn-warn" onclick="openOverride(r=>overrideCredit(${id},r))">Override with Reason</button>
+   <button class="btn btn-ghost" onclick="deferCredit(${id})">Defer</button>`);
+}
+
+function selectCreditOpt(caseId, optId) {
+  const d = creditData[caseId];
+  if (!d.options) return;
+  _selectedCreditOpts[caseId] = d.options.find(o => o.id === optId);
+  document.querySelectorAll('#dw-body .opt-row[data-opt]').forEach(el => el.classList.remove('opt-active'));
+  const card = document.querySelector('#dw-body .opt-row[data-opt="'+optId+'"]');
+  if (card) card.classList.add('opt-active');
+  const btn = document.getElementById('dw-credit-btn');
+  if (btn) {
+    const execLabel = creditData[caseId].execMode === 'Execute with Review' ? 'Execute with Review' : 'Submit for Approval';
+    btn.textContent = execLabel + ' - Option ' + optId;
+  }
+}
+
+function submitCredit(id) {
+  const d = creditData[id];
+  const selOpt = d.options ? (_selectedCreditOpts[id] || d.options.find(o=>o.rec) || d.options[0]) : null;
+  const status = d.execMode === 'Request Approval' ? 'Submitted' : 'Released';
+  setStatusCell('credit-table', id, status);
+  markActed('credit-table', id);
+  updateBadge('badge-credit', -1);
+  closeDrawer();
+  showToast(d.execMode === 'Request Approval' ? 'Submitted for approval' : 'Executed with review', 'SAP workflow initiated: ' + d.workflow, 'ok');
+  const baseAction = status === 'Submitted' ? 'Submitted for Approval' : 'Executed with Review';
+  const uAction = selOpt ? baseAction + ' - Option ' + selOpt.id + ': ' + selOpt.label : baseAction;
+  logAudit({ workbench:'Credit Risk Agent', entity:'Customer Credit', rec:d.customer, userAction:uAction, agentAction:d.decision, confidence:d.confidence, execMode:d.execMode, status:status, pendingWith:d.owner, by:'Credit Analyst' });
+}
+
+function overrideCredit(id, reason) {
+  const d = creditData[id];
+  setStatusCell('credit-table', id, 'Overridden');
+  markActed('credit-table', id);
+  updateBadge('badge-credit', -1);
+  closeDrawer();
+  showToast('Override recorded', 'Reason: ' + reason, 'warn');
+  logAudit({ workbench:'Credit Risk Agent', entity:'Customer Credit', rec:d.customer, userAction:'Manual Override: '+reason, agentAction:d.decision, confidence:d.confidence, execMode:'Override', status:'Overridden', pendingWith:'Audit', by:'Credit Analyst' });
+}
+
+function deferCredit(id) {
+  const d = creditData[id];
+  setStatusCell('credit-table', id, 'Deferred');
+  markActed('credit-table', id);
+  updateBadge('badge-credit', -1);
+  closeDrawer();
+  showToast('Deferred', 'Case queued for next review cycle.', 'info');
+  logAudit({ workbench:'Credit Risk Agent', entity:'Customer Credit', rec:d.customer, userAction:'Deferred', agentAction:d.decision, confidence:d.confidence, execMode:d.execMode, status:'Deferred', pendingWith:d.owner, by:'Credit Analyst' });
+}
+
+function creditFilter(el, type) {
+  document.querySelectorAll('#screen-credit .filter-bar .fchip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#credit-table tbody tr').forEach(r => {
+    r.style.display = (type === 'all' || r.dataset.ctype === type) ? '' : 'none';
+  });
+}
+
+renderCreditTable();
 // ════════════════════════════════════════════════════════
 </script>
 </body>
