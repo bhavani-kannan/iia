@@ -4,9 +4,27 @@
 
 ## Page: Order Exceptions Workbench
 
-**Scenario 1 — Credit Hold: The Customer Who Was Quietly Getting Riskier**
+**Scenario 1: Order Stuck Before It Even Ships**
 
-A $87,400 order from MetroPlex Industries is sitting blocked. On the surface it looks like a standard credit hold. What SAP tells you is that the customer has exceeded their credit limit. What it doesn't tell you is why — or what to do about it. The agent goes further: it identifies that the breach is driven entirely by $48,000 in overdue invoices, not by the order itself, and that the customer's risk score has quietly deteriorated from 41 to 28 since the last annual review — falling below the escalation threshold without anyone noticing. It also surfaces a prior precedent from November 2025 where the same situation was resolved in 8 days via a payment demand. The agent packages the entire case for the credit controller so they can act immediately, rather than re-investigating from scratch.
+**The situation**
+
+MetroPlex Industries has placed an order worth $87,400. The order has not moved to the warehouse for packing and shipping. It has been sitting for 4 days, already past the internal SLA.
+
+**Why it is stuck**
+
+The company has a rule: before shipping to any customer, check whether the total of what they currently owe (unpaid invoices plus the value of this new order) exceeds the credit limit set for them. If it does, stop the order automatically until someone reviews it. SAP enforces this rule. In this case, MetroPlex has $48,000 in unpaid invoices from previous months sitting overdue. Adding this new $87,400 order pushes their total outstanding above the $100,000 limit. So SAP has frozen the order and notified the credit controller.
+
+**What the credit controller sees today without the agent**
+
+SAP shows the controller that the order is blocked and displays the exposure versus the limit. What it does not do is explain why the exposure grew, how long the customer's payment behaviour has been deteriorating, what the fastest resolution path looks like, or whether this situation has occurred before. The controller has to piece that together manually - moving between the overdue invoice report, the customer risk score, payment history records, and old case notes. That takes time, and in the meantime the order sits and the SLA clock keeps running.
+
+**What the agent does**
+
+The agent runs that diagnosis automatically. It queries the customer's unpaid invoices and identifies that three specific overdue invoices totalling $48,000 are the sole reason the limit has been breached - the order itself is not the problem. It checks the customer's risk score history and finds it has been declining for three months, from 41 to 28, crossing the internal escalation threshold without triggering a review because the formal review cycle only runs once a year. It then checks prior cases for this customer and finds that in November 2025, the exact same situation was resolved in 8 days by asking the customer to pay the overdue invoices as a condition of releasing the order.
+
+**The outcome**
+
+The credit controller receives a ready-to-act recommendation: request payment of the overdue invoices, and release the order once the commitment is received. No manual investigation needed. The full context - root cause, resolution path, and a directly comparable precedent - is already packaged. The agent also flags that a once-a-year review cycle is insufficient for a customer whose payment behaviour has been changing month to month, so the same situation does not quietly develop again.
 
 **Scenario 2 — Billing Block: A Contract That Renewed But the System Didn't Know**
 
