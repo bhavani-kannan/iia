@@ -153,6 +153,28 @@ button,select,input,textarea{font-family:inherit;}
 #delivery-table th:nth-child(7),#delivery-table td:nth-child(7){width:128px;}
 #delivery-table th:nth-child(8),#delivery-table td:nth-child(8){width:188px;}
 #delivery-table th:nth-child(9),#delivery-table td:nth-child(9){width:106px;}
+/* Receivables table column overrides */
+#rec-table td:nth-child(2),#rec-table td:nth-child(8){white-space:normal;}
+#rec-table th:nth-child(1),#rec-table td:nth-child(1){width:28px;}
+#rec-table th:nth-child(2),#rec-table td:nth-child(2){width:172px;}
+#rec-table th:nth-child(3),#rec-table td:nth-child(3){width:88px;}
+#rec-table th:nth-child(4),#rec-table td:nth-child(4){width:98px;}
+#rec-table th:nth-child(5),#rec-table td:nth-child(5){width:76px;}
+#rec-table th:nth-child(6),#rec-table td:nth-child(6){width:86px;}
+#rec-table th:nth-child(7),#rec-table td:nth-child(7){width:112px;}
+#rec-table th:nth-child(8),#rec-table td:nth-child(8){width:190px;}
+#rec-table th:nth-child(9),#rec-table td:nth-child(9){width:94px;}
+/* Cash table column overrides */
+#cash-table td:nth-child(2),#cash-table td:nth-child(8){white-space:normal;}
+#cash-table th:nth-child(1),#cash-table td:nth-child(1){width:28px;}
+#cash-table th:nth-child(2),#cash-table td:nth-child(2){width:172px;}
+#cash-table th:nth-child(3),#cash-table td:nth-child(3){width:88px;}
+#cash-table th:nth-child(4),#cash-table td:nth-child(4){width:98px;}
+#cash-table th:nth-child(5),#cash-table td:nth-child(5){width:76px;}
+#cash-table th:nth-child(6),#cash-table td:nth-child(6){width:86px;}
+#cash-table th:nth-child(7),#cash-table td:nth-child(7){width:112px;}
+#cash-table th:nth-child(8),#cash-table td:nth-child(8){width:190px;}
+#cash-table th:nth-child(9),#cash-table td:nth-child(9){width:94px;}
 .data-table tbody tr{cursor:pointer;transition:background .1s;}
 .data-table tbody tr:hover{background:rgba(255,255,255,0.025);}
 .data-table tbody tr.selected{background:rgba(56,192,232,0.05);}
@@ -686,18 +708,121 @@ button,select,input,textarea{font-family:inherit;}
     </div>
 
     <div id="screen-receivables" class="screen">
-      <div class="wip-screen">
-        <div class="wip-icon">RE</div>
-        <div class="wip-label">Receivables Workbench</div>
-        <div class="wip-sub">Coming in Iteration 5</div>
+      <div class="wb-head">
+        <div>
+          <div class="wb-title">Receivables Workbench</div>
+          <div class="wb-sub">AR Collections Agent &middot; Disputes, deductions, dunning and credit notes ranked by DSO impact</div>
+        </div>
+      </div>
+      <div class="kpi-strip" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi-card" style="--kpi-accent:var(--red)">
+          <div class="kpi-val text-red">$75,000</div>
+          <div class="kpi-label">Overdue AR in Queue</div>
+          <div class="kpi-delta up">5 items requiring action</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--amber)">
+          <div class="kpi-val text-amber">2</div>
+          <div class="kpi-label">Open Disputes</div>
+          <div class="kpi-delta flat">Frontier Corp &middot; Vantage Corp deduction</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--red)">
+          <div class="kpi-val text-red">1</div>
+          <div class="kpi-label">Dunning Escalation</div>
+          <div class="kpi-delta up">Galveston Partners 67d &middot; legal threshold</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--green)">
+          <div class="kpi-val text-green">$218</div>
+          <div class="kpi-label">Write-off Candidates</div>
+          <div class="kpi-delta dn">7 residuals &middot; systemic root cause identified</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <div class="fchip active" onclick="recFilter(this,'all')">All</div>
+        <div class="fchip" onclick="recFilter(this,'dispute')">Dispute</div>
+        <div class="fchip" onclick="recFilter(this,'dunning')">Dunning</div>
+        <div class="fchip" onclick="recFilter(this,'credit')">Credit Note</div>
+        <div class="fchip" onclick="recFilter(this,'writeoff')">Write-off</div>
+      </div>
+      <div class="tpanel">
+        <div class="tpanel-head">
+          <div class="tpanel-title">AR Exception Queue - Ranked by DSO Impact</div>
+          <div class="tpanel-meta">5 items &middot; $75,218 total</div>
+        </div>
+        <table class="data-table" id="rec-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Customer / Invoice</th>
+              <th>Amount</th>
+              <th>Issue Type</th>
+              <th>Days Overdue</th>
+              <th>Confidence</th>
+              <th>SAP Tx</th>
+              <th>Next Action</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="rec-tbody"></tbody>
+        </table>
       </div>
     </div>
 
     <div id="screen-cash" class="screen">
-      <div class="wip-screen">
-        <div class="wip-icon">CA</div>
-        <div class="wip-label">Cash Workbench</div>
-        <div class="wip-sub">Coming in Iteration 6</div>
+      <div class="wb-head">
+        <div>
+          <div class="wb-title">Cash Application Workbench</div>
+          <div class="wb-sub">Cash Application Agent &middot; Unallocated, misapplied and on-account payments ranked by DSO impact</div>
+        </div>
+      </div>
+      <div class="kpi-strip" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi-card" style="--kpi-accent:var(--red)">
+          <div class="kpi-val text-red">$61,700</div>
+          <div class="kpi-label">Unallocated Cash</div>
+          <div class="kpi-delta up">3 items pending allocation</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--amber)">
+          <div class="kpi-val text-amber">1</div>
+          <div class="kpi-label">Misapplied Payment</div>
+          <div class="kpi-delta up">Midlands Trading &middot; wrong customer account</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--cyan)">
+          <div class="kpi-val text-cyan">$34,200</div>
+          <div class="kpi-label">EBS Auto-Match Failure</div>
+          <div class="kpi-delta flat">Hargreaves Ltd &middot; combinatorial match found</div>
+        </div>
+        <div class="kpi-card" style="--kpi-accent:var(--green)">
+          <div class="kpi-val text-green">$5,600</div>
+          <div class="kpi-label">Recoverable Today</div>
+          <div class="kpi-delta dn">Brentford Corp &middot; delivery note resolves hold</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <div class="fchip active" onclick="cashFilter(this,'all')">All</div>
+        <div class="fchip" onclick="cashFilter(this,'unallocated')">Unallocated</div>
+        <div class="fchip" onclick="cashFilter(this,'misapplied')">Misapplied</div>
+        <div class="fchip" onclick="cashFilter(this,'onaccount')">On-Account</div>
+      </div>
+      <div class="tpanel">
+        <div class="tpanel-head">
+          <div class="tpanel-title">Cash Exception Queue - Ranked by DSO Impact</div>
+          <div class="tpanel-meta">3 items &middot; $71,700 in unresolved cash</div>
+        </div>
+        <table class="data-table" id="cash-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Customer / Reference</th>
+              <th>Amount</th>
+              <th>Issue Type</th>
+              <th>Days Open</th>
+              <th>Confidence</th>
+              <th>SAP Tx</th>
+              <th>Next Action</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="cash-tbody"></tbody>
+        </table>
       </div>
     </div>
 
@@ -1996,6 +2121,547 @@ function deliveryFilter(el, type) {
 }
 
 renderDeliveryTable();
+// ════════════════════════════════════════════════════════
+// RECEIVABLES WORKBENCH
+// ════════════════════════════════════════════════════════
+const recData = [
+  { id:0, customer:'Galveston Partners', invoice:'INV-90341', amount:'$18,400', amountNum:18400,
+    issueType:'dunning', issueLabel:'Dunning', daysOverdue:67, sev:'h',
+    sevTip:'67 days overdue + failed payment promise (Mar 20) + 2 open orders $22,000 at risk of shipping - forward exposure $40,400 without credit hold',
+    confidence:'High', confPct:93, execMode:'Request Approval',
+    sapTx:'F150 / FD32', status:'Escalation Required', nextAction:'Escalate + Credit Hold',
+    decision:'Two parallel actions requiring Credit Manager authorisation: (1) advance dunning to level 3 (legal notice) via F150 on the next dunning cycle or request manual escalation outside the cycle given the failed payment promise; (2) Credit Manager places a manual credit hold (FD32 in classic credit management or UKM_BP if FSCM is active) to prevent the two open orders ($22,000) from shipping before the overdue situation is resolved.',
+    impact:'Without a credit hold, $22,000 in open orders could ship - growing unrecovered exposure from $18,400 to $40,400. The failed payment promise is a material change in customer behaviour and warrants Credit Manager involvement, not just standard dunning.',
+    diagWhat:'FBL5N: invoice INV-90341 ($18,400) at 67 days overdue. No dispute flag, no deduction code, no credit memo request pending. F150 dunning run has placed the invoice at dunning level 2 - second dunning notice generated Apr 5. No response received. Payment promise recorded Mar 20 (full payment by Mar 31) was not honoured.',
+    diagImp:'VA05 (List of Open Sales Orders) for Galveston Partners: 2 open orders totalling $22,000 confirmed and not yet shipped. No credit hold currently in place. Standard F150 dunning has no visibility into the open order pipeline - the agent surfaces the forward exposure the dunning process cannot see.',
+    rationale:[
+      'Failed payment promise (Mar 20) for full payment by Mar 31 - no payment received, no follow-up from customer. <span class="obs" data-tip="FBL5N: no dispute flag, no deduction, no query on INV-90341. Payment promise recorded in FSCM/CRM: Mar 20, commitment to pay by Mar 31. No payment received. No contact since Apr 5 dunning notice (11 days). This is a material behavioural change from a customer that previously paid on time.">This is a material behavioural change</span> - passive dunning is no longer the appropriate response.',
+      'VA05: 2 open orders ($22,000) confirmed, not yet shipped. <span class="obs" data-tip="VA05 query: Galveston Partners. Order 1: $13,400, confirmed, pick list not yet created. Order 2: $8,600, confirmed, delivery scheduled Apr 18. No credit hold applied. Orders were confirmed before INV-90341 reached 60 days overdue - Galveston had not yet hit their credit limit so no automatic hold was triggered.">Standard F150 dunning has no visibility into the pipeline</span> - if both orders ship, unrecovered exposure doubles to $40,400.',
+      'Agent calculates forward exposure: $18,400 overdue + $22,000 open orders = $40,400 if orders ship. <span class="obs" data-tip="This is the core non-obvious finding. Standard AR reporting shows only $18,400 at risk. The agent cross-references VA05 to compute the total exposure if no credit hold is applied. The difference between acting now (stop $22,000 from shipping) vs acting after the fact (try to recover $40,400) is significant.">Acting now prevents a doubling</span> of unrecovered exposure - the credit hold is the priority action.'
+    ],
+    sapChecks:[
+      {key:'FBL5N - INV-90341 status',val:'67 days overdue, dunning level 2, no dispute flag',status:'partial'},
+      {key:'F150 - dunning history',val:'Level 2 notice Apr 5 - no response',status:'partial'},
+      {key:'Payment promise (FSCM/CRM)',val:'Mar 20 promise - not honoured, no contact since Apr 5',status:'none'},
+      {key:'VA05 - open orders for Galveston',val:'2 orders, $22,000, confirmed and not yet shipped',status:'partial'},
+      {key:'FD32 / UKM_BP - credit hold status',val:'No credit hold currently in place',status:'none'},
+    ],
+    options:[
+      {id:'A',label:'Escalate to level 3 (legal notice) + Credit Manager applies credit hold',score:91,tier:'h',rec:true,
+       detail:'AR coordinator packages the case for Credit Manager: $18,400 overdue, failed payment promise, 2 open orders at risk. Credit Manager authorises F150 manual escalation to level 3 and places a credit hold via FD32 (classic) or UKM_BP (FSCM) to prevent the $22,000 from shipping. Legal notice communicates the escalation to the customer.',
+       tradeoff:'Requires Credit Manager authorisation - not an AR coordinator unilateral action. The case is fully packaged; Credit Manager needs only to approve and execute. Every day without a hold is a day the $22,000 remains at risk.'},
+      {id:'B',label:'Escalate dunning only - defer credit hold decision',score:52,tier:'m',rec:false,
+       detail:'Advance dunning to level 3 via F150 but do not request a credit hold at this stage. Monitor whether the legal notice triggers a payment response.',
+       tradeoff:'Leaves $22,000 in open orders exposed. If both orders ship before the customer responds to the legal notice, total unrecovered exposure doubles. Credit hold is the higher-priority action given the failed promise.'},
+      {id:'C',label:'Request payment directly before escalating',score:34,tier:'l',rec:false,
+       detail:'Contact Galveston Partners directly to request payment before advancing to legal dunning level.',
+       tradeoff:'Direct contact has already been exhausted: dunning level 2 generated Apr 5 with no response. The failed payment promise with no follow-up from the customer is the signal that direct contact is no longer sufficient. Escalation is overdue.'},
+    ],
+    feedbackLoop:'Galveston Partners was a clean-paying account for the prior 18 months - this is the first time a payment promise has been broken. The pattern of 2 open orders sitting exposed during a dunning escalation is systemic: standard F150 dunning has no order pipeline visibility. Flagged to AR Manager: configure a credit alert rule in UKM_BP to flag accounts reaching dunning level 2 for a pre-emptive VA05 check before the next order is confirmed.',
+    workflow:'AR coordinator packages case for Credit Manager -> Credit Manager authorises level 3 dunning escalation via F150 manual run -> Credit Manager applies credit hold (FD32 / UKM_BP) -> Legal notice generated and sent to Galveston Partners -> AR coordinator documents escalation in FSCM case / CRM for audit trail'
+  },
+
+  { id:1, customer:'Hargreaves Ltd', invoice:'INV-90289 + related', amount:'$8,100', amountNum:8100,
+    issueType:'dispute', issueLabel:'Dispute', daysOverdue:14,
+    sev:'m',
+    sevTip:'Formal pricing dispute via UDM_DISPUTE + no SAP-documented price commitment at $66.36 + 4 prior identical approvals in 12 months - commercial decision, not a systems fix',
+    confidence:'High', confPct:96, execMode:'Request Approval',
+    sapTx:'UDM_DISPUTE / VF01', status:'Under Dispute', nextAction:'Escalate with Evidence',
+    decision:'Sales manager and AR coordinator review the FSCM dispute case in UDM_DISPUTE with the agent-packaged evidence: (a) no SAP-documented price commitment at $66.36/unit; (b) the sales manager\'s own countersignature explicitly authorised $70.00/unit at billing; (c) 4 prior B1 cases showing the same recurring pattern at $66-67/unit. Commercial decision: issue a credit note for the $3.64/unit difference as a goodwill gesture (VF11 cancellation + rebill or credit memo request), or hold firm on $70.00 and escalate.',
+    impact:'$8,100 invoice on hold. DSO impact is secondary to the commercial precedent risk. If the recurring pattern of approving the deviation is de facto agreed practice, formalising it in a condition record eliminates 4-6 billing blocks and disputes per year.',
+    diagWhat:'Frontier Corp formally disputed INV-90289 ($8,100, invoiced at $70.00/unit) claiming agreed price of $66.36/unit. FSCM dispute case opened in UDM_DISPUTE, linked to the open FI item. Agent cross-referenced the Orders workbench audit log: billing block B1 on this order was released by the sales manager on Apr 15 via VA02 - the manager\'s countersignature explicitly authorised $70.00/unit.',
+    diagImp:'VA25 found no quotation or contract committing $66.36. The manual price entry at $66.36 was a sales rep accommodation, not a contractual obligation. However, 4 prior B1 approvals over 12 months (deviation range $66-67/unit) suggest this is an established de facto commercial price that has never been formalised in SAP.',
+    rationale:[
+      'No SAP-documented price commitment at $66.36. <span class="obs" data-tip="VA25 search: no active quotation for Frontier Corp, material M-8814, with a committed price below $70.00/unit. No contract, no framework agreement, no customer-specific pricing condition supports $66.36. The manual price entry at order creation was a sales rep commercial accommodation - not a contractual obligation.">The $66.36 has no contractual basis in SAP</span> - but the commercial relationship may make it the de facto agreed price.',
+      'Sales manager\'s own countersignature authorised $70.00 on Apr 15 via VA02. <span class="obs" data-tip="VA02 change log: billing block B1 removed Apr 15, 14:22, by sales manager (user: S.KRISHNA). The manager reviewed the $3.64/unit deviation and signed off on $70.00 as the correct billable price. This is directly at odds with the customer\'s dispute claim. The manager either was unaware of the $66.36 accommodation, or the accommodation was verbal and undocumented.">The approver is the same person</span> who must now decide whether to honour the verbal accommodation that was not reflected in the SAP decision.',
+      '4 prior B1 approvals for Frontier Corp in 12 months, all at $66-67/unit, all approved within 1 day. <span class="obs" data-tip="Order history: 4 prior billing block B1 cases for Frontier Corp, M-8814. Deviations: 4.2%, 4.9%, 5.1%, 5.8%. All approved by sales manager within 24 hours. No rejections, no customer disputes on prior invoices. The recurring pattern at the same price range strongly suggests that $66-67/unit is the operating commercial rate for this customer-material combination.">The recurring pattern is the real issue</span> - without a customer-specific condition record, this cycle repeats indefinitely.'
+    ],
+    sapChecks:[
+      {key:'UDM_DISPUTE - dispute case status',val:'Open, linked to INV-90289 FI item',status:'partial'},
+      {key:'VA25 - quotation history, Frontier Corp M-8814',val:'No committed lower price found',status:'found'},
+      {key:'VA02 change log - billing block B1 release',val:'Released Apr 15 by S.KRISHNA at $70.00/unit',status:'found'},
+      {key:'B1 history - Frontier Corp prior deviations',val:'4 approvals in 12 months, $66-67/unit range',status:'partial'},
+      {key:'FBL5N - other open AR, Frontier Corp',val:'No other overdue items',status:'found'},
+    ],
+    options:[
+      {id:'A',label:'Issue credit note for $3.64/unit difference as commercial goodwill gesture',score:78,tier:'h',rec:true,
+       detail:'Sales manager confirms the $66.36 accommodation as the agreed operating price. Credit memo request raised for the $3.64/unit difference. VF01 creates the credit billing document. FI open item partially cleared. Separately: create a customer-specific pricing condition for Frontier Corp at $66.36/unit to eliminate future billing blocks and disputes.',
+       tradeoff:'Resolves the dispute and the customer relationship. Cost: $3.64 x 115 units = ~$419 credit. Benefit: eliminates 4-6 billing blocks and disputes per year. The condition record creation is the structural fix.'},
+      {id:'B',label:'Hold firm on $70.00 - escalate dispute for formal resolution',score:55,tier:'m',rec:false,
+       detail:'Maintain the $70.00/unit invoiced price. Dispute case remains open in UDM_DISPUTE. Sales manager formally communicates to Frontier Corp that the price was authorised via the deviation approval process.',
+       tradeoff:'Commercially risky given the 4-year pattern of approving deviations. Customer may refuse payment or take further action. Only appropriate if the sales manager confirms that $66.36 was never agreed and the prior approvals were errors.'},
+      {id:'C',label:'Formalise condition record first - then resolve dispute',score:44,tier:'l',rec:false,
+       detail:'Create the customer-specific pricing condition for Frontier Corp at $66.36/unit in VK11, then use the new condition as the basis for resolving the dispute (credit note or rebill).',
+       tradeoff:'Correct as a structural fix but adds 1-2 days to the dispute resolution. The dispute needs a commercial decision first - the condition record is the follow-up, not the prerequisite.'},
+    ],
+    feedbackLoop:'Frontier Corp dispute is the downstream consequence of a pricing governance gap: the sales rep accommodated a verbal price agreement at order creation, the manager approved the deviation at billing without querying the underlying accommodation, and no condition record was ever created to formalise it. This cycle has repeated 4 times in 12 months. Creating a ZPR0 customer-material condition record for M-8814 / Frontier Corp at $66.36/unit resolves the root cause - eliminating billing blocks, countersignature overhead, and now an FSCM dispute case.',
+    workflow:'Sales manager reviews FSCM dispute case UDM_DISPUTE -> Commercial decision made -> If credit: VF11 cancellation (or credit memo request) -> VF01 credit billing document -> FI item partially cleared -> Create customer-specific pricing condition VK11 for M-8814/Frontier Corp -> Future orders price correctly, no B1 block, no dispute'
+  },
+
+  { id:2, customer:'Vantage Corp', invoice:'INV-90412', amount:'$2,400', amountNum:2400,
+    issueType:'dispute', issueLabel:'Deduction', daysOverdue:8,
+    sev:'m',
+    sevTip:'$2,400 residual on $47,600 invoice - likely Q2 rebate claim via VBO3 + $20 overage suggests customer calculates on gross vs SAP net basis',
+    confidence:'High', confPct:91, execMode:'Execute with Review',
+    sapTx:'VBO3 / F-32', status:'Pending Resolution', nextAction:'Rebate Settlement',
+    decision:'Confirm $2,380 of the $2,400 deduction as a valid Q2 rebate claim via the rebate settlement module (VBO3 partial settlement → credit memo request → VF01). The $20 overage is a calculation methodology difference (customer calculates 5% on gross-of-freight, SAP calculates on net) - recover via a small follow-on invoice or write off under policy threshold. Do NOT post a direct FB70 credit note - that bypasses the rebate settlement module and breaks the accrual/settlement reconciliation.',
+    impact:'The $2,400 open residual on an otherwise-paid invoice creates a false overdue signal in FBL5N. If the rebate claim is valid, denying it damages the commercial relationship. The $20 discrepancy is the only genuine open question.',
+    diagWhat:'Vantage Corp paid $45,200 against invoice $47,600 with no remittance explanation for the $2,400 shortfall. FBL5N shows the invoice partially open at $2,400. Agent checks VBO3 (Display Rebate Agreement - not VB03 which is pricing condition records): active volume rebate agreement for Vantage Corp with 5% Q2 rebate on net sales.',
+    diagImp:'Agent calculates accrued rebate: Q2 net sales to date = $47,600 (this invoice only, no prior Q2 invoices). 5% of $47,600 = $2,380. Deduction is $2,400 - $20 more than the valid rebate. VBO3 settlement history shows no prior Q2 partial settlements. The $20 overage is a known pattern when customer and SAP use different rebate base values (gross-of-freight vs net).',
+    rationale:[
+      'VBO3 (Rebate Agreement) confirms 5% Q2 volume rebate for Vantage Corp. <span class="obs" data-tip="VBO3: rebate agreement 1000234, Vantage Corp, valid Q2 2026. Rebate rate: 5% on net Q2 sales. Settlement history: no prior partial settlements this quarter. Accrual position: 5% x $47,600 net invoice value = $2,380. Note: VB03 is a different transaction (display pricing condition records) - the rebate agreement is in VBO3 (three characters, zero not O).">The $2,380 deduction is mathematically valid</span> against the active rebate agreement - this is not a payment error.',
+      'The $20 overage is a calculation method difference. <span class="obs" data-tip="Customer deduction: $2,400. SAP calculation: 5% x $47,600 net = $2,380. Difference: $20. The customer calculates 5% on the gross invoice value ($48,000 before freight adjustment) rather than the SAP net value ($47,600 after freight). This is a documented pattern in rebate programs with freight-adjusted base values - the discrepancy is structural, not a payment error.">Customer calculates on gross-of-freight</span> ($48,000 x 5% = $2,400) while SAP calculates on net ($47,600 x 5% = $2,380).',
+      'Direct FB70 credit note would bypass the rebate settlement module entirely. <span class="obs" data-tip="FB70 posts a direct FI document against the GL account, with no link to the SD rebate agreement. This leaves the rebate accrual in VBO3 uncleared, creates a GL/rebate reconciliation gap, and breaks the quarterly rebate settlement report. The correct path is VBO3 partial settlement → credit memo request → VF01 credit billing document - this clears the accrual, creates a linked credit note, and maintains the audit trail.">FI-only posting creates an irreconcilable accrual gap</span> in the rebate module - the correct path is through VBO3 settlement.'
+    ],
+    sapChecks:[
+      {key:'FBL5N - INV-90412 open balance',val:'$2,400 residual on $47,600 invoice',status:'partial'},
+      {key:'VBO3 - Q2 rebate agreement, Vantage Corp',val:'5% net sales, active, no prior Q2 settlement',status:'found'},
+      {key:'Rebate accrual calculation',val:'5% x $47,600 net = $2,380 valid; $20 overage',status:'partial'},
+      {key:'VBO3 settlement history - Q2',val:'No prior partial settlements this quarter',status:'found'},
+      {key:'Customer base value calculation',val:'5% x $48,000 gross = $2,400 (gross-of-freight)',status:'partial'},
+    ],
+    options:[
+      {id:'A',label:'VBO3 partial settlement for $2,380 + recover $20 separately',score:89,tier:'h',rec:true,
+       detail:'AR coordinator confirms the Q2 rebate claim with Vantage Corp. VBO3 partial settlement initiated for $2,380 - SAP generates a credit memo request. VF01 creates the credit billing document. Invoice residual reduces to $20. The $20 is either invoiced separately (if above administrative cost) or written off under tolerance policy via F-32 with a reason code.',
+       tradeoff:'Correct process through the rebate settlement module. Accrual cleared. Credit note linked to the rebate agreement. Audit trail intact. The $20 is resolved as a rounding/methodology difference - the smallest decision in the case.'},
+      {id:'B',label:'FB70 direct credit note for $2,400 full amount',score:18,tier:'l',rec:false,
+       detail:'Post a direct FB70 credit note for $2,400 against the open AR item.',
+       tradeoff:'Not recommended. FB70 bypasses the VBO3 rebate settlement module entirely - leaves the Q2 rebate accrual open in an uncleared state, breaks the quarterly rebate settlement reconciliation, and creates a GL/subledger discrepancy that requires manual correction. The additional effort to fix this later far exceeds the marginal effort of using the correct VBO3 path now.'},
+      {id:'C',label:'Reject the deduction - request full $2,400 payment',score:22,tier:'l',rec:false,
+       detail:'Treat the $2,400 as an unauthorised deduction and request payment in full from Vantage Corp.',
+       tradeoff:'Commercially incorrect given the valid active rebate agreement. Denying a valid 5% rebate claim that is contractually documented in VBO3 damages the commercial relationship and is not supportable in a dispute. Only appropriate if the rebate agreement has been terminated or the Q2 sales threshold has not been reached.'},
+    ],
+    feedbackLoop:'Vantage Corp has an active Q2 rebate agreement that was not considered in the auto-matching configuration for their account. When EBS or F-28 posts a payment that is exactly 5% short of the invoice, the match should automatically flag a potential rebate deduction for review rather than creating an open item. Flagged to AR Manager: add a rebate-awareness rule in the payment matching configuration for accounts with active VBO3 agreements.',
+    workflow:'AR coordinator confirms Q2 rebate claim with Vantage Corp -> VBO3 partial settlement for $2,380 -> SAP generates credit memo request -> VF01 creates credit billing document -> Apply credit against INV-90412 residual via F-32 (clearing) -> Residual reduces to $20 -> $20 resolved by follow-on collection or write-off with reason code'
+  },
+
+  { id:3, customer:'Caldwell Corp', invoice:'Returns Order RE-10089', amount:'$4,800', amountNum:4800,
+    issueType:'credit', issueLabel:'Credit Note', daysOverdue:8,
+    sev:'m',
+    sevTip:'8 days since goods receipt + returns order not referenced to original invoice + pricing date mismatch ($12 difference) - not a billing oversight but a pricing issue',
+    confidence:'High', confPct:88, execMode:'Execute with Review',
+    sapTx:'VA02 / VF01', status:'Pending', nextAction:'Fix Returns Pricing + Bill',
+    decision:'Correct the returns order (RE-10089) to reference the original billing document so pricing is copied from the original invoice rather than re-determined from current conditions. This requires a VA02 change to update the reference document and re-copy pricing (VA02 → item → conditions → copy from original). Once pricing matches $4,800, run VF01 for the credit billing document.',
+    impact:'8-day delay on a customer credit note creates relationship friction. Caldwell Corp is chasing the credit. The root cause (returns order created without invoice reference causing a price mismatch) means VF01 would currently create a credit note at $4,788 - $12 short of the expected amount - causing a second dispute.',
+    diagWhat:'Returns order RE-10089 created for Caldwell Corp goods return. Return delivery (LR) created and goods receipt posted (movement type 651 - goods received into unrestricted stock). Returns order billing status in VA03 shows "not yet invoiced." VF04 (Billing Due List) confirms the returns order is in the billing queue with no billing block.',
+    diagImp:'Agent checks whether returned material is in QA inspection stock (QA32): MMBE confirms unrestricted stock - material is not quality-managed. QA hold is not the cause. Agent checks the returns order reference field: created without reference to the original invoice. Pricing re-determined from scratch at today\'s conditions - $4,788 vs original $4,800 ($12 difference due to a pricing date change between original invoice date and returns order creation date).',
+    rationale:[
+      'VF04 confirms returns order is in the billing queue - no billing block, eligible for VF01. <span class="obs" data-tip="VF04 filter: returns order RE-10089, billing type LRC (returns credit). Status: eligible for billing. No billing block at order or delivery level. GR posted (movement type 651). The item appears in VF04 - it is ready to bill. The reason VF01 has not been run is that the AR coordinator noticed the $12 price discrepancy in the billing preview and left the item unresolved.">The reason billing stalled is a price preview discrepancy</span> - the coordinator saw $4,788 vs $4,800 and stopped, correctly.',
+      'Returns order created without reference to original invoice - pricing re-determined at today\'s rates. <span class="obs" data-tip="Returns order RE-10089: reference document field blank. SAP re-ran the full pricing procedure at the returns order creation date. Material price condition PR00 for this material/customer combination has a pricing date dependency - the rate changed by $0.10/unit between the original invoice date and the returns order creation date. 120 units x $0.10 = $12 difference. This is a process discipline issue: returns orders for customer-specific pricing should always reference the original invoice.">Pricing date shift of $0.10/unit x 120 units = $12</span> - small in value but enough to prevent billing without correction.',
+      'QA hold was the most plausible alternative cause - eliminated by MMBE check. <span class="obs" data-tip="Movement type 651 can post to QI (quality inspection) stock if the material is quality-managed in the material master. MMBE confirms: returned material posted to unrestricted stock (not QI). Material plant data tab: no quality management flag. QA32 usage decision is not pending. The credit is not being intentionally withheld for QA reasons.">Material is not quality-managed</span> - the hold is a pricing data issue, not an intentional QA control.'
+    ],
+    sapChecks:[
+      {key:'VA03 - returns order RE-10089 billing status',val:'Not yet invoiced',status:'partial'},
+      {key:'VF04 - billing due list (LRC)',val:'RE-10089 eligible, no billing block',status:'found'},
+      {key:'MMBE - returned material stock type',val:'Unrestricted (not QI) - QA hold excluded',status:'found'},
+      {key:'Returns order reference document field',val:'Blank - original invoice not referenced',status:'none'},
+      {key:'Pricing date comparison - original vs returns',val:'$4,800 original vs $4,788 re-determined ($12 difference)',status:'partial'},
+    ],
+    options:[
+      {id:'A',label:'Update returns order reference + re-copy pricing + run VF01',score:90,tier:'h',rec:true,
+       detail:'VA02 change to returns order RE-10089: populate the reference to the original billing document (copy-from field). Re-copy pricing from the original invoice (conditions tab → update → copy from reference). Pricing recalculates to $4,800. Run VF01 for the credit billing document at $4,800. Send credit note to Caldwell Corp.',
+       tradeoff:'Requires SD authorisation to amend the returns order. Correct solution - credit note matches the original invoice amount, no follow-up dispute. Takes 15-30 minutes to execute once authorisation is obtained.'},
+      {id:'B',label:'Bill at $4,788 + send a $12 supplementary credit',score:38,tier:'m',rec:false,
+       detail:'Run VF01 at the current re-determined price ($4,788). Post a separate FB70 GL credit of $12 to cover the discrepancy.',
+       tradeoff:'Creates two documents for what should be one. The $12 FB70 credit bypasses the SD module and creates a minor reconciliation complexity. Only appropriate if the returns order cannot be amended due to a system lock or authorisation gap.'},
+      {id:'C',label:'Cancel returns order and re-raise with invoice reference',score:48,tier:'m',rec:false,
+       detail:'Cancel RE-10089 and create a new returns order with the original invoice referenced correctly from the start.',
+       tradeoff:'Cleaner from a data quality perspective but adds 1-2 days of processing. The VA02 amendment (Option A) achieves the same pricing outcome with less overhead. Cancellation and re-raise is warranted only if the returns delivery has not yet been confirmed.'},
+    ],
+    feedbackLoop:'This is the second returns order created without invoice reference for Caldwell Corp in Q1 2026 - both required retrospective corrections. Flagged to Order Management team: returns orders for customers with custom pricing conditions must reference the original invoice to prevent pricing date drift. A mandatory reference field validation at RE order creation in OVAJ/VOV8 (returns order type configuration) would prevent this class of error systematically.',
+    workflow:'Obtain SD authorisation for VA02 amendment -> VA02: populate reference to original billing document + re-copy pricing (conditions tab) -> Pricing recalculates to $4,800 -> VF01: create credit billing document (LRC type) -> Send credit note $4,800 to Caldwell Corp -> FI open item created and matched against customer account'
+  },
+
+  { id:4, customer:'Portfolio - 7 Accounts', invoice:'Period-end residuals', amount:'$218', amountNum:218,
+    issueType:'writeoff', issueLabel:'Write-off', daysOverdue:16,
+    sev:'l',
+    sevTip:'7 residuals all created Mar 31 period-end + all USD/EUR conversions + OBA1 rounding config gap - systemic root cause, not 7 individual customer errors',
+    confidence:'High', confPct:95, execMode:'Execute with Review',
+    sapTx:'F-32 / OBA1', status:'Pending', nextAction:'Portfolio Write-off + Config Fix',
+    decision:'Two actions: (1) AR Manager writes off the 7 residuals via F-32 with reason codes configured in OBA3 tolerance groups - posting the difference to the write-off GL account. Note: FB50 is not used here as it bypasses the AR subledger and creates a reconciliation gap. (2) FI configuration team reviews OBA1 rounding account settings for USD/EUR to prevent new residuals at the next period-end close.',
+    impact:'$218 total write-off is immaterial. The real value is identifying that a configuration gap generates systematic residuals at every USD/EUR period-end close. Left unresolved, this accumulates across hundreds of invoices over multiple periods and creates a growing reconciliation burden.',
+    diagWhat:'A $47 open balance on Brentford Corp (142 days, 99.8% of invoice cleared) appeared eligible for individual write-off. Agent does not evaluate in isolation - scans FBL5N portfolio-wide for open items below $50, outstanding over 90 days, no dispute code. Finds 7 such residuals totalling $218.',
+    diagImp:'Agent analyses creation dates: all 7 residuals created the same week (period-end, Mar 31 2026). Cross-references the residual amounts to the USD/EUR exchange rate applied on Mar 31: all 7 invoices were originally in EUR, converted to USD, and the residuals correspond precisely to rounding differences at the Mar 31 rate. This is a period-end currency rounding issue in the FI posting configuration (OBA1), not 7 individual customer payment errors.',
+    rationale:[
+      'All 7 residuals were created in the same week (Mar 31 period-end) - not a random distribution. <span class="obs" data-tip="FBL5N scan: 7 open items below $50, over 90 days, no dispute code. Creation dates: Mar 28-Apr 1 (all from the period-end processing window). This is not a coincidence - a single event at period-end generated all 7 residuals simultaneously. Random payment errors would be distributed throughout the period.">Simultaneous creation at period-end is the key pattern signal</span> - it points to a batch process, not individual customer behaviour.',
+      'All 7 are USD/EUR invoices - residuals match Mar 31 USD/EUR rounding differentials precisely. <span class="obs" data-tip="Residual analysis: Invoice 1 ($47, EUR 43.28 at 1.086 = $47.00 USD, rounding: $0.03 gap). Same pattern across all 7 residuals. The FI posting used the daily exchange rate for the invoice date; period-end revaluation at the Mar 31 rate created a small rounding difference that was posted as a separate open item rather than absorbed into the invoice balance. OBA1 exchange rate difference account configuration determines how these differences are handled.">OBA1 rounding account configuration</span> is the structural cause - writing off 7 items treats symptoms while the root cause recurs at every period-end.',
+      'FB50 write-off would bypass the AR subledger - correct path is F-32 with reason code. <span class="obs" data-tip="FB50 posts directly to GL accounts - it does not update the customer sub-ledger. If FB50 is used to credit the write-off GL account, FBL5N still shows the 7 items as open (sub-ledger not cleared). The correct process: F-32 (Clear Customer), selecting the open items and using a reason code configured in OBA3 to post the difference automatically to the write-off GL account. The clearing document updates both the sub-ledger and the GL simultaneously.">F-32 with OBA3 reason code is the only correct mechanism</span> - it clears both the subledger and posts the write-off GL entry in one step.'
+    ],
+    sapChecks:[
+      {key:'FBL5N portfolio scan - open items under $50, over 90d',val:'7 residuals, total $218, no dispute flags',status:'found'},
+      {key:'Creation date pattern analysis',val:'All 7 created Mar 28 - Apr 1 (period-end window)',status:'found'},
+      {key:'Currency analysis - all 7 residuals',val:'All EUR-invoiced, USD-posted; rounding differential at Mar 31 rate',status:'found'},
+      {key:'OBA3 - tolerance groups / write-off config',val:'Write-off reason code configured, below $50 threshold',status:'found'},
+      {key:'OBA1 - USD/EUR rounding account assignment',val:'Rounding difference account not absorbing small FX differentials',status:'partial'},
+    ],
+    options:[
+      {id:'A',label:'Write off 7 residuals via F-32 + fix OBA1 rounding config',score:94,tier:'h',rec:true,
+       detail:'AR Manager writes off 7 residuals using F-32 (Clear Customer) with OBA3 reason codes - difference posts to the write-off GL account, subledger cleared. All 7 items processed in a single F-32 session by selecting multiple open items. Separately: FI configuration team reviews OBA1 USD/EUR rounding account assignment to ensure future period-end rounding differences are absorbed into the exchange rate difference account rather than creating open items.',
+       tradeoff:'Write-off: 15 minutes, immaterial amount, policy-compliant. Config fix: requires FI configuration access and testing in sandbox before production transport. The structural fix prevents recurrence at every subsequent period-end close.'},
+      {id:'B',label:'Write off only - defer OBA1 config fix',score:52,tier:'m',rec:false,
+       detail:'Clear the 7 residuals via F-32 with reason codes. Raise a config change request for OBA1 but do not implement now.',
+       tradeoff:'Clears the immediate queue but the root cause recurs at next period-end (Jun 30). Each period-end generates a new batch of residuals that require another AR Manager write-off session. Without the config fix, this is a recurring quarterly overhead.'},
+      {id:'C',label:'Individual customer outreach before write-off',score:8,tier:'l',rec:false,
+       detail:'Contact each of the 7 customers to explain the $13-47 residuals and request payment.',
+       tradeoff:'Operationally disproportionate: contacting 7 customers about $13-47 residuals caused by an internal configuration gap - not customer payment errors - costs more in staff time than the $218 total value and damages customer experience. The residuals are FX rounding artefacts, not genuine underpayments.'},
+    ],
+    feedbackLoop:'The 7 residuals are a period-end artefact, not an AR quality issue. The pattern (all EUR invoices, all created at period-end, all matching FX rounding) is a reliable signature of the OBA1 configuration gap. AR Manager flagged to FI Controller: add a period-end check to the month-close checklist - run the FBL5N portfolio scan for sub-$50 items created during the close window and review for FX rounding patterns before the next quarter-end.',
+    workflow:'AR Manager selects 7 open items in F-32 -> Posts difference to write-off GL account using OBA3 reason code -> Customer sub-ledger cleared for all 7 accounts -> FI config team raises transport request for OBA1 rounding account fix -> Sandbox test -> Production transport before Jun 30 period-end close'
+  },
+];
+
+const _selectedRecOpts = {};
+
+function renderRecTable() {
+  document.getElementById('rec-tbody').innerHTML = recData.map((d,i) => `
+    <tr data-id="${i}" data-rtype="${d.issueType}" onclick="openRecCase(${i})">
+      <td><span class="sev sev-${d.sev}" data-tip="${d.sevTip}">${d.sev==='l'?'i':'!'}</span></td>
+      <td><div class="fw7">${d.customer}</div><div class="td-sub">${d.invoice}</div></td>
+      <td class="fw7 text-teal">${d.amount}</td>
+      <td><span class="itag itag-${d.issueType}">${d.issueLabel}</span></td>
+      <td class="fw7" style="color:var(--${d.daysOverdue>60?'red':d.daysOverdue>14?'amber':'muted'})">${d.daysOverdue}d</td>
+      <td>${confBadge(d.confidence)}</td>
+      <td style="font-size:11px;color:var(--text2)">${d.sapTx}</td>
+      <td style="font-size:12px;color:var(--text2)">${d.nextAction}</td>
+      <td class="status-cell">${recPillFor(d.status)}</td>
+    </tr>`).join('');
+}
+
+function recPillFor(s) {
+  const m = {'Escalation Required':'pill-blocked','Under Dispute':'pill-review','Pending Resolution':'pill-pending','Pending':'pill-pending',Submitted:'pill-submitted',Released:'pill-approved',Overridden:'pill-overridden',Deferred:'pill-deferred'};
+  return `<span class="pill ${m[s]||'pill-deferred'}">${s}</span>`;
+}
+
+function openRecCase(id) {
+  activeRow = document.querySelector('#rec-table tbody tr[data-id="'+id+'"]');
+  const d = recData[id];
+  _selectedRecOpts[id] = d.options ? (d.options.find(o=>o.rec) || d.options[0]) : null;
+  const selOptId = _selectedRecOpts[id] ? _selectedRecOpts[id].id : null;
+  const execLabel = d.execMode === 'Request Approval' ? 'Submit for Approval' : 'Execute with Review';
+  const primaryLabel = selOptId ? execLabel + ' - Option ' + selOptId : execLabel;
+  const daysColor = d.daysOverdue > 60 ? 'red' : d.daysOverdue > 14 ? 'amber' : 'muted';
+  openDrawer('AR Collections Agent', d.customer + ' - ' + d.issueLabel, `
+    <div class="dw-meta">
+      <span class="dw-val">${d.amount}</span>
+      <span class="fw7" style="color:var(--${daysColor})">${d.daysOverdue}d overdue</span>
+      <span class="itag itag-${d.issueType}">${d.issueLabel}</span>
+      ${execBadge(d.execMode)}
+    </div>
+    <div class="dw-decision">
+      <div class="dw-dec-lbl">Decision Required</div>
+      <div class="dw-dec-text">${d.decision}</div>
+      <div class="dw-impact"><b style="color:var(--amber)">Impact if ignored:</b> ${d.impact}</div>
+    </div>
+    <div class="dw-ctx">
+      <div class="dw-ctx-cell"><div class="dw-ctx-v text-teal">${d.amount}</div><div class="dw-ctx-l">Amount</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--${daysColor})">${d.daysOverdue}d</div><div class="dw-ctx-l">Days Overdue</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="font-size:10px">${d.sapTx}</div><div class="dw-ctx-l">SAP Tx</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--cyan)">${d.confPct}%</div><div class="dw-ctx-l">Confidence</div></div>
+    </div>
+    <div class="dw-diag">
+      <div class="dw-diag-lbl">Diagnosis</div>
+      <div class="dw-diag-w">${d.diagWhat}</div>
+      <div class="dw-diag-i">${d.diagImp}</div>
+    </div>
+    <div class="dw-sect">
+      <div class="dw-sect-lbl">Key Findings</div>
+      ${d.rationale.map(r=>`<div class="dw-rat-item">${r}</div>`).join('')}
+    </div>
+    ${d.sapChecks?`<div class="sap-probes"><div class="sap-probe-lbl">Agent Investigation</div>${d.sapChecks.map(c=>`<div class="sap-probe-row"><span class="sap-probe-key">${c.key}</span><span class="sap-probe-val sap-probe-${c.status}">${c.val}</span></div>`).join('')}</div>`:''}
+    ${d.options?`<div class="dw-sect-lbl" style="margin:10px 0 6px">Options Evaluated <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;font-size:10px">- click to select before executing</span></div><div class="opts-grid">${d.options.map(o=>`<div class="opt-row${o.rec?' opt-rec':''}${o.id===selOptId?' opt-active':''}" data-opt="${o.id}" onclick="selectRecOpt(${id},'${o.id}')">${o.rec?'<div class="opt-rec-tag">Recommended</div>':''}<div class="opt-head"><span class="opt-sel-indicator"></span><span class="opt-id">${o.id}</span><span class="opt-label">${o.label}</span><span class="opt-score opt-score-${o.tier}">${o.score}</span></div><div class="opt-detail">${o.detail}</div><div class="opt-tradeoff">${o.tradeoff}</div></div>`).join('')}</div>`:''}
+    ${d.feedbackLoop?`<div class="feedback-loop"><div class="feedback-lbl">Agent Feedback Loop</div><div class="feedback-text">${d.feedbackLoop}</div></div>`:''}
+    <div class="dw-workflow"><b>SAP Workflow:</b> ${d.workflow}</div>`,
+  `<button class="btn btn-primary" id="dw-rec-btn" onclick="submitRec(${id})">${primaryLabel}</button>
+   <button class="btn btn-warn" onclick="openOverride(r=>overrideRec(${id},r))">Override with Reason</button>
+   <button class="btn btn-ghost" onclick="deferRec(${id})">Defer</button>`);
+}
+
+function selectRecOpt(caseId, optId) {
+  const d = recData[caseId];
+  if (!d.options) return;
+  _selectedRecOpts[caseId] = d.options.find(o => o.id === optId);
+  document.querySelectorAll('#dw-body .opt-row[data-opt]').forEach(el => el.classList.remove('opt-active'));
+  const card = document.querySelector('#dw-body .opt-row[data-opt="'+optId+'"]');
+  if (card) card.classList.add('opt-active');
+  const btn = document.getElementById('dw-rec-btn');
+  if (btn) {
+    const execLabel = recData[caseId].execMode === 'Request Approval' ? 'Submit for Approval' : 'Execute with Review';
+    btn.textContent = execLabel + ' - Option ' + optId;
+  }
+}
+
+function submitRec(id) {
+  const d = recData[id];
+  const selOpt = d.options ? (_selectedRecOpts[id] || d.options.find(o=>o.rec) || d.options[0]) : null;
+  const status = d.execMode === 'Request Approval' ? 'Submitted' : 'Released';
+  setStatusCell('rec-table', id, status);
+  markActed('rec-table', id);
+  updateBadge('badge-receivables', -1);
+  closeDrawer();
+  showToast(d.execMode === 'Request Approval' ? 'Submitted for approval' : 'Executed with review', 'SAP workflow initiated: ' + d.workflow.split('->')[0].trim(), 'ok');
+  const baseAction = status === 'Submitted' ? 'Submitted for Approval' : 'Executed with Review';
+  const uAction = selOpt ? baseAction + ' - Option ' + selOpt.id + ': ' + selOpt.label : baseAction;
+  logAudit({workbench:'Receivables', entity:d.customer+' ('+d.invoice+')', rec:d.decision.substring(0,120)+'…', userAction:uAction, agentAction:d.workflow.split('->')[0].trim(), confidence:d.confidence, execMode:d.execMode, status, pendingWith:status==='Submitted'?'AR Manager':'N/A', by:'AR Analyst'});
+}
+
+function overrideRec(id, reason) {
+  const d = recData[id];
+  setStatusCell('rec-table', id, 'Overridden');
+  markActed('rec-table', id);
+  updateBadge('badge-receivables', -1);
+  closeDrawer();
+  showToast('Override recorded', 'Reason: '+reason, 'warn');
+  logAudit({workbench:'Receivables', entity:d.customer+' ('+d.invoice+')', rec:d.decision.substring(0,80)+'…', userAction:'Override: '+reason, agentAction:'User overrode agent recommendation.', confidence:d.confidence, execMode:'Override', status:'Overridden', pendingWith:'Audit', by:'AR Analyst'});
+}
+
+function deferRec(id) {
+  const d = recData[id];
+  setStatusCell('rec-table', id, 'Deferred');
+  markActed('rec-table', id);
+  updateBadge('badge-receivables', -1);
+  closeDrawer();
+  showToast('Deferred', d.customer+' queued for next review cycle.', 'info');
+  logAudit({workbench:'Receivables', entity:d.customer+' ('+d.invoice+')', rec:d.decision.substring(0,80)+'…', userAction:'Deferred', agentAction:'Queued for review. No SAP action taken.', confidence:d.confidence, execMode:d.execMode, status:'Deferred', pendingWith:'AR Analyst', by:'AR Analyst'});
+}
+
+function recFilter(el, type) {
+  document.querySelectorAll('#screen-receivables .filter-bar .fchip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#rec-table tbody tr').forEach(r => {
+    r.style.display = (type === 'all' || r.dataset.rtype === type) ? '' : 'none';
+  });
+}
+
+renderRecTable();
+// ════════════════════════════════════════════════════════
+// CASH WORKBENCH
+// ════════════════════════════════════════════════════════
+const cashData = [
+  { id:0, customer:'Hargreaves Ltd', ref:'Bank Ref: EBS-20260413', amount:'$34,200', amountNum:34200,
+    issueType:'unallocated', issueLabel:'Unallocated', daysOpen:3, sev:'h',
+    sevTip:'$34,200 DSO overstated 3 days + incorrect dunning risk + 3 of last 5 payments were consolidated remittances - combinatorial match found but requires AR confirmation',
+    confidence:'Medium', confPct:81, execMode:'Execute with Review',
+    sapTx:'FEBAN / F-28', status:'Pending Confirmation', nextAction:'Confirm Match + Post F-28',
+    decision:'AR coordinator contacts Hargreaves to confirm the preferred interpretation: (A) payment covers INV-88401 ($18,400) + INV-88312 ($15,800) = $34,200 exact match; or (B) partial payment against INV-88490 ($47,600) with a $13,400 deduction. Once confirmed, post incoming payment (F-28) against the identified invoices, clearing the bank clearing GL account. Separately: update EBS configuration with a customer-specific matching rule for Hargreaves\' PO-reference remittance format.',
+    impact:'$34,200 DSO overstated for 3 days. Hargreaves account incorrectly flagged as overdue - risking an unwarranted dunning notice on a customer that has effectively already paid. EBS matching has failed on 3 of the last 5 Hargreaves payments - a configuration fix is overdue.',
+    diagWhat:'$34,200 payment from Hargreaves Ltd processed through EBS (FEBAN/FEBP). SAP auto-matching failed - remittance references do not match any open items by SAP invoice number. Payment posted to bank clearing GL account pending manual resolution.',
+    diagImp:'Agent runs combinatorial match across all open item subsets for Hargreaves: INV-88401 ($18,400) + INV-88312 ($15,800) = $34,200 exact match. Remittance references are Hargreaves\' internal PO numbers, not SAP invoice numbers. Payment history: 3 of the last 5 Hargreaves payments were consolidated remittances with PO references - confirmed customer behaviour pattern, not a one-off.',
+    rationale:[
+      'Exact 2-invoice combinatorial match: INV-88401 ($18,400) + INV-88312 ($15,800) = $34,200. <span class="obs" data-tip="FBL5N open items for Hargreaves Ltd: INV-88401 $18,400 (22 days), INV-88312 $15,800 (15 days), INV-88490 $47,600 (8 days), INV-88623 $8,200 (3 days). Combinatorial match: all 2-item and 3-item subsets tested. Only one produces an exact match with zero residual: INV-88401 + INV-88312 = $34,200.">Zero-residual exact match</span> is strong evidence of intent - but one alternative interpretation requires confirmation.',
+      'Alternative: $34,200 as a partial payment against INV-88490 ($47,600) with a $13,400 deduction. <span class="obs" data-tip="If Hargreaves intended to pay $34,200 as a partial against INV-88490 (e.g., disputing $13,400 or applying a trade deduction), the F-28 posting would be against a different invoice. Without confirmation, allocating to the wrong interpretation creates a misapplication requiring FBRA reversal. 5-minute confirmation call eliminates this risk.">Allocating without confirmation risks a misapplication</span> requiring FBRA reversal - more work than a brief confirmation call.',
+      'Hargreaves used PO-reference remittances in 3 of last 5 payments - confirmed customer behaviour. <span class="obs" data-tip="Payment history: 3 of 5 Hargreaves payments used internal PO reference numbers in the bank remittance field rather than SAP invoice numbers. EBS uses IBAN as primary key, SAP invoice number as secondary. When remittance contains PO references only, secondary matching fails. A customer-specific EBS matching rule (PO-to-invoice cross-reference) resolves this permanently.">Recurring EBS configuration gap</span> - not a one-off. A matching rule prevents future failures.'
+    ],
+    sapChecks:[
+      {key:'FEBAN/FEBP - EBS posting status',val:'Unmatched - posted to bank clearing GL',status:'partial'},
+      {key:'FBL5N - Hargreaves open items',val:'4 invoices: $18,400 / $15,800 / $47,600 / $8,200',status:'found'},
+      {key:'Combinatorial match result',val:'INV-88401 + INV-88312 = $34,200 exact zero-residual',status:'found'},
+      {key:'Alternative interpretation',val:'Partial payment against INV-88490 - $13,400 deduction possible',status:'partial'},
+      {key:'Payment history pattern',val:'3 of 5 prior Hargreaves payments: PO-reference EBS match failure',status:'partial'},
+    ],
+    options:[
+      {id:'A',label:'Confirm match with Hargreaves + post F-28 + update EBS config',score:88,tier:'h',rec:true,
+       detail:'AR coordinator confirms with Hargreaves AP: payment covers INV-88401 + INV-88312. F-28 posted against both invoices, bank clearing GL cleared. EBS configuration updated with a customer-specific matching rule using Hargreaves\' PO-to-invoice cross-reference to prevent future auto-match failures.',
+       tradeoff:'Confirmation takes 5 minutes and prevents a potential misapplication. EBS config fix eliminates this class of failure for Hargreaves permanently.'},
+      {id:'B',label:'Apply combinatorial match via F-28 without confirmation',score:54,tier:'m',rec:false,
+       detail:'Post F-28 against INV-88401 + INV-88312 based on the combinatorial match, without customer confirmation.',
+       tradeoff:'If the alternative interpretation is correct, FBRA reversal and re-posting adds more work than the confirmation call. Appropriate only if AR has very high confidence and the INV-88490 deduction scenario is essentially impossible given the customer\'s history.'},
+      {id:'C',label:'Issue payment query letter + leave in clearing GL',score:18,tier:'l',rec:false,
+       detail:'Leave $34,200 in bank clearing GL and send a formal remittance query to Hargreaves.',
+       tradeoff:'DSO overstated continues to grow. Dunning risk remains. Query letters take 2-5 days - far slower than a direct confirmation call. Not justified.'},
+    ],
+    feedbackLoop:'EBS matching failure for Hargreaves is a recurring pattern (3 of 5 recent payments). Root cause: Hargreaves uses internal PO numbers in the remittance field rather than SAP invoice numbers. Fix: customer-specific EBS matching rule maps PO reference → SAP invoice number via the purchase order cross-reference. Same fix applies to any customer that uses PO-based remittances.',
+    workflow:'AR coordinator confirms interpretation with Hargreaves AP -> F-28: post payment against INV-88401 ($18,400) + INV-88312 ($15,800) -> Bank clearing GL cleared -> Customer open items cleared -> Dunning flag removed -> EBS config: customer-specific matching rule for Hargreaves (IT team action)'
+  },
+
+  { id:1, customer:'Midlands Trading', ref:'Payment Ref: MT-90441', amount:'$27,500', amountNum:27500,
+    issueType:'misapplied', issueLabel:'Misapplied', daysOpen:2, sev:'h',
+    sevTip:'Payment applied to Midlands Group (wrong entity) via EBS name-match fallback + Midlands Trading approaching dunning on a paid invoice + phantom credit on Midlands Group uncleared',
+    confidence:'High', confPct:94, execMode:'Execute with Review',
+    sapTx:'FBRA / F-28', status:'Requires Correction', nextAction:'FBRA Reversal + Repost',
+    decision:'FI coordinator resets the clearing on the misapplied payment via FBRA (Reset Cleared Items) - not F-32, which clears open items rather than reversing cleared documents. FBRA reverses the clearing document and reopens the payment as an open credit on Midlands Group. The payment is then re-posted to Midlands Trading via F-28 against INV-MT-90441. FI posting approval required per system configuration.',
+    impact:'Midlands Trading is approaching dunning on INV-MT-90441 - an invoice effectively already paid. A dunning notice for a settled obligation is a relationship risk. Midlands Group holds a phantom $27,500 credit that could be incorrectly applied to their own invoices if not reversed promptly.',
+    diagWhat:'$27,500 EBS payment auto-matched to Midlands Group (customer 100234) instead of Midlands Trading (customer 100267). Midlands Group account: $27,500 open credit. Midlands Trading: INV-MT-90441 ($27,500) remains open.',
+    diagImp:'Bank statement reference text: "Midlands Trading, Inv MT-90441" - explicit intent. EBS used customer name fuzzy-match fallback (no IBAN or payment reference match found) - "Midlands" matched Midlands Group as the first alphabetical match. Agent confirms: Midlands Group $27,500 credit is uncleared. Simple FBRA reversal path is available.',
+    rationale:[
+      'Bank reference explicitly names "Midlands Trading, Inv MT-90441" - no ambiguity in paying intent. <span class="obs" data-tip="EBS bank statement record: reference field contains \'Midlands Trading, Inv MT-90441\'. EBS matching sequence: (1) IBAN match - not found (Midlands Trading bank not in customer master); (2) payment reference match - not found (MT-90441 is not SAP document number format); (3) name fallback - \'Midlands\' matched customer 100234 (Midlands Group) alphabetically. The fallback matched incorrectly.">EBS name-match fallback failed</span> - primary match keys were absent because Midlands Trading bank account is not linked in the customer master.',
+      'Midlands Group phantom credit is uncleared - FBRA reversal is the complete solution. <span class="obs" data-tip="FBL5N for Midlands Group (100234): $27,500 open credit, uncleared - not applied to any Midlands Group invoice. Prerequisite check: if the credit had been applied to Midlands Group invoices, FBRA would create an open debit on their account, requiring additional settlement. Uncleared status means FBRA + F-28 is the complete two-step correction with no residual.">Uncleared status is the key prerequisite</span> that keeps the correction simple.',
+      'F-32 is the wrong transaction here - FBRA is required. <span class="obs" data-tip="F-32 (Clear Customer) creates a new clearing document against selected open items. It cannot reverse an existing clearing document. The EBS posting created a clearing document - only FBRA (Reset Cleared Items) can reverse it. FBRA reopens the original items on both sides and removes the clearing entry. After FBRA, the $27,500 is an open credit on Midlands Group, ready for F-28 re-application to Midlands Trading.">F-32 would add a parallel clearing</span> rather than reverse the original - only FBRA achieves a clean reversal.'
+    ],
+    sapChecks:[
+      {key:'Bank statement reference text',val:'"Midlands Trading, Inv MT-90441" - explicit intent',status:'found'},
+      {key:'EBS match applied to',val:'Midlands Group (100234) - name fallback error',status:'partial'},
+      {key:'FBL5N - Midlands Group open credit',val:'$27,500 uncleared credit',status:'found'},
+      {key:'FBL5N - Midlands Trading INV-MT-90441',val:'$27,500 open - approaching dunning threshold',status:'partial'},
+      {key:'FBRA prerequisite check',val:'Midlands Group credit uncleared - clean reversal path available',status:'found'},
+    ],
+    options:[
+      {id:'A',label:'FBRA reversal + F-28 repost to Midlands Trading',score:93,tier:'h',rec:true,
+       detail:'FBRA resets the clearing on the Midlands Group EBS posting. $27,500 reopens as open credit on Midlands Group. F-28 posts the payment to Midlands Trading (100267) against INV-MT-90441. FI posting approval obtained per config. Customer master: add Midlands Trading IBAN for future EBS primary matching. EBS config: review name-match fallback confidence threshold for "Midlands" customers.',
+       tradeoff:'FBRA may require FI posting approval (system config dependent). Clean correction with no residuals. EBS fix prevents recurrence.'},
+      {id:'B',label:'Manual GL correction without FBRA',score:12,tier:'l',rec:false,
+       detail:'Post manual GL entries to transfer the balance without using FBRA.',
+       tradeoff:'Creates a subledger/GL reconciliation issue. FBL5N for both customers would show incorrect open item states. More difficult to audit than the original error. Not recommended.'},
+      {id:'C',label:'Contact Midlands Group to apply credit themselves',score:5,tier:'l',rec:false,
+       detail:'Ask Midlands Group to apply the $27,500 credit to their own invoices as a net settlement.',
+       tradeoff:'Operationally and legally incorrect. The payment belongs to Midlands Trading - involving Midlands Group creates external exposure and legal ambiguity. Internal FBRA correction is the correct path.'},
+    ],
+    feedbackLoop:'EBS name-matching fallback is the root cause. Fix: (1) add Midlands Trading bank IBAN to their customer master record so IBAN-based primary matching succeeds on future payments; (2) increase the name-match confidence threshold in EBS configuration to prevent one-word matches ("Midlands") from triggering automatic allocation against the wrong customer.',
+    workflow:'FI coordinator checks Midlands Group FBL5N - confirms $27,500 credit is uncleared -> FBRA: reset cleared items for Midlands Group EBS posting -> $27,500 reopens as open credit on Midlands Group -> F-28: post to Midlands Trading (100267) against INV-MT-90441 -> FI approval if required -> Customer master: add Midlands Trading IBAN'
+  },
+
+  { id:2, customer:'Brentford Corp', ref:'Payment Ref: BCO-20260414', amount:'$10,000', amountNum:10000,
+    issueType:'onaccount', issueLabel:'On-Account', daysOpen:2, sev:'m',
+    sevTip:'$10,000 posted F-28 open credit (not F-29) + exact match to 2 oldest invoices = likely intentional payment + CRM delivery note enquiry explains Invoice C hold',
+    confidence:'High', confPct:89, execMode:'Execute with Review',
+    sapTx:'F-28 / F-32', status:'Pending Allocation', nextAction:'Confirm Allocation + Resolve CRM',
+    decision:'AR coordinator confirms with Brentford Corp that the payment covers invoices A ($6,200) and B ($3,800). Clear via F-32. For invoice C ($5,600): respond to the Apr 12 CRM delivery note enquiry with the delivery documentation. Invoice C is within payment terms - no dunning action. Once Brentford confirms receipt of the delivery note, the $5,600 should clear in the next payment cycle.',
+    impact:'$5,600 invoice C is within payment terms - no immediate AR risk. The value of the agent analysis is preventing a mechanical FIFO allocation that misses the CRM signal. Responding to the delivery note request accelerates the $5,600 by addressing the customer\'s documented hold reason.',
+    diagWhat:'$10,000 payment from Brentford Corp with no remittance advice. Correctly posted as F-28 open credit (not F-29 - which is for advance payments with a special GL indicator). Three open invoices: A ($6,200, 42d), B ($3,800, 28d), C ($5,600, 12d), totalling $15,600.',
+    diagImp:'FIFO allocation: A + B = $10,000 exactly, zero residual. Non-obvious: exact zero-residual match on two invoices from a payment with no remittance is statistically improbable - it signals intentional payment of invoices A and B. Agent cross-references CRM: open AP enquiry from Brentford Corp (Apr 12) requesting a delivery note copy for the invoice C shipment - explaining why invoice C was deliberately excluded.',
+    rationale:[
+      'Invoice A ($6,200) + Invoice B ($3,800) = exactly $10,000 - zero residual match signals intentional payment. <span class="obs" data-tip="Open invoices: A $6,200 (42d), B $3,800 (28d), C $5,600 (12d). FIFO allocation: A + B = $10,000 exact zero residual. The probability of a randomly-sized on-account payment matching two specific invoices to the dollar is very low. This precision is the signal that the customer deliberately paid invoices A and B rather than making a random partial payment.">Statistical improbability of exact match</span> is the agentic observation - mechanical FIFO produces the same allocation but misses the intent signal.',
+      'CRM Apr 12 AP enquiry: Brentford requests delivery note copy for invoice C shipment. <span class="obs" data-tip="CRM note: P.Williams (Brentford Corp AP), Apr 12 11:40. Requested copy of delivery note for shipment referenced in invoice C (delivered Mar 15, 2026). No response recorded from AR team. Invoice C is within Net 30 terms (12 days). The AP enquiry explains the intentional exclusion of invoice C from this payment.">Invoice C held pending delivery documentation</span> - a 5-minute response to the CRM note removes the documented hold.',
+      'F-28 open credit posting is correct - F-29 (down payment) would have been inappropriate. <span class="obs" data-tip="F-29 (Post Customer Down Payment) uses a special GL indicator (e.g., indicator A) and posts to a down payment balance sheet account, creating a liability for future delivery. It is for advance payments against future obligations. An on-account payment for existing invoices should be posted as F-28 without selecting open items, creating an open credit available for F-32 clearing. F-28 open credit is confirmed correct.">F-28 open credit is the right mechanism</span> - F-29 would have created incorrect balance sheet treatment for a payment against existing invoices.'
+    ],
+    sapChecks:[
+      {key:'FBL5N - Brentford Corp open items',val:'3 invoices: A $6,200 (42d), B $3,800 (28d), C $5,600 (12d)',status:'found'},
+      {key:'FIFO allocation result',val:'A + B = $10,000 exact zero residual',status:'found'},
+      {key:'Exact-match significance',val:'Zero-residual on 2 invoices = likely intentional payment selection',status:'found'},
+      {key:'CRM - open Brentford AP enquiry',val:'Apr 12: delivery note requested for invoice C shipment',status:'partial'},
+      {key:'Invoice C payment terms',val:'12 days overdue on Net 30 - within terms, no dunning',status:'found'},
+    ],
+    options:[
+      {id:'A',label:'Confirm A+B allocation + respond to CRM delivery note enquiry',score:91,tier:'h',rec:true,
+       detail:'AR coordinator contacts Brentford to confirm payment covers invoices A + B. F-32 clears both against the $10,000 credit. Retrieve delivery note for invoice C shipment and respond to the Apr 12 CRM enquiry (P.Williams). Invoice C monitored for payment in the next Brentford payment cycle.',
+       tradeoff:'Confirmation takes 5 minutes. CRM response is the action that actually accelerates the $5,600 - without it, invoice C approaches dunning with no AR team awareness of the documented block.'},
+      {id:'B',label:'Apply FIFO mechanically without CRM cross-reference',score:36,tier:'m',rec:false,
+       detail:'Apply FIFO (A then B) in F-32 without confirmation or CRM follow-up.',
+       tradeoff:'Allocation is correct but the CRM signal is missed. Invoice C remains on hold for an undocumented reason from AR\'s perspective. Without the delivery note response, the $5,600 will not be paid in the next cycle and will progressively approach dunning.'},
+      {id:'C',label:'Request formal remittance before allocating',score:42,tier:'m',rec:false,
+       detail:'Contact Brentford Corp and request a formal remittance advice before making any allocation.',
+       tradeoff:'Appropriate if the combinatorial match were ambiguous. In this case, the match is unambiguous (zero residual, 2 invoices, exact match) and the CRM note corroborates the intent. Waiting for formal remittance delays by 1-2 days with no accuracy gain.'},
+    ],
+    feedbackLoop:'Brentford Corp has sent on-account payments without remittance twice in Q1 2026 - both times the exact-match pattern resolved allocation unambiguously. The recurring pattern suggests their AP system sends ACH payments without remittance data. A one-time request to Brentford AP team to include SAP invoice numbers in the payment reference field (or to send a remittance email) would eliminate on-account allocation overhead for this customer permanently.',
+    workflow:'AR coordinator confirms A+B allocation with Brentford AP (P.Williams) -> F-32: clear invoices A ($6,200) + B ($3,800) against $10,000 credit -> Zero residual -> Retrieve delivery note for invoice C (order/delivery ref from VA03/VL03N) -> Respond to Apr 12 CRM enquiry with delivery note copy -> Invoice C ($5,600) monitored for next Brentford payment cycle'
+  },
+];
+
+const _selectedCashOpts = {};
+
+function renderCashTable() {
+  document.getElementById('cash-tbody').innerHTML = cashData.map((d,i) => `
+    <tr data-id="${i}" data-ctype="${d.issueType}" onclick="openCashCase(${i})">
+      <td><span class="sev sev-${d.sev}" data-tip="${d.sevTip}">${d.sev==='l'?'i':'!'}</span></td>
+      <td><div class="fw7">${d.customer}</div><div class="td-sub">${d.ref}</div></td>
+      <td class="fw7 text-teal">${d.amount}</td>
+      <td><span class="itag itag-cash">${d.issueLabel}</span></td>
+      <td class="fw7" style="color:var(--${d.daysOpen>2?'amber':'muted'})">${d.daysOpen}d</td>
+      <td>${confBadge(d.confidence)}</td>
+      <td style="font-size:11px;color:var(--text2)">${d.sapTx}</td>
+      <td style="font-size:12px;color:var(--text2)">${d.nextAction}</td>
+      <td class="status-cell">${cashPillFor(d.status)}</td>
+    </tr>`).join('');
+}
+
+function cashPillFor(s) {
+  const m = {'Pending Confirmation':'pill-pending','Requires Correction':'pill-blocked','Pending Allocation':'pill-pending',Submitted:'pill-submitted',Released:'pill-approved',Overridden:'pill-overridden',Deferred:'pill-deferred'};
+  return `<span class="pill ${m[s]||'pill-deferred'}">${s}</span>`;
+}
+
+function openCashCase(id) {
+  activeRow = document.querySelector('#cash-table tbody tr[data-id="'+id+'"]');
+  const d = cashData[id];
+  _selectedCashOpts[id] = d.options ? (d.options.find(o=>o.rec) || d.options[0]) : null;
+  const selOptId = _selectedCashOpts[id] ? _selectedCashOpts[id].id : null;
+  const primaryLabel = selOptId ? 'Execute with Review - Option ' + selOptId : 'Execute with Review';
+  openDrawer('Cash Application Agent', d.customer + ' - ' + d.issueLabel, `
+    <div class="dw-meta">
+      <span class="dw-val">${d.amount}</span>
+      <span class="fw7" style="color:var(--${d.daysOpen>2?'amber':'muted'})">${d.daysOpen}d open</span>
+      <span class="itag itag-cash">${d.issueLabel}</span>
+      ${execBadge(d.execMode)}
+    </div>
+    <div class="dw-decision">
+      <div class="dw-dec-lbl">Decision Required</div>
+      <div class="dw-dec-text">${d.decision}</div>
+      <div class="dw-impact"><b style="color:var(--amber)">Impact if ignored:</b> ${d.impact}</div>
+    </div>
+    <div class="dw-ctx">
+      <div class="dw-ctx-cell"><div class="dw-ctx-v text-teal">${d.amount}</div><div class="dw-ctx-l">Amount</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--${d.daysOpen>2?'amber':'muted'})">${d.daysOpen}d</div><div class="dw-ctx-l">Days Open</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="font-size:10px">${d.sapTx}</div><div class="dw-ctx-l">SAP Tx</div></div>
+      <div class="dw-ctx-cell"><div class="dw-ctx-v" style="color:var(--cyan)">${d.confPct}%</div><div class="dw-ctx-l">Confidence</div></div>
+    </div>
+    <div class="dw-diag">
+      <div class="dw-diag-lbl">Diagnosis</div>
+      <div class="dw-diag-w">${d.diagWhat}</div>
+      <div class="dw-diag-i">${d.diagImp}</div>
+    </div>
+    <div class="dw-sect">
+      <div class="dw-sect-lbl">Key Findings</div>
+      ${d.rationale.map(r=>`<div class="dw-rat-item">${r}</div>`).join('')}
+    </div>
+    ${d.sapChecks?`<div class="sap-probes"><div class="sap-probe-lbl">Agent Investigation</div>${d.sapChecks.map(c=>`<div class="sap-probe-row"><span class="sap-probe-key">${c.key}</span><span class="sap-probe-val sap-probe-${c.status}">${c.val}</span></div>`).join('')}</div>`:''}
+    ${d.options?`<div class="dw-sect-lbl" style="margin:10px 0 6px">Options Evaluated <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;font-size:10px">- click to select before executing</span></div><div class="opts-grid">${d.options.map(o=>`<div class="opt-row${o.rec?' opt-rec':''}${o.id===selOptId?' opt-active':''}" data-opt="${o.id}" onclick="selectCashOpt(${id},'${o.id}')">${o.rec?'<div class="opt-rec-tag">Recommended</div>':''}<div class="opt-head"><span class="opt-sel-indicator"></span><span class="opt-id">${o.id}</span><span class="opt-label">${o.label}</span><span class="opt-score opt-score-${o.tier}">${o.score}</span></div><div class="opt-detail">${o.detail}</div><div class="opt-tradeoff">${o.tradeoff}</div></div>`).join('')}</div>`:''}
+    ${d.feedbackLoop?`<div class="feedback-loop"><div class="feedback-lbl">Agent Feedback Loop</div><div class="feedback-text">${d.feedbackLoop}</div></div>`:''}
+    <div class="dw-workflow"><b>SAP Workflow:</b> ${d.workflow}</div>`,
+  `<button class="btn btn-primary" id="dw-cash-btn" onclick="submitCash(${id})">${primaryLabel}</button>
+   <button class="btn btn-warn" onclick="openOverride(r=>overrideCash(${id},r))">Override with Reason</button>
+   <button class="btn btn-ghost" onclick="deferCash(${id})">Defer</button>`);
+}
+
+function selectCashOpt(caseId, optId) {
+  const d = cashData[caseId];
+  if (!d.options) return;
+  _selectedCashOpts[caseId] = d.options.find(o => o.id === optId);
+  document.querySelectorAll('#dw-body .opt-row[data-opt]').forEach(el => el.classList.remove('opt-active'));
+  const card = document.querySelector('#dw-body .opt-row[data-opt="'+optId+'"]');
+  if (card) card.classList.add('opt-active');
+  const btn = document.getElementById('dw-cash-btn');
+  if (btn) btn.textContent = 'Execute with Review - Option ' + optId;
+}
+
+function submitCash(id) {
+  const d = cashData[id];
+  const selOpt = d.options ? (_selectedCashOpts[id] || d.options.find(o=>o.rec) || d.options[0]) : null;
+  setStatusCell('cash-table', id, 'Released');
+  markActed('cash-table', id);
+  updateBadge('badge-cash', -1);
+  closeDrawer();
+  showToast('Executed with review', 'SAP workflow initiated: ' + d.workflow.split('->')[0].trim(), 'ok');
+  const uAction = selOpt ? 'Execute with Review - Option ' + selOpt.id + ': ' + selOpt.label : 'Execute with Review';
+  logAudit({workbench:'Cash', entity:d.customer+' ('+d.ref+')', rec:d.decision.substring(0,120)+'…', userAction:uAction, agentAction:d.workflow.split('->')[0].trim(), confidence:d.confidence, execMode:d.execMode, status:'Released', pendingWith:'N/A', by:'Cash Analyst'});
+}
+
+function overrideCash(id, reason) {
+  const d = cashData[id];
+  setStatusCell('cash-table', id, 'Overridden');
+  markActed('cash-table', id);
+  updateBadge('badge-cash', -1);
+  closeDrawer();
+  showToast('Override recorded', 'Reason: '+reason, 'warn');
+  logAudit({workbench:'Cash', entity:d.customer+' ('+d.ref+')', rec:d.decision.substring(0,80)+'…', userAction:'Override: '+reason, agentAction:'User overrode agent recommendation.', confidence:d.confidence, execMode:'Override', status:'Overridden', pendingWith:'Audit', by:'Cash Analyst'});
+}
+
+function deferCash(id) {
+  const d = cashData[id];
+  setStatusCell('cash-table', id, 'Deferred');
+  markActed('cash-table', id);
+  updateBadge('badge-cash', -1);
+  closeDrawer();
+  showToast('Deferred', d.customer+' queued for next review cycle.', 'info');
+  logAudit({workbench:'Cash', entity:d.customer+' ('+d.ref+')', rec:d.decision.substring(0,80)+'…', userAction:'Deferred', agentAction:'Queued for review. No SAP action taken.', confidence:d.confidence, execMode:d.execMode, status:'Deferred', pendingWith:'Cash Analyst', by:'Cash Analyst'});
+}
+
+function cashFilter(el, type) {
+  document.querySelectorAll('#screen-cash .filter-bar .fchip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#cash-table tbody tr').forEach(r => {
+    r.style.display = (type === 'all' || r.dataset.ctype === type) ? '' : 'none';
+  });
+}
+
+renderCashTable();
 // ════════════════════════════════════════════════════════
 </script>
 </body>
