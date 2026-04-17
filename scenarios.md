@@ -37,9 +37,35 @@ The agent runs that diagnosis automatically and finds:
 
 The credit controller receives a ready-to-act recommendation: request payment of the overdue invoices and release the order once the commitment is received. The full context, root cause, resolution path and a comparable precedent are already packaged. No manual investigation needed. The agent also flags that a once-a-year review cycle is insufficient for a customer whose payment behaviour has been changing month to month, so the same situation does not quietly develop again.
 
-**Scenario 2 - Billing Block: A Contract That Renewed But the System Didn't Know**
+**Scenario 2: The Invoice That Could Not Be Raised**
 
-Axford Global's $45,200 order can't be invoiced. SAP has applied a billing block because it found no valid price on record. To a user staring at the block, the instinct is to route it to the pricing team and wait. The agent traces the root cause in seconds: the framework agreement was renewed on April 1st, but the associated price record wasn't extended - an administrative oversight, not a commercial dispute. More importantly, the agent spots that two other open orders for the same product will hit the exact same block when they reach invoicing. One fix, extended to the right date, resolves all three.
+**The situation**
+
+Axford Global placed an order worth $45,200. The goods have shipped. The order is sitting in the billing queue, ready to invoice. But no invoice has been raised, and the order has been stuck for three days.
+
+**Why it is stuck**
+
+SAP has applied a billing block. Before generating an invoice, SAP checks whether a valid, current price exists for the product on the order. In this case, it found nothing. A billing block does not mean the price is wrong or disputed. It means SAP could not confirm what price to use, so it stopped rather than invoice at the wrong amount.
+
+**What the billing team sees today without the agent**
+
+The team can see the block and the reason code. What SAP cannot tell them is:
+
+- Why there is no valid price on record
+- Whether the pricing gap affects other open orders for this customer
+- Whether this is a system administration issue or a genuine commercial dispute
+
+The instinct is to route it to the pricing team and wait. That adds days.
+
+**What the agent does**
+
+The agent traces the root cause in seconds. The framework agreement with Axford Global was renewed on April 1st, but the associated price record was not extended to cover the new contract period. SAP sees an expired record and blocks. The agent also checks all other open orders for the same product and finds two more that have not yet reached the billing stage. They will hit the exact same block when they do.
+
+The fix is a single administrative update: extend the price record to the correct end date. One action resolves all three orders.
+
+**The outcome**
+
+The billing team receives a clear diagnosis and a contained action. The pricing team does not need to reopen a commercial conversation. The two downstream orders are caught before they stall. A gap that looked like a pricing dispute turns out to be a missed renewal date.
 
 **Scenario 3 - Credit Hold: When the Right Answer Is to Do Nothing**
 
