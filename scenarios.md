@@ -334,17 +334,103 @@ A simple, targeted outreach replaces what could become a reactive hold and escal
 
 ## Page: Delivery Execution Workbench
 
-**Scenario 1 - Partial Pick: The Stock Is There, Just in the Wrong Bin**
+**Scenario 1: The Units That Were There All Along**
 
-A $52,400 delivery for Hartwell Group needs to ship today. 32 of 40 units have been picked; the remaining 8 can't be found in the directed bin. SAP holds the goods issue until all items are fully picked. The agent traces the discrepancy to a put-away mis-confirmation from three weeks earlier - stock was physically placed in one bin but the system was told it went to another. It locates the 8 units in the correct physical location, recommends a supplemental transfer order to complete the pick, and flags the phantom inventory record for correction in parallel. The shipment goes today without waiting for a full inventory count.
+**The situation**
 
-**Scenario 2 - Batch Expiry: An Alternative That Meets the Customer's Actual Requirement**
+A $52,400 delivery for Hartwell Group needs to ship today. 32 of 40 units have been picked and confirmed. The remaining 8 units were not found in the bin the system directed the picker to. The delivery has stopped and the ship date is at risk.
 
-Nexon Pharma's delivery is blocked because the allocated batch fails the shelf-life check for their minimum remaining shelf-life requirement. SAP stops there. The agent checks available batches and finds one with 38 days remaining shelf life - above the customer's 30-day minimum. It recommends re-allocating to the alternative batch, which meets the contractual requirement, and flags that the original batch should be redirected to a customer with a lower shelf-life threshold rather than sitting in stock.
+**Why it is stuck**
 
-**Scenario 3 - Carrier Failure: A Cost-Justified Alternative**
+In most warehouse management configurations, a goods issue cannot be posted until all items on the delivery have been fully picked and confirmed. A partial pick leaves the delivery in an incomplete status, and in these setups the system does not allow the shipment to proceed until the outstanding quantity is resolved. The warehouse team is looking at a bin that appears to have stock on paper but nothing physically present.
 
-Vantage Corp's delivery is blocked because the primary carrier has no available capacity. SAP surfaces the block. The agent sources a spot carrier quote, calculates that the $340 premium is less than the penalty clause exposure in the customer contract, and recommends proceeding. It also flags the carrier's recent capacity failures as a pattern worth reviewing in the procurement relationship.
+**What the warehouse team sees today without the agent**
+
+The workbench shows a partially picked delivery and a bin discrepancy. What it does not clearly surface is:
+
+- Whether the missing units are actually somewhere else in the warehouse
+- What caused the discrepancy and when
+- Whether resolving the pick will also leave an inventory integrity problem that needs a separate action
+
+The default response is to initiate a warehouse investigation or conduct a bin count, both of which take time the ship date does not allow.
+
+**What the agent does**
+
+The agent queries bin stock records and finds 8 units of the material sitting unreserved in an adjacent bin, not allocated to any other transfer order. The stock is there. It is just not where the system said it would be.
+
+Tracing the history, the agent identifies a put-away mis-confirmation from three weeks earlier. A goods receipt directed stock to one bin, but the operator confirmed a different bin as the actual destination. The warehouse management system accepted the confirmation without cross-checking the physical location, leaving the original bin with a stock record that has no physical backing.
+
+Two actions are needed:
+
+- A supplemental transfer order to pick the 8 units from the correct physical bin, which would allow the goods issue to be posted today
+- A physical inventory document for the original bin to reconcile the ghost stock record, run in parallel and with no impact on today's shipment
+
+**The outcome**
+
+The warehouse supervisor creates the supplemental transfer order through the standard warehouse process, the pick is confirmed, and the goods issue is posted. Hartwell receives their full 40-unit order on time. The inventory discrepancy is addressed as a parallel action. The agent also flags that this is the third bin discrepancy for this material in six weeks, all from put-away mis-confirmations in the same aisle, which points to a process gap in how put-away confirmations are validated.
+
+**Scenario 2: The Right Batch Was Available All Along**
+
+**The situation**
+
+A $31,800 delivery for Nexon Pharma is blocked. An attempt to post the goods issue failed. The batch assigned to the delivery expired seven days ago and has been sitting on an open delivery since then with no alert.
+
+**Why it is stuck**
+
+Where shelf life management is configured, the system typically runs a shelf life check when a goods issue is posted. The check compares the batch expiry date against the customer's minimum remaining shelf life requirement, which in many setups is maintained in the customer-material information record. If the batch does not meet the requirement, the goods issue is blocked. In this case, the batch expired well before the customer's minimum threshold and the system correctly stopped the shipment. The delivery should have been reassigned to a different batch days earlier.
+
+**What the warehouse team sees today without the agent**
+
+The workbench shows a goods issue block and an expired batch. What it does not clearly surface is:
+
+- Whether other batches are available that meet the customer's shelf life requirement
+- What the critical execution sequence is for swapping the batch when a warehouse transfer order is already active
+- That the batch has been expired and assigned to an open delivery for a week without any proactive alert
+
+**What the agent does**
+
+The agent checks available batches at the plant and finds two options with sufficient remaining shelf life to meet the customer's 90-day minimum requirement. It calculates the required expiry floor for this delivery and confirms both batches pass, with one expiring sooner and selected as the primary option to align with a first-expiry-first-out approach where that policy is configured.
+
+The agent also identifies a critical execution step that is frequently missed in batch substitution scenarios. An active warehouse transfer order was already raised for the expired batch. If the batch is changed on the delivery without first cancelling that transfer order, the warehouse management layer retains the old reference and the goods issue continues to fail despite the update. The correct sequence is to cancel the active transfer order first, then change the batch on the delivery, then raise a new transfer order and post the goods issue.
+
+**The outcome**
+
+The warehouse team follows the correct execution sequence through the standard warehouse process. The goods issue is posted, the delivery ships, and the expired batch is moved to restricted stock status so it cannot be picked again. The agent flags a structural gap: there is no proactive alert configured for batches assigned to open deliveries when their expiry date passes. A daily monitoring process against open delivery batch assignments would have surfaced this 30 days before expiry rather than 7 days after it.
+
+**Scenario 3: A Master Data Change That Silently Broke Three Deliveries**
+
+**The situation**
+
+A $19,600 delivery for Vantage Corp cannot be shipped. Two more deliveries for the same customer, totalling a further $22,200, are in the same state. No shipment has been created for any of them. The route field on all three deliveries is blank.
+
+**Why it is stuck**
+
+Before a shipment can be created and a carrier assigned, the system needs to determine the correct route for the delivery. In most configurations, route determination runs automatically based on factors including the departure point, the destination zone derived from the customer's postal code, the transportation group on the material, and the shipping condition on the customer record. If the system cannot find a matching route for the combination it evaluates, it typically saves the delivery without raising an error and leaves the route field blank. The failure only surfaces later when shipment creation is attempted.
+
+**What the logistics team sees today without the agent**
+
+The workbench shows three blocked deliveries with blank route fields. What it does not clearly surface is:
+
+- What changed to cause this, and when
+- Whether the physical route is actually different or only the system reference is missing
+- That the same gap will affect every future delivery to this customer until a configuration update is made
+
+**What the agent does**
+
+The agent traces the route determination failure. A customer master update on April 11 changed Vantage Corp's postal code to reflect a confirmed address change following a relocation. The postal code change moved the customer into a new destination zone. That zone has no route entries configured in the routing table for any shipping condition, including the one on Vantage Corp's record. The delivery was saved without error, but shipment creation fails because there is no route to reference.
+
+The physical route the carrier follows has not changed. The gap is a configuration entry that was not created when the new zone was introduced.
+
+Two parallel actions are needed:
+
+- The logistics coordinator manually enters the prior route on all three affected deliveries, which in most setups is a permitted action before goods issue, and creates the shipments so the deliveries can proceed today
+- The transportation configuration team adds the missing zone entries in the routing table to prevent the same failure on every future delivery to this customer
+
+The agent also flags that the April 11 master data update was part of a batch run covering 14 customers. The other 13 may have the same configuration gap waiting to surface on their next delivery.
+
+**The outcome**
+
+All three deliveries ship. The configuration gap is closed through the standard transport configuration process. A post-change validation check for blank routes on open deliveries is raised as a structural fix so future master data updates do not produce the same silent failure.
 
 ---
 
