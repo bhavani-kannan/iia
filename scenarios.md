@@ -169,9 +169,35 @@ Two parallel actions are needed: escalate the open compliance case to the Compli
 
 The Compliance Manager receives a structured case with the check-by-check breakdown, the prior shipping history, and a clear explanation of why this is an administrative gap rather than a regulatory risk. The order is not cleared by the agent. That remains a compliance decision. What the agent does is remove the ambiguity so the right person can act on the right information quickly.
 
-**Scenario 6 - Pricing Deviation: A Verbal Agreement That Was Never Formalised**
+**Scenario 6: A Price That Was Never Written Down**
 
-Frontier Corp's $8,100 order is blocked because the sales rep entered a price 5.2% below the standard rate - just over the 5% tolerance. SAP blocks it automatically and asks for a manager countersignature. The agent adds context: this has happened four times in the past 12 months for this customer, always at the same price level, always approved within a day. The pattern is clear - the commercial price for this customer has never been formalised in the system. The immediate action is a countersignature. The structural recommendation is to create a customer-specific pricing condition so this cycle never repeats.
+**The situation**
+
+Frontier Corp has placed an order worth $8,100. The order is in the billing queue but no invoice has been raised. A billing block has been applied and it is sitting with the sales manager for a countersignature.
+
+**Why it is stuck**
+
+When a sales order is saved with a manually entered price, the SD pricing procedure checks whether the deviation from the standard price falls within an approved tolerance. In this case, the tolerance is set at 5.0%. The price entered was 5.2% below the standard rate, 0.2% over the threshold. In most configurations, the system automatically applies a billing block at that point and routes the case for manager approval before invoicing can proceed.
+
+**What the sales manager sees today without the agent**
+
+The case lands in the queue with the deviation flagged. The manager can see the numbers. What the system does not provide is:
+
+- Whether this customer has had the same situation before
+- Whether there is a pattern suggesting this price has become the de facto commercial rate
+- Whether the right response is to approve this case or fix the underlying condition
+
+Without that context, the manager approves or rejects based on the single case in front of them.
+
+**What the agent does**
+
+The agent checks the order history for this customer on this material. The same billing block has been raised four times in the past 12 months, always at a price in the same range, always approved by the sales manager within a day. There is no quotation or contract on record that commits the lower price, but the pattern strongly indicates this has become an accepted commercial practice that was never formalised in the system.
+
+The immediate recommendation is a countersignature to unblock this order, processed via the standard approval in the sales order. The structural recommendation is to create a customer-specific pricing condition so the agreed price is captured in the system and this approval cycle does not repeat on every order.
+
+**The outcome**
+
+The sales manager approves with full context rather than just a deviation percentage. The invoice is raised through the standard billing process once the block is removed. The longer-term action, formalising the pricing condition, is flagged separately so it does not get lost once this order is resolved.
 
 ---
 
