@@ -203,21 +203,132 @@ The sales manager approves with full context rather than just a deviation percen
 
 ## Page: Credit Risk Workbench
 
-**Scenario 1 - Over Limit: The Case That's Ready to Submit**
+**Scenario 1: The Case That Is Ready to Act On**
 
-MetroPlex Industries is $35,400 over their credit limit with $48,000 in overdue invoices and a risk score that has been declining for months. SAP surfaces the exposure; the agent builds the case. It calculates that paying just two of the three overdue invoices brings exposure back below the limit, references a November 2025 precedent where the same approach worked in 8 days, and flags that the annual review cadence is no longer adequate for an account that has grown 42% in three months. The controller receives a packaged recommendation, not a raw alert.
+**The situation**
 
-**Scenario 2 - FSCM Case Active: Monitor, Don't Intervene**
+MetroPlex Industries is $35,400 over their credit limit. A linked sales order worth $87,400 is sitting blocked. No credit case has been opened yet. The SLA has been breached.
 
-Pinnacle Systems is 4.6% over their limit with zero overdue invoices - a volume-driven overage, not a payment risk. A credit case is already open. SAP cannot tell you whether it's appropriate to act or wait. The agent recognises the active case and recommends holding: acting in parallel would duplicate the process, create an audit conflict, and undermine the control framework. Based on a near-identical situation two months ago resolved in four hours, same-day resolution is expected.
+**Why it is stuck**
 
-**Scenario 3 - Proactive Flag: The Hold That Hasn't Happened Yet**
+When a customer's total exposure exceeds their credit limit, the credit controller typically assesses the situation and decides on a course of action. In many configurations, this involves opening a formal case through the credit management workflow before any delivery block can be released. The case has not been opened yet, so nothing is moving.
 
-Thornfield Holdings is 11.5% over their credit limit with no orders currently blocked. SAP has nothing to flag today. The agent does: it calculates that any standard inbound order - typically $10,000 to $14,000 - will push exposure above the limit and trigger an automatic hold with no warning. It recommends opening a credit case now and requesting payment on the two overdue invoices before the disruption occurs, rather than scrambling to resolve it reactively.
+**What the credit controller sees today without the agent**
 
-**Scenario 4 - Watch Account: A Leading Indicator Worth Acting On**
+The workbench surfaces the exposure and the breach. What it does not clearly surface is:
 
-Caldera Corp's risk score has dropped 14 points in six weeks and sits just 3 points above the FSCM auto-escalation threshold. There are no blocked orders today. SAP will not act until something breaks. The agent flags the trajectory: one standard order will breach the credit limit, and at the current rate of decline the risk score will trigger automatic escalation within weeks. The intervention needed is a simple payment request on one overdue invoice - the lowest-friction action available before a more disruptive hold becomes inevitable.
+- Which factors are driving the overage and which represent the most actionable path to resolution
+- How the customer's payment behaviour has been trending and for how long
+- Whether a comparable situation has been handled before and how it was resolved
+- Whether the current review cadence is still appropriate for this account
+
+The controller often has to assemble that picture manually before they can open a case and act.
+
+**What the agent does**
+
+The agent diagnoses the exposure. Total exposure includes both the $48,000 in overdue invoices and the value of open orders. The overdue AR is the primary driver of the breach. Paying just two of the three overdue invoices would, in this case, bring exposure back below the limit and represents a more targeted resolution than increasing the credit limit.
+
+The risk score trend adds further context. The score has declined from 41 to 28 since January 2026, crossing the internal escalation threshold. The annual review cycle did not catch this because the decline happened between review dates.
+
+A November 2025 case on this account followed a similar pattern. A payment demand was issued, the customer paid within 8 days, and the order was released. That precedent supports the recommended approach but does not guarantee the same outcome.
+
+The agent prepares the full case for the controller to review and submit: the AR breakdown, the exposure calculation, the precedent reference, and a recommendation to issue a payment demand as the release condition. The controller opens the case and approves the action. The agent does not open the case or issue the demand directly.
+
+**The outcome**
+
+The controller does not need to investigate before acting. The case is submitted through the credit management workflow, the payment demand is issued, and the delivery block on the linked order is released through the standard process once the customer responds. The agent also flags that the annual review cadence is no longer appropriate for an account whose payment behaviour has been shifting month to month. That is raised separately for the Credit Manager, not tied to resolving this case.
+
+**Scenario 2: When the Right Action Is to Hold**
+
+**The situation**
+
+Pinnacle Systems is 4.6% over their credit limit, with a blocked order on the workbench. A formal credit case is already open and under active review by a credit controller.
+
+**Why it is stuck**
+
+A credit limit breach typically surfaces on the workbench as something requiring action. In many configurations, the workbench and the credit case management module operate as separate views of the same situation. What is not always visible from the workbench is whether a formal review process is already underway elsewhere in the system.
+
+**What the credit controller sees today without the agent**
+
+The workbench shows the breach and the blocked order. What it does not clearly consolidate is:
+
+- Whether a formal credit case has already been opened for this account
+- Who owns it and what stage they are at
+- Whether acting here would conflict with a process already in motion
+
+Without that, the natural response is to investigate and work toward releasing the block.
+
+**What the agent does**
+
+The agent checks the credit management module and finds that a formal case is already open and assigned to a controller, opened the previous day and currently under active review. The exposure is driven by open order accumulation rather than overdue invoices, which suggests a volume and limit calibration issue rather than a payment behaviour concern. That said, the agent does not make a credit decision. It identifies that the formal review process is already engaged.
+
+Acting independently from the workbench at this point would typically create a parallel workflow alongside the open case. In most configurations, this risks an audit gap and undermines the control structure designed to manage credit decisions through a single tracked process.
+
+The agent recommends no action from the Credit workbench and explains why.
+
+**The outcome**
+
+The credit controller does not intervene. The formal review proceeds through the appropriate channel. A February 2026 case on this account with a similar profile was resolved within 4 hours, which indicates same-day resolution is plausible, though each case is assessed on its own merits. The Credit Manager has separately been flagged that the current limit may no longer reflect the customer's order run-rate, which is the structural question underlying the recurring breaches.
+
+**Scenario 3: The Problem That Has Not Happened Yet**
+
+**The situation**
+
+Thornfield Holdings has no blocked orders today. Nothing on the workbench requires immediate action. But the account is already 11.5% over its credit limit, carrying $21,600 in overdue invoices, with a risk score that has been declining for months and no FSCM case open.
+
+**Why it matters**
+
+In many configurations, SAP's credit management functionality surfaces accounts when something is already blocked or a case is already open. Accounts that are over their limit but not yet causing an active disruption often sit below the visible threshold. There is no alert for an order that has not arrived yet.
+
+**What the credit controller sees today without the agent**
+
+The workbench does not clearly surface this account as requiring action today because nothing is blocked. The controller has no direct visibility into:
+
+- Whether the next inbound order is likely to breach the limit and trigger a hold
+- How the risk score trend is moving relative to escalation thresholds
+- Whether the overdue invoices have been formally requested yet
+
+**What the agent does**
+
+The agent reviews the full exposure profile. At 111.5% utilisation, any standard inbound order for this customer, which based on order history typically falls in the $10,000 to $14,000 range, would in most credit check configurations push exposure further above the limit and likely trigger an automatic hold at order save. That disrupts the customer's order cycle with no advance communication.
+
+The risk score has declined from 58 to 45 over the past six months, a consistent downward trend that the last annual review did not capture. Two overdue invoices totalling $21,600 have not yet had a formal payment request raised against them.
+
+The agent flags the account as requiring proactive action: open a credit case, issue a formal payment request on the overdue invoices, and initiate a credit limit review in parallel. The goal is to address the exposure before a hold becomes the trigger rather than after.
+
+**The outcome**
+
+The controller acts before a disruption rather than in response to one. The customer receives a formal payment request through the standard process. The credit limit review is initiated separately. Whether the hold is avoided depends on the customer's response and the outcome of the limit review, but the controller is in a position to manage the situation rather than react to it.
+
+**Scenario 4: A Signal Worth Acting On Before It Becomes a Problem**
+
+**The situation**
+
+Caldera Corp has no blocked orders today. The account is at 95.6% of its credit limit with $2,200 of headroom remaining. One overdue invoice for $8,900 has not yet had a formal payment request raised against it. The risk score has dropped 14 points in six weeks and sits 3 points above the threshold that, in many FSCM configurations, triggers automatic escalation.
+
+**Why it matters**
+
+Credit workbenches in most configurations surface accounts when a hold has already been triggered or a case is already open. An account with a deteriorating risk score, minimal headroom, and an unaddressed overdue invoice does not typically generate a workbench alert until something breaks. By that point, the options are more limited and the customer impact is more visible.
+
+**What the credit controller sees today without the agent**
+
+The account appears in a watch status but does not clearly surface:
+
+- How close the risk score is to the auto-escalation threshold and how fast it is moving
+- That the available headroom is insufficient for any standard inbound order
+- That a single overdue invoice, if cleared, would materially change both the exposure and the score trajectory
+
+**What the agent does**
+
+The agent assesses the account trajectory rather than just the current state. Current exposure is $47,800 against a $50,000 limit. Based on historical order sizes for this customer, which have typically ranged from $8,000 to $15,000, any standard inbound order would in most credit check configurations push exposure above the limit and likely trigger a hold. The risk score decline, if it continues at the current rate, would approach the auto-escalation threshold within weeks, depending on the FSCM configuration in place.
+
+A pattern observed across similar accounts in the past quarter indicates that a risk score decline of more than 10 points in six weeks has often preceded a hold event, though this is a directional signal rather than a certainty.
+
+The recommended action is straightforward: send a formal payment request for the one overdue invoice. No FSCM case is needed at this stage. If payment is received, exposure drops by $8,900 and the payment behaviour component of the risk score stabilises. The May quarterly review is flagged to include a limit reassessment.
+
+**The outcome**
+
+A simple, targeted outreach replaces what could become a reactive hold and escalation. The controller acts on a signal rather than waiting for a trigger. Whether the hold is ultimately avoided depends on the customer's payment response and the trajectory of new orders, but the action taken is proportionate and timely.
 
 ---
 

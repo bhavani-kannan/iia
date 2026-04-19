@@ -1586,7 +1586,7 @@ const creditData = [
     sevTip:'SLA breached - $35,400 over limit, $48K overdue AR, risk score 41->28, no FSCM case open',
     status:'Action Required', execMode:'Request Approval', confidence:'High', confPct:94,
     nextAction:'Open FSCM Case + Payment Demand',
-    decision:'Open FSCM case and issue payment demand for $48,000 overdue AR as the release condition. Pre-packaged analysis ready - controller can act immediately. Linked order 5001234 ($87,400) remains delivery-blocked until this is resolved.',
+    decision:'Open FSCM case and issue payment demand for $48,000 overdue AR as the release condition. Full diagnosis is prepared - controller can act immediately. Linked order 5001234 ($87,400) remains delivery-blocked until this is resolved.',
     impact:'$87,400 in blocked orders. $48,000 overdue AR is the sole driver of the limit breach - the $100K limit has not been reviewed since Jan 2026 despite 42% exposure growth.',
     diagWhat:'UKM_BP (segment 1000): $135,400 total open exposure vs $100,000 limit, overage $35,400. FBL5N: 3 overdue invoices - INV-90234 ($18,400, 28d), INV-90198 ($16,200, 21d), INV-90167 ($13,400, 12d). Risk score: 28/100, down from 41 since Jan 2026. No FSCM case currently open.',
     diagImp:'The breach is driven entirely by overdue AR, not order volume. Paying two of the three invoices brings exposure below the limit. Annual review cadence missed the risk score decline - flagged to Credit Manager for quarterly review.',
@@ -1605,7 +1605,7 @@ const creditData = [
     options:[
       {id:'A', label:'Open FSCM case + issue payment demand for $48K overdue AR', score:90, tier:'h', rec:true,
        detail:'Create credit case in UKM_MY_CREDIT_CASE with full AR aging, exposure breakdown, and Nov 2025 payment precedent. Controller issues formal payment demand. On payment receipt or commitment, controller releases via VKM1 - delivery block removed from order 5001234.',
-       tradeoff:'Fastest credible path. Nov 2025 precedent: MetroPlex responded within 8 days. Full analysis pre-packaged - controller needs no additional research.'},
+       tradeoff:'Fastest credible path. Nov 2025 precedent: MetroPlex responded within 8 days. Full diagnosis prepared - controller needs no additional research.'},
       {id:'B', label:'Temporary limit increase to $140K in UKM_BP', score:58, tier:'m', rec:false,
        detail:'Controller approves a temporary credit limit uplift to $140K in UKM_BP segment 1000, releasing the blocked order immediately. Limit resets once overdue AR is cleared.',
        tradeoff:'Unblocks revenue without requiring payment upfront, but increases uninsured exposure. Appropriate only if a confirmed payment plan is already in place.'},
@@ -1631,11 +1631,11 @@ const creditData = [
     decision:'No action required from Credit workbench. FSCM case FSCM-2026-0441 is under active review by J. Mehta. Context provided: volume-driven breach, zero overdue AR, consistent with seasonal pattern. Same-day resolution expected.',
     impact:'Releasing independently via UKM_BP would bypass the active FSCM case and create an audit gap. Credit risk is low given zero overdue AR - process control must be respected.',
     diagWhat:'UKM_BP: $52,300 total open exposure vs $50,000 limit, overage $2,300 (4.6%). FBL5N: zero overdue invoices for Pinnacle Systems. FSCM case FSCM-2026-0441 opened Apr 15 at 13:40, assigned to J. Mehta, status: Under Review. The overage is entirely from open order accumulation.',
-    diagImp:'Volume-driven breach, not a payment risk. Pinnacle pays on time and operates at high volumes near their limit. The FSCM case is the correct resolution path - any independent action duplicates and undermines the control framework.',
+    diagImp:'Exposure is driven by open order accumulation rather than overdue invoices, which suggests a volume and limit calibration issue rather than a payment behaviour concern. In most configurations, the open credit case represents the appropriate resolution path - any independent action from the workbench would typically create a parallel workflow and risk an audit gap.',
     rationale:[
       'FSCM case FSCM-2026-0441 is open and actively under review. <span class="obs" data-tip="Case opened Apr 15, 13:40. Assigned to J. Mehta. Status: Under Review. Acting from the Credit workbench while this case is open creates a parallel workflow and audit compliance gap.">Releasing independently bypasses</span> the FSCM control framework entirely.',
-      'Zero overdue AR - the $2,300 overage is entirely from open order accumulation. <span class="obs" data-tip="FBL5N: no overdue invoices. All AR within payment terms. Exposure: $34,100 (order 5001890) + $18,200 (other open orders) = $52,300. Payment behaviour risk: none.">Payment behaviour risk is zero</span> - this is a limit calibration issue, not a credit concern.',
-      'Feb 2026 identical pattern resolved by J. Mehta within 4 hours. <span class="obs" data-tip="Feb 2026: volume breach, zero overdue AR. Controller approved temporary limit increase to $55,000 within 4 hours. Limit reset 10 days later. Credit Manager flagged to review the $50K limit against current run-rate.">Same-day resolution is expected</span> based on precedent.'
+      'Zero overdue AR - the $2,300 overage is driven by open order accumulation. <span class="obs" data-tip="FBL5N: no overdue invoices. All AR within payment terms. Exposure: $34,100 (order 5001890) + $18,200 (other open orders) = $52,300. Payment behaviour risk appears low based on current AR aging.">Payment behaviour risk appears low</span> - this more likely indicates a limit calibration issue than a credit concern.',
+      'Feb 2026 similar pattern resolved by J. Mehta within 4 hours. <span class="obs" data-tip="Feb 2026: volume breach, zero overdue AR. Controller approved temporary limit increase to $55,000 within 4 hours. Limit reset 10 days later. Credit Manager flagged to review the $50K limit against current run-rate.">Same-day resolution is plausible</span> based on precedent, though each case is assessed on its own merits.'
     ],
     sapChecks:[
       {key:'UKM_BP - exposure vs limit (segment 1000)', val:'$52,300 vs $50,000 - overage $2,300 (4.6%)', status:'partial'},
@@ -1670,7 +1670,7 @@ const creditData = [
     decision:'Open FSCM case and request payment for $21,600 overdue AR. No orders currently blocked, but the next standard order (~$12K) will push exposure to ~$101K and trigger an automatic credit hold. Acting now is more controlled than reacting to a hold.',
     impact:'No current order block, but at 111.5% utilisation with declining risk score, any standard inbound order triggers an automatic hold. Pre-emptive FSCM action avoids an unplanned disruption.',
     diagWhat:'UKM_BP (segment 1000): $89,200 exposure vs $80,000 limit, overage $9,200 (11.5%). FBL5N: 2 overdue invoices - INV-88412 ($14,200, 42d) and INV-88301 ($7,400, 31d). Risk score: 45/100, down from 58 (Oct 2025 review, 6 months ago). No FSCM case open.',
-    diagImp:'Unlike the other credit cases, no order is currently blocked. At 111.5% utilisation with declining risk and $21,600 overdue AR, the next standard inbound order will trigger an automatic hold. Proactive FSCM action now is more controlled than reactive hold management.',
+    diagImp:'Unlike the other credit cases, no order is currently blocked. At 111.5% utilisation with declining risk and $21,600 overdue AR, the next standard inbound order would in most credit check configurations push exposure further above the limit and likely trigger an automatic hold. Proactive FSCM action now is more controlled than reactive hold management.',
     rationale:[
       '2 overdue invoices totalling $21,600 - both past Net 30 terms. <span class="obs" data-tip="FBL5N: INV-88412 $14,200 (42 days overdue, Net 30 terms). INV-88301 $7,400 (31 days overdue, Net 30 terms). No dispute flag on either invoice. No payment promise recorded.">No payment promise or dispute recorded</span> - a formal request has not yet been made.',
       'Risk score has fallen from 58 to 45 in 3 months. <span class="obs" data-tip="Score Oct 2025: 58/100. Score today: 45/100. Key driver: payment behaviour component declined from 52 to 38 due to increasing days overdue. Last review: Oct 2025 - 6 months ago. Consistent decline over 3 months unreviewed.">Consistent decline unreviewed for 6 months</span> - annual cadence missed two quarterly inflection points.',
@@ -1695,7 +1695,7 @@ const creditData = [
        tradeoff:'Disruptive to the customer relationship before a formal payment communication has been made. Appropriate as a secondary control if the FSCM case receives no response.'},
       {id:'D', label:'Monitor without action', score:12, tier:'l', rec:false,
        detail:'No FSCM case, no payment request. Continue monitoring.',
-       tradeoff:'Deteriorating credit with no intervention means the next order triggers an automatic hold with no pre-packaged analysis ready. Reactive and avoidable.'},
+       tradeoff:'Deteriorating credit with no intervention means the next order would likely trigger an automatic hold with no prior communication to the customer. Reactive and avoidable.'},
     ],
     feedbackLoop:'No prior FSCM cases for Thornfield Holdings in the past 12 months - first time exposure has exceeded limit. Account grew 35% in the past year; credit limit ($80K, last reviewed Oct 2025) may no longer reflect the account size. Credit Manager flagged for a formal limit review using the updated exposure profile.',
     workflow:'Open FSCM credit case (UKM_MY_CREDIT_CASE) -> Controller contacts Thornfield for payment of INV-88412 and INV-88301 -> Confirm payment timeline -> Credit Manager reviews and adjusts limit in UKM_BP if warranted -> Case closed once AR cleared'
@@ -1709,14 +1709,14 @@ const creditData = [
     sevTip:'95.6% utilisation - next standard order breaches limit + risk score 52->38 in 6 weeks + $8,900 overdue AR',
     status:'Watch', execMode:'Execute with Review', confidence:'Medium', confPct:80,
     nextAction:'Pre-emptive AR Request',
-    decision:'Request payment for INV-91203 ($8,900, 35d overdue) now, before the next order triggers an automatic credit hold. Risk score has dropped 14 points in 6 weeks and is 3 points above the FSCM auto-escalation threshold. Any standard order (typical size $8K-$15K) breaches the $50K limit.',
-    impact:'No orders currently blocked. One standard inbound order pushes exposure above $50K and triggers an automatic hold. Risk score velocity (rapid decline) is a leading indicator of a hold event within 4-6 weeks.',
+    decision:'Request payment for INV-91203 ($8,900, 35d overdue) now, before the next order likely triggers a credit hold. Risk score has dropped 14 points in 6 weeks and is 3 points above the FSCM auto-escalation threshold (in most configurations). Any standard order (typical size $8K-$15K) would exceed the $50K limit.',
+    impact:'No orders currently blocked. One standard inbound order would in most credit check configurations push exposure above $50K and likely trigger an automatic hold. Risk score velocity (rapid decline) is a directional indicator of a potential hold event within 4-6 weeks.',
     diagWhat:'UKM_BP: $47,800 exposure vs $50,000 limit, $2,200 headroom (4.4%). FBL5N: 1 overdue invoice - INV-91203 ($8,900, 35d, Net 30 terms). Risk score: 38/100, down from 52 six weeks ago (Feb 2026 quarterly review). FSCM auto-escalation threshold: 35/100. Next quarterly review: May 2026.',
     diagImp:'At 95.6% utilisation with a declining risk score, this account needs a pre-emptive touch before it self-escalates. Clearing the overdue invoice reduces exposure by $8,900 and arrests the payment behaviour drag on the risk score.',
     rationale:[
-      'INV-91203 ($8,900) is 5 days past Net 30 terms with no payment promise. <span class="obs" data-tip="INV-91203: $8,900, invoice date Mar 11, 2026. Due date Apr 10. Overdue by 6 days. No dispute flag, no payment promise. Direct payment request has not been made.">No formal request has been made</span> - this is the lowest-friction intervention available.',
-      'Risk score down from 52 to 38 in 6 weeks. <span class="obs" data-tip="Feb 2026 quarterly review: score 52/100. Current: 38/100. Decline: -14 points. Driver: payment behaviour component, driven by INV-91203 going overdue. FSCM auto-escalation threshold: 35/100.">2 more points triggers FSCM auto-escalation</span> - pre-emptive contact stops the drift.',
-      'Next standard order breaches the $50K limit automatically. <span class="obs" data-tip="Current exposure: $47,800. Credit limit: $50,000. Headroom: $2,200. Typical Caldera order size: $8,000-$15,000. Any standard order immediately exceeds the limit and triggers an automatic hold at order save.">Limit headroom is effectively zero</span> for any standard-sized order.'
+      'INV-91203 ($8,900) is 5 days past Net 30 terms with no payment promise. <span class="obs" data-tip="INV-91203: $8,900, invoice date Mar 11, 2026. Due date Apr 10. Overdue by 6 days. No dispute flag, no payment promise. Direct payment request has not been made.">No formal request has been made</span> - a targeted payment request is the most proportionate first action.',
+      'Risk score down from 52 to 38 in 6 weeks. <span class="obs" data-tip="Feb 2026 quarterly review: score 52/100. Current: 38/100. Decline: -14 points. Driver: payment behaviour component, driven by INV-91203 going overdue. FSCM auto-escalation threshold: 35/100 in this configuration.">In many FSCM configurations, 2 more points would trigger auto-escalation</span> - pre-emptive contact may help arrest the drift.',
+      'Next standard order would likely exceed the $50K limit. <span class="obs" data-tip="Current exposure: $47,800. Credit limit: $50,000. Headroom: $2,200. Typical Caldera order size: $8,000-$15,000. In most credit check configurations, any standard order exceeds the limit and would likely trigger a hold at order save.">Limit headroom is minimal</span> for any standard-sized order.'
     ],
     sapChecks:[
       {key:'UKM_BP - exposure vs limit (segment 1000)', val:'$47,800 vs $50,000 - $2,200 headroom (95.6%)', status:'partial'},
@@ -1728,7 +1728,7 @@ const creditData = [
     options:[
       {id:'A', label:'Request payment for INV-91203 + flag for May limit review', score:82, tier:'h', rec:true,
        detail:'Send payment request for INV-91203 ($8,900) to Caldera accounts payable contact. Flag the May 2026 quarterly review to include a credit limit reassessment using current exposure run-rate. No FSCM case needed at this stage.',
-       tradeoff:'Lowest-friction intervention. Clearing the invoice reduces exposure by $8,900 and removes the payment behaviour drag on the risk score - creating breathing room for the next order.'},
+       tradeoff:'Proportionate first action. Clearing the invoice reduces exposure by $8,900 and may help arrest the payment behaviour drag on the risk score - creating breathing room for the next order.'},
       {id:'B', label:'Preventive limit increase to $60K in UKM_BP', score:66, tier:'m', rec:false,
        detail:'Controller approves a preventive limit increase to $60K in UKM_BP, providing headroom for 2-3 standard orders while overdue AR is cleared and risk score stabilises.',
        tradeoff:'Removes the immediate hold risk but does not address the overdue AR or risk score decline. Appropriate only if the account relationship warrants it and a payment timeline is confirmed.'},
@@ -1739,7 +1739,7 @@ const creditData = [
        detail:'No action until the scheduled May 2026 quarterly review.',
        tradeoff:'The next standard order triggers an automatic hold before then. Risk score is 3 points above the FSCM auto-escalation threshold. Waiting is high-risk for a low-effort intervention.'},
     ],
-    feedbackLoop:'No prior credit events for Caldera Corp in the past 12 months - clean payment history until now. Pattern observed across 4 similar accounts in Q1: rapid risk score decline (>10 points in 6 weeks) is a reliable leading indicator of a hold event within 4-6 weeks. Early intervention at the 38/100 threshold avoided holds in 3 of those 4 cases.',
+    feedbackLoop:'No prior credit events for Caldera Corp in the past 12 months - clean payment history until now. Pattern observed across 4 similar accounts in Q1: rapid risk score decline (>10 points in 6 weeks) has proven to be a meaningful directional indicator of a potential hold event within 4-6 weeks. Early intervention at a similar threshold avoided holds in 3 of those 4 cases - supporting but not guaranteeing the same outcome here.',
     workflow:'Send payment request for INV-91203 to Caldera AP contact -> Confirm payment commitment -> Update FSCM watch flag if risk score reaches 35 -> May quarterly review includes limit reassessment -> No SAP block expected if payment received before next order'
   },
 ];
