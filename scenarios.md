@@ -99,9 +99,39 @@ The agent recommends no action from the orders workbench and explains why.
 
 The value here is not a resolution. It is the prevention of a mistake. The orders team does not intervene in a process that is already being managed through the right channel. The credit controller retains clear ownership. The audit trail stays clean.
 
-**Scenario 4 - ATP Failure: Stock Exists, Just Not in the Right Place**
+**Scenario 4: The Stock That Was There All Along**
 
-Kensworth Ltd needs 24 units but SAP's availability check only finds 18 at the primary plant and blocks the whole order. The agent checks stock across all plants and finds the missing 6 units sitting unreserved at a secondary location. It confirms a split delivery ships today from both plants, meeting the customer's committed delivery date. It also validates that Kensworth has accepted this approach before, so there's no commercial risk in proceeding.
+**The situation**
+
+Kensworth Ltd has an order for 24 units of a product. The order has been blocked. The committed delivery date is today.
+
+**Why it is stuck**
+
+Before confirming a delivery, SAP runs an availability check against the stock held at the plant assigned to the order. If the required quantity is not available at that location, SAP blocks the delivery. In this case, the primary plant has 18 units available. The order needs 24. SAP sees a shortfall of 6 units and stops the whole order rather than ship a partial delivery without authorisation.
+
+**What the warehouse team sees today without the agent**
+
+The workbench shows the ATP failure and the quantity gap. What it does not show is:
+
+- Whether the missing units exist elsewhere in the network
+- Which plants have a scheduled outbound route that can still reach the customer within the delivery window
+- Whether the customer has agreed to split deliveries before
+
+Resolving this manually means checking stock reports across plants, cross-referencing carrier route schedules, confirming transit times, and validating with the customer or account manager. That takes time the delivery date does not allow.
+
+**What the agent does**
+
+The agent checks stock across all plants in the network. Plant 1200 has 6 units unreserved. Plant 1300 also has units available, but the agent checks the outbound route schedule and finds that the carrier serving that zone has suspended departures until April 22. Including plant 1300 would mean committing stock to a route that cannot meet the delivery date.
+
+The agent then confirms three things before recommending action:
+
+- Plant 1200 has a scheduled outbound departure today at 14:00
+- The 2-day transit time puts the delivery within the committed window
+- Kensworth has accepted split deliveries before when both shipments arrive on the same day
+
+**The outcome**
+
+The warehouse team receives a recommendation grounded in stock availability, confirmed route schedules, and customer precedent. Proceed with a split delivery from plants 1100 and 1200. The customer gets their full order on time. Plant 1300 was considered and ruled out before it became a problem.
 
 **Scenario 5 - Export Control Block: An Administrative Gap, Not a Compliance Violation**
 

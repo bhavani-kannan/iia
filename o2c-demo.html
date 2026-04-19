@@ -330,6 +330,7 @@ button,select,input,textarea{font-family:inherit;}
 .sap-probe-partial{color:var(--amber);}
 .sap-probe-none{color:var(--muted);}
 .sap-probe-later{color:var(--cyan);}
+.sap-probe-blocked{color:var(--red);}
 
 /* Drawer - Options Grid */
 .opts-grid{display:flex;flex-direction:column;gap:7px;margin:8px 0 4px;}
@@ -1283,23 +1284,25 @@ const orderData = [
    owner:'Warehouse / Supply Planning',status:'Blocked',nextAction:'Split Delivery - Ship Today',
    decision:'Option A: reduce original item 10 to 18 units (plant 1100) and add new item 20 for 6 units with delivering plant 1200 via VA02. Raise two outbound deliveries - 18 units from plant 1100 and 6 units from plant 1200 - both shipping today. Customer receives full 24 units by Apr 18 (2-day transit confirmed for this zone), meeting their committed delivery date.',
    impact:'Internal action SLA (3 days from block) expires today - resolution must be initiated now. Without action, the customer\'s Apr 18 delivery commitment is missed and $28,600 is delayed.',
-   diagWhat:'ATP check failed for K-7712 at plant 1100 - only 18 of 24 units in unrestricted stock. MMBE (Stock Overview) confirmed plant 1200 holds 6 units unrestricted; CO09 at plant 1200 confirmed ATP availability with no open reservations. Plant 1200 stock is available for immediate outbound delivery - no inter-plant transfer needed.',
-   diagImp:'Adding item 20 for 6 units with delivering plant 1200 (VA02) and creating two VL01N deliveries avoids any transfer wait. Both deliveries ship today; customer receives the full 24-unit order by Apr 18, meeting the committed delivery date.',
+   diagWhat:'ATP check failed for K-7712 at plant 1100 - only 18 of 24 units in unrestricted stock. MMBE (Stock Overview) confirmed plant 1200 holds 6 units unrestricted; CO09 at plant 1200 confirmed ATP availability with no open reservations. Plant 1300 holds 4 units but outbound route to this delivery zone is suspended until Apr 22 (carrier maintenance) - excluded from consideration. Route schedule for plant 1200 confirmed: scheduled departure today 14:00, 2-day transit to Kensworth delivery zone, delivery within committed window.',
+   diagImp:'Adding item 20 for 6 units with delivering plant 1200 (VA02) and creating two VL01N deliveries avoids any transfer wait. Both deliveries ship today on confirmed scheduled routes; customer receives the full 24-unit order by Apr 18, meeting the committed delivery date.',
    rationale:[
      'Plant 1100 holds 18 of 24 required units in unrestricted stock. <span class="obs" data-tip="Material K-7712, plant 1100. CO09 availability check: 18 units confirmed unrestricted. SAP held the full order - standard ATP logic requires full quantity confirmation at the delivering plant before releasing any delivery.">SAP held the full order</span> pending complete quantity confirmation at plant 1100.',
-     'Plant 1200 has the 6 missing units in unrestricted stock with no open reservations. <span class="obs" data-tip="MMBE confirmed 6 units unrestricted at plant 1200; CO09 confirmed ATP availability. New item 20 added via VA02 for 6 units, delivering plant 1200. Separate VL01N raised - VL01N creation commits the plant 1200 stock. No inter-plant transfer or transit wait required.">Adding a new sales order line</span> for the shortfall quantity enables a same-day outbound delivery from plant 1200.',
+     'Plant 1200 has the 6 missing units in unrestricted stock with no open reservations. <span class="obs" data-tip="MMBE confirmed 6 units unrestricted at plant 1200; CO09 confirmed ATP availability. Route schedule validated: outbound departure today 14:00, 2-day transit confirmed for this zone. Plant 1300 had 4 units but carrier route suspended until Apr 22 - excluded. New item 20 added via VA02 for 6 units, delivering plant 1200. Separate VL01N raised - VL01N creation commits the plant 1200 stock. No inter-plant transfer or transit wait required.">Adding a new sales order line</span> for the shortfall quantity enables a same-day outbound delivery from plant 1200 on a confirmed scheduled route.',
      'Split-plant deliveries were used for 3 similar ATP shortfall orders in this zone this month. <span class="obs" data-tip="Apr 1-15: 3 ATP shortfall orders. New line item added via VA02 with delivering plant set to alternate plant, separate VL01N per plant. All 3 met customer committed delivery date. CRM account notes (Mar 2026): Kensworth preference is full delivery; same-day split accepted when both deliveries meet committed date.">All met the customer committed date</span> - this is a validated resolution path.'
    ],
    sapChecks:[
      {key:'Plant 1100 - K-7712 (CO09 / MMBE)',val:'18 units unrestricted',status:'partial'},
      {key:'Plant 1200 - K-7712 (CO09 / MMBE)',val:'6 units, no open reservations',status:'found'},
-     {key:'Plant 1300 - K-7712 (CO09 / MMBE)',val:'0 units',status:'none'},
+     {key:'Plant 1200 - outbound route schedule',val:'Departure today 14:00, 2-day transit - delivery within window',status:'found'},
+     {key:'Plant 1300 - K-7712 (CO09 / MMBE)',val:'4 units unrestricted',status:'partial'},
+     {key:'Plant 1300 - outbound route schedule',val:'Carrier suspended until Apr 22 - misses delivery window',status:'blocked'},
      {key:'Substitute material M-7713 (CS15 BOM)',val:'24 units at plant 1100',status:'found'},
      {key:'Replenishment PO 4500198',val:'ETA May 2',status:'later'},
    ],
    options:[
      {id:'A',label:'Split delivery: 18 units plant 1100 + 6 units plant 1200, ships today',score:91,tier:'h',rec:true,
-      detail:'Reduce item 10 to 18 units (plant 1100) and add item 20 for 6 units with delivering plant 1200 via VA02. Create VL01N for item 10 (18 units, plant 1100) and VL01N for item 20 (6 units, plant 1200). Both ship today. Full 24 units at customer Apr 18 - 2-day transit confirmed for this zone.',
+      detail:'Reduce item 10 to 18 units (plant 1100) and add item 20 for 6 units with delivering plant 1200 via VA02. Create VL01N for item 10 (18 units, plant 1100) and VL01N for item 20 (6 units, plant 1200). Both ship today on confirmed scheduled routes (plant 1200 departure 14:00). Full 24 units at customer Apr 18 - 2-day transit confirmed for this zone. Plant 1300 excluded: 4 units available but carrier route suspended until Apr 22.',
       tradeoff:'Two deliveries mean two delivery notes and two tracking references - proactive shipment notification to Kensworth is recommended (not required per contract CST-K-2024-05). No backorder, no substitution. VL01N creation at plant 1200 commits the stock.'},
      {id:'B',label:'Partial delivery 18 units today + backorder schedule line May 2',score:72,tier:'m',rec:false,
       detail:'Ship 18 units from plant 1100 today via VL01N. Add backorder schedule line in the sales order (VA02) for remaining 6 units, committed date May 2.',
