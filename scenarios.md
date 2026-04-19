@@ -605,14 +605,88 @@ Seven items are cleared in a single session. The AR ledger is clean. The configu
 
 ## Page: Cash Application Workbench
 
-**Scenario 1 - EBS Match Failure: Finding the Pattern Behind the Payment**
+**Scenario 1: The Payment That Was Always Going to End Up Here**
 
-Hargreaves Ltd sent $34,200 with no SAP invoice numbers in the remittance - just their own internal purchase order references. The Electronic Bank Statement process couldn't match it and parked the payment in a clearing account. SAP stops there. The agent runs a combinatorial match across all open invoices and finds an exact two-invoice combination that totals $34,200 with zero remainder. It also checks the last five Hargreaves payments and finds the same remittance format in three of them - this is how the customer always pays. The immediate action is a brief confirmation call. The structural fix is a customer-specific matching rule so this never lands in the exception queue again.
+**The situation**
 
-**Scenario 2 - Misapplied Payment: The Invoice That Looked Paid But Wasn't**
+A $34,200 payment from Hargreaves Ltd has been sitting in a bank clearing account for three days. The Electronic Bank Statement process attempted to match it automatically but could not. The customer's AR account is showing as overdue and is at risk of generating a dunning notice.
 
-A $27,500 payment arrived and the bank statement processing automatically matched it to Midlands Group. The problem: the payment was from Midlands Trading, a different legal entity. The bank reference explicitly named "Midlands Trading" but the system's name-matching fallback picked the first alphabetical match when the primary identifiers weren't found. Midlands Trading's invoice is now approaching the dunning threshold - for a debt that is effectively already settled. The correction requires a specific reversal transaction to undo the existing clearing entry; simply re-clearing would compound the error rather than fix it.
+**Why it is stuck**
 
-**Scenario 3 - On-Account Payment: Reading What the Customer Didn't Say**
+In most EBS configurations, automatic payment matching relies on reference identifiers in the bank remittance to link the incoming payment to open invoices. These identifiers typically include the bank account IBAN, SAP invoice numbers, or payment references in a recognised format. When the remittance contains references the system cannot match to any open item, the payment is typically posted to a clearing account pending manual resolution. No error is raised. The AR team has to identify and work through unmatched items manually.
 
-Brentford Corp sent $10,000 with no remittance. Three invoices are open totalling $15,600. A mechanical FIFO allocation produces the right answer - oldest invoices first - but misses the signal: Invoice A plus Invoice B equals exactly $10,000, to the dollar. That's not coincidence. The agent cross-references CRM notes and finds an open enquiry from Brentford's AP team requesting a copy of the delivery note for the third invoice. They aren't short on cash - they're waiting on a document before they'll approve that payment. The recommended action isn't just an allocation; it's sending the delivery note so the $5,600 clears in the next payment run.
+**What the AR team sees today without the agent**
+
+The clearing account shows an unmatched $34,200 payment. What the system does not clearly surface is:
+
+- Whether the remittance references correspond to something that can be identified in the open AR
+- Whether there is more than one plausible interpretation of what the payment is intended to cover
+- Whether this has happened before with this customer
+
+**What the agent does**
+
+The agent runs a combinatorial match across all open invoice subsets for Hargreaves Ltd. One combination produces an exact zero-residual match: two invoices totalling $34,200. Hargreaves' remittance contains their own internal purchase order numbers rather than SAP invoice numbers, which is why the automatic matching process could not resolve it.
+
+The agent also checks payment history and finds that three of the last five Hargreaves payments used the same remittance format. This is an established pattern, not a one-off. The customer consistently pays using their own reference system.
+
+Before posting, the agent flags one alternative interpretation. The $34,200 could represent a partial payment against a larger open invoice with a $13,400 deduction attached. Without confirmation, applying the combinatorial match directly carries a risk of misapplication that would require a reversal if the interpretation is wrong. A brief confirmation call resolves the ambiguity before the F-28 posting is made.
+
+**The outcome**
+
+The AR coordinator confirms the correct interpretation with the customer and posts the payment against the two invoices through the standard incoming payment transaction. The clearing account is cleared, the invoices are closed, and the unwarranted dunning risk is removed. The structural fix, a customer-specific matching rule that maps Hargreaves' purchase order references to SAP invoice numbers, is raised separately to prevent future payments from landing in the exception queue.
+
+**Scenario 2: The Invoice That Looked Paid But Wasn't**
+
+**The situation**
+
+A $27,500 payment from Midlands Trading arrived via electronic bank statement and was automatically matched and cleared within the same business day. On the surface, the process worked. Two days later, Midlands Trading's invoice INV-MT-90441 appears overdue in the AR ledger, approaching the dunning threshold. Midlands Group, a separate legal entity, is showing an unexplained $27,500 credit on its account.
+
+**Why it is stuck**
+
+In many EBS configurations, the matching engine processes incoming payments through a hierarchy of identifiers: bank account number first, then payment reference codes, then customer name. When the primary identifiers are absent or do not match any open item, some configurations fall back to a name-based lookup. The bank remittance for this payment referenced "Midlands Trading, Inv MT-90441." The primary identifiers were not found, and the name-based fallback appears to have resolved to Midlands Group, a different customer whose name begins with the same word, resulting in the payment being cleared against the wrong account.
+
+Once a payment is cleared in FI, it cannot simply be redirected to a different customer account. The clearing entry must first be reset using a dedicated FI reversal transaction before the payment can be reposted correctly. Without that step, attempting to re-clear the payment directly would typically compound the error rather than correct it.
+
+**What the AR team sees today without the agent**
+
+The team sees an overdue invoice on Midlands Trading's account. The natural response is to chase the customer for payment on an invoice that, from the customer's perspective, they have already settled. Midlands Group's unexpected credit sits unnoticed, with no alert connecting it to the Midlands Trading situation. The two ledger entries are visible in isolation. Their relationship is not.
+
+**What the agent does**
+
+The agent identifies both signals simultaneously: an invoice approaching dunning on one customer account and an unexplained recent credit of identical value on another. Cross-referencing the original bank statement remittance text confirms that the payment was intended for Midlands Trading, with the correct invoice number stated explicitly.
+
+The agent also identifies a structural factor: Midlands Trading's customer record does not have a bank account IBAN registered. This indicates why the EBS process did not match on primary identifiers and fell back to the name-based lookup. The root cause is missing master data, not an ambiguous payment.
+
+The recommended correction runs in two steps. The first is to reset the clearing on the Midlands Group posting using the appropriate FI clearing reversal transaction, which reopens the payment as an unallocated item. The second is to post it against Midlands Trading's open invoice through the standard incoming payment transaction. Both steps require AR team execution and, depending on configuration and internal FI posting controls, a second-level approval before the reversal is posted.
+
+**The outcome**
+
+The correction is made before Midlands Trading receives a dunning notice for a debt they have already paid. The phantom credit on Midlands Group's account is cleared. The missing bank account IBAN is added to Midlands Trading's customer record, so future payments from this customer match on primary identifiers rather than falling back to name-based logic. The AR team resolves what looked like a collections case before it became one.
+
+**Scenario 3: Reading What the Customer Didn't Say**
+
+**The situation**
+
+Brentford Corp has sent a $10,000 payment with no remittance advice. Three invoices are open on the account, totalling $15,600. The payment covers part of the outstanding balance. The AR team has no instruction from the customer on what to apply it to.
+
+**Why it is stuck**
+
+When a payment arrives without remittance information, the standard approach in most AR workflows is to allocate against the oldest open items first. Applied here, that logic produces a clean result: the two oldest invoices, at $6,200 and $3,800, total $10,000 exactly. No residual, no rounding, no mismatch. The allocation would post cleanly and the ledger would balance. The remaining $5,600 invoice stays open.
+
+The issue is not the allocation. A FIFO posting here is technically correct. The issue is that a clean allocation gives no prompt to look further, and looking further changes what the team should do next.
+
+**What the AR team sees today without the agent**
+
+The team sees a partial payment with no remittance and a clean FIFO match. The $10,000 is posted and the $5,600 invoice remains open. Without a reason to investigate, the invoice may drift toward the dunning threshold. The AR team will eventually chase Brentford Corp for a payment that Brentford may believe is already in progress on their side.
+
+**What the agent does**
+
+The agent applies the same FIFO logic and reaches the same allocation. But it also notes that two invoices summing to exactly the payment amount is an unusual degree of precision for a partial payment with no remittance. That pattern prompts a check of the CRM activity log.
+
+The log shows an open enquiry from Brentford's AP team, submitted three days earlier, requesting a copy of the delivery note for the third invoice. The enquiry has not been responded to. This suggests Brentford is not short of funds for that invoice. They are most likely holding the payment pending receipt of supporting documentation their AP team requires before approving it.
+
+The recommended action covers both dimensions: post the $10,000 allocation against invoices A and B, and respond to the open CRM enquiry with the delivery note for invoice C. Both actions fall within the AR team's standard execution scope, with a brief confirmation to Brentford before posting.
+
+**The outcome**
+
+The $10,000 is posted against the correct invoices. The delivery note is sent the same day. In most cases, the $5,600 would clear in Brentford's next payment cycle without requiring any dunning activity. The team recovers the full outstanding balance faster than a standard collections process would achieve, and avoids a collections call that would have been premature. What looked like a partial payment turns out to be a near-complete payment with one outstanding document request.
