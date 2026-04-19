@@ -133,9 +133,41 @@ The agent then confirms three things before recommending action:
 
 The warehouse team receives a recommendation grounded in stock availability, confirmed route schedules, and customer precedent. Proceed with a split delivery from plants 1100 and 1200. The customer gets their full order on time. Plant 1300 was considered and ruled out before it became a problem.
 
-**Scenario 5 - Export Control Block: An Administrative Gap, Not a Compliance Violation**
+**Scenario 5: A Compliance Alert That Is Not a Compliance Problem**
 
-A $15,300 order for Dalton Manufacturing has been blocked by the export control system for 5 days with no response from the compliance team. SAP flags it as a GTS hold and stops there. The agent breaks it down: the embargo check passed, the denied party screening passed - the only reason the block exists is that a product classification field in the material master is blank. Three prior shipments to the same customer cleared without issue in 2025. The agent packages this finding for the Compliance Manager so they can act on a clear, contained gap rather than a vague compliance alert.
+**The situation**
+
+A $15,300 order for Dalton Manufacturing has been sitting blocked for 5 days. The internal SLA allows 3 days. The compliance team has not responded to two notifications.
+
+**Why it is stuck**
+
+Before any international shipment is released, SAP runs a series of export compliance checks. These checks verify whether the destination country is under an embargo, whether the customer appears on any restricted party lists, and whether the product being shipped requires an export licence for that destination. If any check cannot be completed, SAP blocks the delivery until compliance clears it. In this case, one check could not complete and the order stopped.
+
+**What the orders team sees today without the agent**
+
+The workbench shows an export control block and a compliance team that has not responded. What SAP cannot tell them is:
+
+- Which specific check triggered the block
+- Whether this is a genuine export control risk or an administrative gap
+- Why the same customer received three shipments of this material without issue last year
+
+Without that breakdown, the block looks serious and the instinct is to wait for compliance to investigate. That wait is now 5 days long.
+
+**What the agent does**
+
+The agent breaks down the three checks that SAP ran:
+
+- Embargo check: passed. The destination country is not under any embargo.
+- Restricted party screening: passed. Dalton Manufacturing does not appear on any restricted party list.
+- Export licence check: flagged. The product classification field in the material master is blank. SAP cannot determine whether a licence is needed without it.
+
+The block is not a compliance violation. It is a missing field. The agent also checks shipping history and finds three prior shipments to Dalton Manufacturing that cleared these same checks in 2025. The most likely cause is that the classification field was cleared during a routine material master update and was never repopulated.
+
+Two parallel actions are needed: escalate the open compliance case to the Compliance Manager, and request the product team to populate the classification field once compliance confirms the correct value. The compliance team must sign off on the classification before the field is updated. This is not an administrative shortcut.
+
+**The outcome**
+
+The Compliance Manager receives a structured case with the check-by-check breakdown, the prior shipping history, and a clear explanation of why this is an administrative gap rather than a regulatory risk. The order is not cleared by the agent. That remains a compliance decision. What the agent does is remove the ambiguity so the right person can act on the right information quickly.
 
 **Scenario 6 - Pricing Deviation: A Verbal Agreement That Was Never Formalised**
 
