@@ -67,9 +67,37 @@ The fix is a single administrative update: extend the price record to the correc
 
 The billing team receives a clear diagnosis and a contained action. The pricing team does not need to reopen a commercial conversation. The two downstream orders are caught before they stall. A gap that looked like a pricing dispute turns out to be a missed renewal date.
 
-**Scenario 3 - Credit Hold: When the Right Answer Is to Do Nothing**
+**Scenario 3: When the Right Answer Is to Do Nothing**
 
-Pinnacle Systems has an order blocked on a credit hold - but an FSCM credit case is already open and actively being reviewed by the credit controller. SAP surfaces the block; it cannot tell you whether someone else is already handling it. The agent recognises the active case and recommends no action from the Orders workbench, because releasing the order independently would create a parallel workflow, undermine the control framework, and leave an audit gap. The intelligence here isn't in finding a fix - it's in knowing when not to act.
+**The situation**
+
+Pinnacle Systems has an order sitting on a credit hold. On the surface, this looks the same as any other blocked order: a customer has exceeded their credit limit, the system has stopped the order, and someone needs to act.
+
+**Why it is stuck**
+
+When a customer's outstanding balance plus any new orders exceeds the credit limit SAP holds for them, SAP automatically places a credit hold on new orders. The order cannot proceed to the warehouse until the hold is released by an authorised credit controller.
+
+**What the orders team sees today without the agent**
+
+The workbench shows the hold. The reason code points to credit exposure. What SAP cannot surface is:
+
+- Whether someone else in the business is already handling this
+- Whether a formal credit review is underway
+- Whether acting here would conflict with a process already in motion
+
+Without that context, the natural response is to start investigating and work toward releasing the hold.
+
+**What the agent does**
+
+The agent checks the FSCM credit management module and finds that a credit case for Pinnacle Systems is already open and actively being reviewed by the credit controller. This is not a stale or forgotten case. It is live.
+
+Acting from the orders workbench at this point would create a parallel workflow running alongside the formal credit review. It would undermine the control framework and leave an audit trail with two separate people making decisions on the same exposure at the same time.
+
+The agent recommends no action from the orders workbench and explains why.
+
+**The outcome**
+
+The value here is not a resolution. It is the prevention of a mistake. The orders team does not intervene in a process that is already being managed through the right channel. The credit controller retains clear ownership. The audit trail stays clean.
 
 **Scenario 4 - ATP Failure: Stock Exists, Just Not in the Right Place**
 
