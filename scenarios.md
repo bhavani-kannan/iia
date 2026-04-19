@@ -436,25 +436,170 @@ All three deliveries ship. The configuration gap is closed through the standard 
 
 ## Page: Receivables Workbench
 
-**Scenario 1 - Dunning Escalation: The Invisible $22,000 at Risk**
+**Scenario 1: The $22,000 the Dunning Process Cannot See**
 
-Galveston Partners is 67 days overdue on $18,400, with a broken payment promise and no response to the second dunning notice. SAP's dunning process sees $18,400 at risk and recommends a level 3 escalation. The agent looks further: two open orders totalling $22,000 are confirmed and not yet shipped. If those orders ship before a credit hold is in place, the total unrecovered exposure doubles to $40,400. The dunning run has no visibility into the open order pipeline - that cross-check is the intelligence layer's contribution. The recommendation is two parallel actions: legal-level dunning and a credit hold, both requiring Credit Manager authorisation.
+**The situation**
 
-**Scenario 2 - Disputed Invoice: A Pattern the System Never Connected**
+Galveston Partners is 67 days overdue on an $18,400 invoice. A payment promise made in March was not honoured. The second dunning notice has had no response. The standard dunning process is indicating a level 3 escalation.
 
-Frontier Corp is formally disputing an $8,100 invoice, claiming the price should be $66.36/unit rather than the $70.00 invoiced. SAP raises the dispute case. The agent finds that the sales manager who is now being asked to adjudicate the dispute is the same person who countersigned the $70.00 deviation at billing three days ago. It also surfaces that this has happened four times in the past year - always the same customer, always the same price range, always resolved as a goodwill gesture. The evidence package changes the nature of the conversation: this is a governance question about formalising a commercial practice, not a one-off billing error.
+**Why it matters**
 
-**Scenario 3 - Trade Deduction: A Valid Claim Through the Wrong Channel**
+The dunning process in most configurations operates on the open AR balance. It identifies overdue invoices, tracks escalation levels, and generates notices. What it does not typically consolidate is whether the same customer has confirmed open orders that have not yet shipped. Those orders represent additional exposure that may ship before any credit control is in place.
 
-Vantage Corp paid $45,200 against a $47,600 invoice with no explanation for the $2,400 shortfall. The agent checks the rebate agreement - not the pricing condition record, which is a different transaction entirely - and finds that a 5% quarterly rebate on this customer's net sales calculates to $2,380. The deduction is valid. The $20 overage is a calculation methodology difference: the customer applies the rebate to the gross invoice value, SAP applies it to the net. The recommended path is through the rebate settlement module, not a direct credit note - which would bypass the accrual and break the quarterly reconciliation.
+**What the AR team sees today without the agent**
 
-**Scenario 4 - Credit Note Stuck: A $12 Discrepancy Holding Up $4,800**
+The workbench surfaces $18,400 at risk and a recommended escalation. What it does not clearly surface is:
 
-Caldwell Corp returned goods eight days ago. The goods receipt is posted, the returns order is in the billing queue, and there is no billing block. Yet no credit note has been issued. SAP can tell you the order is eligible to bill; it cannot tell you why no one has run it. The agent finds the answer: the returns order was created without referencing the original invoice, so the system re-priced it at today's conditions rather than copying the original price - producing $4,788 instead of $4,800. The AR coordinator spotted the discrepancy and stopped. The fix is a one-line amendment to the returns order to reference the original invoice, not a manual workaround.
+- That two confirmed open orders totalling $22,000 have not yet shipped
+- That no credit hold is currently in place to stop them
+- That if both orders ship before a hold is applied, the total unrecovered exposure rises to $40,400
 
-**Scenario 5 - Write-off Candidates: Seven Individual Errors That Are Actually One**
+The AR coordinator working from the dunning queue alone has no reason to check the open order pipeline.
 
-A $47 residual on a customer account appears to be a routine small write-off. The agent doesn't evaluate it in isolation - it scans the full customer portfolio and finds six identical cases, all created in the same week, all on invoices originally in euros, all with residuals that match the USD/EUR exchange rate rounding differential on the last day of the period. This isn't seven customers slightly underpaying. It's a configuration gap in how the system handles foreign currency rounding at period-end close. Writing off seven items treats the symptom; fixing the configuration prevents it from recurring at every quarter-end.
+**What the agent does**
+
+The agent cross-references the open order list for Galveston Partners alongside the AR position. Two orders, totalling $22,000, are confirmed and scheduled to ship in the coming days. There is no credit hold in place. The orders were confirmed before the invoice reached a threshold that would typically trigger an automatic hold in most credit management configurations, so they are sitting live in the pipeline.
+
+The failed payment promise is a meaningful signal. A customer that had a clean payment history for 18 months, made a commitment and did not honour it, and has not responded to a follow-up notice, warrants a different response than a standard escalation step.
+
+Two parallel actions require Credit Manager authorisation:
+
+- Advance the dunning to legal level through the standard dunning process, outside the normal cycle given the failed promise
+- Apply a credit hold to prevent the two open orders from shipping before the overdue situation is resolved
+
+Neither action is within the AR coordinator's unilateral authority. The agent prepares the case for the Credit Manager to review and authorise.
+
+**The outcome**
+
+The Credit Manager acts on a complete picture: the overdue invoice, the failed promise, and the forward exposure from the open orders. The credit hold is applied before additional goods ship. The legal notice is issued. The $40,400 scenario is avoided by acting on information the dunning process on its own would not have surfaced.
+
+**Scenario 2: The Dispute That Traces Back to the Approver**
+
+**The situation**
+
+Frontier Corp has formally disputed an $8,100 invoice, claiming the agreed price was $66.36 per unit rather than the $70.00 invoiced. A dispute case has been opened in the receivables system. The AR team needs to present the case to the sales manager for a commercial decision.
+
+**Why it matters**
+
+Invoice disputes in most configurations require the AR team to gather context from multiple sources before the case can be adjudicated. Without that context, the sales manager is making a commercial decision based only on what the customer is claiming.
+
+**What the AR team sees today without the agent**
+
+The dispute case is open. The AR coordinator can see the invoice amount and the customer's claim. What the system does not clearly consolidate is:
+
+- Whether there is a documented price commitment at $66.36 anywhere in the system
+- Who authorised the $70.00 price at billing and when
+- Whether this pattern has occurred before
+
+**What the agent does**
+
+The agent checks three things before the case reaches the sales manager.
+
+First, it confirms there is no quotation, contract, or pricing condition on record committing a price of $66.36 for this customer on this material. The lower price has no documented basis in the system.
+
+Second, it checks the order audit log. The billing block on this order was released three days ago by the sales manager who is now being asked to adjudicate the dispute. That countersignature explicitly authorised $70.00 as the billable price. The person reviewing the dispute is the same person who approved the invoice.
+
+Third, it checks the prior order history. The same billing block has been raised and approved four times in the past 12 months for this customer, always in the $66 to $67 per unit range, always approved within a day. No prior invoices at $70.00 have been disputed. The pattern indicates that $66 to $67 per unit has become the operating commercial rate for this customer, even though it has never been recorded as such in the system.
+
+The agent does not resolve the dispute. That is a commercial decision. It presents the evidence so the sales manager understands exactly what they are deciding.
+
+**The outcome**
+
+The sales manager reviews a case that is no longer a one-off billing dispute. The structural question is whether to formalise the commercial price in a customer-specific pricing condition so the billing block, the countersignature, and the dispute cycle do not repeat. Whatever is decided on this invoice, the pattern warrants a governance decision about the pricing record.
+
+**Scenario 3: A Valid Deduction, But Through the Wrong Process**
+
+**The situation**
+
+Vantage Corp paid $45,200 against a $47,600 invoice with no remittance explanation for the $2,400 shortfall. The invoice is showing a partial open balance in the AR ledger. The AR team needs to determine whether this is a payment error, a dispute, or a deduction, and how to clear it.
+
+**Why it matters**
+
+An unexplained shortfall on an otherwise-paid invoice typically creates an overdue signal in the AR system. The AR team has to determine what the shortfall represents before they can act. Without context, the default response is to chase the customer for the remainder, which may be commercially incorrect if the deduction is contractually valid.
+
+**What the AR team sees today without the agent**
+
+The AR coordinator sees a $2,400 open balance with no remittance note. What the system does not clearly surface is:
+
+- Whether this customer has an active rebate agreement that could explain the deduction
+- What the correct amount of any valid rebate claim would be
+- What the right process is to clear it, and why a direct credit note would create a reconciliation problem
+
+**What the agent does**
+
+The agent checks whether an active rebate agreement exists for this customer. In setups where SD rebate management is configured, rebate agreements are held separately from standard pricing condition records. The agent finds an active quarterly rebate agreement with a 5% rate on net sales. Applying that rate to the invoice value produces a valid rebate amount of $2,380. The customer deducted $2,400, which is $20 more than the calculated entitlement.
+
+The $20 difference points to a calculation methodology gap. The customer appears to have applied the 5% rate to the gross invoice value rather than the net value the rebate agreement references. This is a known source of small discrepancies in rebate programs and is a structural difference in how the two parties calculate the same rate.
+
+The agent flags the correct resolution path. In setups with SD rebate management active, posting a direct FI credit note bypasses the rebate settlement module. That leaves the rebate accrual uncleared, creates a gap in the quarterly reconciliation, and breaks the audit trail linking the payment to the agreement. The correct path is to process the $2,380 through the rebate settlement module, which generates a linked credit document and clears the accrual. The remaining $20 is addressed separately, either recovered or written off under tolerance policy.
+
+**The outcome**
+
+The AR coordinator confirms the rebate claim with the customer and initiates the settlement through the correct process. The invoice is cleared correctly. The quarterly rebate reconciliation remains intact. The $20 methodology difference is documented and flagged as a structural pattern for the rebate configuration team to review.
+
+**Scenario 4: A $12 Gap Holding Up a $4,800 Credit**
+
+**The situation**
+
+Caldwell Corp returned goods eight days ago. The goods receipt has been posted, the returns order is sitting in the billing queue, and there is no billing block. The AR team has not issued the credit note. The customer is chasing it.
+
+**Why it matters**
+
+When a returns order is eligible to bill, in most configurations it appears in the billing due list and can be processed through the standard billing transaction. If nothing is blocking it at a system level, the reason it has not been issued is typically that someone spotted something and stopped. Without knowing what they saw, the AR coordinator cannot determine whether it is safe to proceed.
+
+**What the AR team sees today without the agent**
+
+The returns order is in the billing queue with no block. What the system does not clearly surface is:
+
+- Why the credit note has not been issued despite being technically eligible
+- Whether the pricing on the returns order matches what the customer expects
+- What caused any discrepancy and how to fix it cleanly
+
+**What the agent does**
+
+The agent checks the billing preview for the returns order and finds the system would generate a credit note for $4,788, not the $4,800 the original invoice reflected. The AR coordinator had already spotted this $12 difference and paused correctly.
+
+The agent traces the cause. The returns order was created without referencing the original invoice. When no reference exists, in most SD configurations the system re-runs the full pricing procedure at the conditions active on the date the returns order was created rather than copying the original price. A pricing condition had changed slightly between the original invoice date and the returns order creation date, producing a $12 difference across 120 units.
+
+The agent also checks whether the material was placed in quality inspection stock on receipt, as this would be another reason a credit could be withheld. The returned material posted to unrestricted stock and the material is not quality-managed, so that cause is eliminated.
+
+The fix is a targeted amendment to the returns order in the standard sales order transaction: add the reference to the original invoice and re-copy pricing from it. Once the pricing matches $4,800, the credit note can be issued through the standard billing process.
+
+**The outcome**
+
+The AR coordinator obtains the necessary authorisation, makes the amendment, and issues the credit note at the correct amount. Caldwell Corp receives the full $4,800 credit. A $12 discrepancy that looked small turned out to be the precise thing preventing a correct credit note from being issued. The agent also notes this is the second returns order for this customer this quarter created without an invoice reference, which points to a process gap in how returns are raised.
+
+**Scenario 5: Seven Write-offs That Are Actually One Configuration Gap**
+
+**The situation**
+
+A $47 open balance on a customer account has been sitting unresolved for over 90 days. The invoice is 99.8% cleared. It looks like a routine small write-off candidate. The AR team is preparing to process it individually.
+
+**Why it matters**
+
+Small residuals below a write-off threshold are a normal part of AR housekeeping. What is less obvious is when multiple small residuals share a common origin. Evaluating them individually and writing them off one by one treats symptoms without identifying the cause.
+
+**What the AR team sees today without the agent**
+
+The workbench surfaces the $47 item as an individual write-off candidate. What it does not clearly surface is:
+
+- Whether other similar residuals exist across the portfolio
+- Whether they share a common pattern in timing, currency, or origin
+- Whether the correct action is a write-off, a configuration fix, or both
+
+**What the agent does**
+
+The agent does not evaluate the $47 item in isolation. It scans the full AR portfolio for open items below a threshold that have been outstanding over 90 days with no dispute flag. It finds six more, bringing the total to seven residuals across seven customer accounts, totalling $218.
+
+The pattern is specific. All seven were created in the same week, during the period-end close window. All seven are on invoices originally raised in euros and posted in US dollars. All seven residual amounts correspond precisely to rounding differences at the USD/EUR exchange rate applied on the last day of the period.
+
+The agent identifies this as a FI configuration gap rather than seven individual customer payment shortfalls. In most configurations, the way foreign currency rounding differences are handled at period-end is governed by the exchange rate difference account assignment in the FI settings. Where that assignment does not absorb small rounding differences automatically, the system creates a separate open item instead. That is what happened here.
+
+Two actions are needed. The seven residuals are written off through the standard AR clearing process using the appropriate reason codes, which posts the difference to the write-off account and clears the customer subledger. A direct GL posting would not clear the customer subledger and should not be used here. In parallel, the FI configuration team reviews the rounding account assignment to prevent new residuals of the same type being generated at the next period-end.
+
+**The outcome**
+
+Seven items are cleared in a single session. The AR ledger is clean. The configuration fix, once tested and transported to production, prevents the same pattern from accumulating again at the next close. Without the portfolio scan, the AR team would have processed one item today and found the remaining six at the next review cycle.
 
 ---
 
